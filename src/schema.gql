@@ -1,0 +1,45 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input CreateDomain1Input {
+  """domain1001"""
+  domain1001: Int!
+}
+
+type CreateDomain1Output {
+  domain1: Domain1!
+}
+
+type Domain1 {
+  """domain1001"""
+  domain1001: Int
+
+  """id"""
+  id: Int!
+}
+
+type Mutation {
+  createDomain1(createDomain1Input: CreateDomain1Input!): CreateDomain1Output!
+  removeDomain1(id: Int!): RemoveDomain1Output!
+  updateDomain1(updateDomain1Input: UpdateDomain1Input!): UpdateDomain1Output!
+}
+
+type Query {
+  domain1(id: Int!): Domain1!
+  domain1s: [Domain1!]!
+}
+
+type RemoveDomain1Output {
+  domain1: Domain1!
+}
+
+input UpdateDomain1Input {
+  """domain1001"""
+  domain1001: Int
+  id: Int!
+}
+
+type UpdateDomain1Output {
+  domain1: Domain1!
+}
