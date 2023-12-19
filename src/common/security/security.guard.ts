@@ -20,7 +20,7 @@ export class SecurityGuard implements CanActivate {
     private readonly reflector: Reflector,
   ) {}
 
-  async canActivate(context: ExecutionContext): Promise<boolean> {
+  canActivate(context: ExecutionContext): boolean {
     const handler = context.getHandler();
     const classRef = context.getClass();
 
@@ -30,21 +30,26 @@ export class SecurityGuard implements CanActivate {
     );
     if (noAuthentication) return true;
 
-    if (!(await this.authentication(context))) return false;
+    if (!this.authentication(context)) return false;
 
     return true;
   }
 
-  private async authentication(context: ExecutionContext): Promise<boolean> {
+  private authentication(context: ExecutionContext): boolean {
     const ctx = GqlExecutionContext.create(context);
     const gqlContext: IGraphQLContext = ctx.getContext();
+
+    // prevent multiple query
+    if (gqlContext.user) {
+      return true;
+    }
+
     const token = this.extractTokenFromHeader(gqlContext.req);
     if (!token) {
       throw new UnauthorizedException();
     }
     try {
-      const user = await this.jwtService.verifyAsync<User>(token);
-      // use Promise, to prevent multiple query
+      const user = this.jwtService.verify<User>(token);
       gqlContext.user = {
         ...user,
         createdAt: new Date(user.createdAt),
