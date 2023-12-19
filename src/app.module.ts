@@ -12,7 +12,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
+import { CommonModule } from './common/common.module';
 import { Domain1Module } from './domain1/domain1.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -31,6 +34,7 @@ import { Domain1Module } from './domain1/domain1.module';
         autoLoadEntities: true, // every entity registered through the forFeature() method will be automatically added to the entities array of the configuration object.
         synchronize: true, // Setting synchronize: true shouldn't be used in production - otherwise you can lose production data.
         logging: !!configService.get('DB_LOGGING'),
+        subscribers: [join(__dirname, '**', '*.subscriber.{ts,js}')],
       }),
     }),
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
@@ -53,6 +57,9 @@ import { Domain1Module } from './domain1/domain1.module';
         };
       },
     }),
+    CommonModule,
+    UserModule,
+    AuthModule,
     Domain1Module,
   ],
   controllers: [AppController],
