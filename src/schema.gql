@@ -3,12 +3,24 @@
 # ------------------------------------------------------
 
 input CreateDomain1Input {
+  """domain2s"""
+  domain2s: [CreateDomain2Input!]!
+
   """domain1001"""
   domain1001: Int
 }
 
 type CreateDomain1Output {
   domain1: Domain1!
+}
+
+input CreateDomain2Input {
+  """domain2001"""
+  domain2001: Int
+}
+
+type CreateDomain2Output {
+  domain2: Domain2!
 }
 
 input CreateUserInput {
@@ -32,6 +44,9 @@ type Domain1 implements MetaEntity {
   deleteUser: User
   deleteUserId: ID
   deletedAt: DateTime
+
+  """domain2s"""
+  domain2s: [Domain2!]
 
   """domain1001"""
   domain1001: Int
@@ -65,6 +80,46 @@ input Domain1WhereInput {
   id: String
 }
 
+type Domain2 {
+  createUser: User
+  createUserId: ID
+  createdAt: DateTime!
+  deleteUser: User
+  deleteUserId: ID
+  deletedAt: DateTime
+
+  """domain2001"""
+  domain2001: Int
+  id: ID!
+  updateUser: User
+  updateUserId: ID
+  updatedAt: DateTime!
+}
+
+input Domain2OrderInput {
+  createdAt: NodeOrderEnum
+  updatedAt: NodeOrderEnum = DESC
+}
+
+type Domain2Page implements NodePage {
+  """Nodes in this page"""
+  nodes: [Domain2!]!
+
+  """Amount of nodes to skip from the beginning of this page"""
+  skip: NonNegativeInt
+
+  """Maximum amount of nodes in this page"""
+  take: NonNegativeInt
+
+  """Total amount of nodes"""
+  total: NonNegativeInt
+}
+
+input Domain2WhereInput {
+  """Example Field"""
+  id: String
+}
+
 interface MetaEntity {
   createUser: User
   createUserId: ID
@@ -80,11 +135,14 @@ interface MetaEntity {
 
 type Mutation {
   createDomain1(input: CreateDomain1Input!): CreateDomain1Output!
+  createDomain2(input: CreateDomain2Input!): CreateDomain2Output!
   createUser(createUserInput: CreateUserInput!): CreateUserOutput!
   removeDomain1(input: RemoveDomain1Input!): RemoveDomain1Output!
+  removeDomain2(input: RemoveDomain2Input!): RemoveDomain2Output!
   removeUser(input: RemoveUserInput!): RemoveUserOutput!
   signIn(input: SignInInput!): SignInOutput!
   updateDomain1(input: UpdateDomain1Input!): UpdateDomain1Output!
+  updateDomain2(input: UpdateDomain2Input!): UpdateDomain2Output!
   updateUser(input: UpdateUserInput!): UpdateUserOutput!
 }
 
@@ -151,6 +209,14 @@ type RemoveDomain1Output {
   domain1: Domain1!
 }
 
+input RemoveDomain2Input {
+  id: ID!
+}
+
+type RemoveDomain2Output {
+  domain2: Domain2!
+}
+
 input RemoveUserInput {
   id: ID!
 }
@@ -172,6 +238,9 @@ type SignInOutput {
 }
 
 input UpdateDomain1Input {
+  """domain2s"""
+  domain2s: [CreateDomain2Input!]
+
   """domain1001"""
   domain1001: Int
   id: ID!
@@ -179,6 +248,16 @@ input UpdateDomain1Input {
 
 type UpdateDomain1Output {
   domain1: Domain1!
+}
+
+input UpdateDomain2Input {
+  """domain2001"""
+  domain2001: Int
+  id: ID!
+}
+
+type UpdateDomain2Output {
+  domain2: Domain2!
 }
 
 input UpdateUserInput {
