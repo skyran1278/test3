@@ -4,7 +4,7 @@
 
 input CreateDomain1Input {
   """domain1001"""
-  domain1001: Int!
+  domain1001: Int
 }
 
 type CreateDomain1Output {
@@ -25,12 +25,44 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type Domain1 {
+type Domain1 implements MetaEntity {
+  createUser: User
+  createUserId: ID
+  createdAt: DateTime!
+  deleteUser: User
+  deleteUserId: ID
+  deletedAt: DateTime
+
   """domain1001"""
   domain1001: Int
+  id: ID!
+  updateUser: User
+  updateUserId: ID
+  updatedAt: DateTime!
+}
 
-  """id"""
-  id: Int!
+input Domain1OrderInput {
+  createdAt: NodeOrderEnum
+  updatedAt: NodeOrderEnum = DESC
+}
+
+type Domain1Page implements NodePage {
+  """Nodes in this page"""
+  nodes: [Domain1!]!
+
+  """Amount of nodes to skip from the beginning of this page"""
+  skip: NonNegativeInt
+
+  """Maximum amount of nodes in this page"""
+  take: NonNegativeInt
+
+  """Total amount of nodes"""
+  total: NonNegativeInt
+}
+
+input Domain1WhereInput {
+  """Example Field"""
+  id: String
 }
 
 interface MetaEntity {
@@ -47,12 +79,12 @@ interface MetaEntity {
 }
 
 type Mutation {
-  createDomain1(createDomain1Input: CreateDomain1Input!): CreateDomain1Output!
+  createDomain1(input: CreateDomain1Input!): CreateDomain1Output!
   createUser(createUserInput: CreateUserInput!): CreateUserOutput!
-  removeDomain1(id: Int!): RemoveDomain1Output!
+  removeDomain1(input: RemoveDomain1Input!): RemoveDomain1Output!
   removeUser(input: RemoveUserInput!): RemoveUserOutput!
   signIn(input: SignInInput!): SignInOutput!
-  updateDomain1(updateDomain1Input: UpdateDomain1Input!): UpdateDomain1Output!
+  updateDomain1(input: UpdateDomain1Input!): UpdateDomain1Output!
   updateUser(input: UpdateUserInput!): UpdateUserOutput!
 }
 
@@ -80,8 +112,20 @@ interface NodePage {
 scalar NonNegativeInt
 
 type Query {
-  domain1(id: Int!): Domain1!
-  domain1s: [Domain1!]!
+  domain1(id: ID!): Domain1!
+  domain1Page(
+    """排序欄位與方式"""
+    order: Domain1OrderInput! = {updatedAt: DESC}
+
+    """Amount of nodes to skip from the beginning of this page"""
+    skip: NonNegativeInt
+
+    """Maximum amount of nodes in this page"""
+    take: NonNegativeInt
+
+    """查詢條件"""
+    where: Domain1WhereInput! = {}
+  ): Domain1Page!
   me: User
   user(id: ID!): User!
   userPage(
@@ -97,6 +141,10 @@ type Query {
     """查詢條件"""
     where: UserWhereInput! = {}
   ): UserPage!
+}
+
+input RemoveDomain1Input {
+  id: ID!
 }
 
 type RemoveDomain1Output {
@@ -126,7 +174,7 @@ type SignInOutput {
 input UpdateDomain1Input {
   """domain1001"""
   domain1001: Int
-  id: Int!
+  id: ID!
 }
 
 type UpdateDomain1Output {

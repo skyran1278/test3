@@ -1,7 +1,7 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
+import { Field, ID, InputType } from '@nestjs/graphql';
 
 @InputType()
 export class RemoveDomain1Input {
-  @Field(() => Int)
-  id!: number;
+  @Field(() => ID)
+  id!: string;
 }
