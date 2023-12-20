@@ -93,6 +93,22 @@ export abstract class BaseService<Entity extends MetaEntity> {
     return repo.findOne(options);
   }
 
+  findOneOrFail(
+    options: FindOneOptions<Entity>,
+    metadata?: ServiceMetadata,
+  ): Promise<Entity> {
+    const repo = this.getRepo(metadata);
+    return repo.findOneOrFail(options);
+  }
+
+  findOneByOrFail(
+    where: FindOptionsWhere<Entity>[] | FindOptionsWhere<Entity>,
+    metadata?: ServiceMetadata,
+  ): Promise<Entity> {
+    const repo = this.getRepo(metadata);
+    return repo.findOneByOrFail(where);
+  }
+
   async find(
     options: FindManyOptions<Entity>,
     metadata?: ServiceMetadata,
