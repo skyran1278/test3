@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/base.service';
-import { ServiceMetadata } from 'src/common/interface/service-metadata.interface';
+import { IServiceMetadata } from 'src/common/interface/service-metadata.interface';
 import { NodeIdNotFoundError } from 'src/common/node-id-not-found.error';
 import { EntityManager, FindOneOptions, Repository } from 'typeorm';
 
@@ -22,7 +22,7 @@ export class Domain1Service extends BaseService<Domain1> {
 
   async createOne(
     input: CreateDomain1Input | Domain1,
-    metadata?: ServiceMetadata,
+    metadata?: IServiceMetadata,
   ): Promise<Domain1> {
     const create = async (manager: EntityManager) => {
       const dao = input instanceof Domain1 ? input : this.create(input);
@@ -42,7 +42,7 @@ export class Domain1Service extends BaseService<Domain1> {
 
   findOne(
     options: FindOneOptions<Domain1>,
-    metadata?: ServiceMetadata,
+    metadata?: IServiceMetadata,
   ): Promise<Domain1 | null> {
     const domain1Repo = metadata?.manager
       ? metadata.manager.getRepository(Domain1)
@@ -50,11 +50,11 @@ export class Domain1Service extends BaseService<Domain1> {
     return domain1Repo.findOne(options);
   }
 
-  findPage(args: Domain1PageArgs, metadata?: ServiceMetadata) {
+  findPage(args: Domain1PageArgs, metadata?: IServiceMetadata) {
     return this.findNodePage(args, metadata);
   }
 
-  async updateOne(input: UpdateDomain1Input, metadata: ServiceMetadata) {
+  async updateOne(input: UpdateDomain1Input, metadata: IServiceMetadata) {
     const update = async (manager: EntityManager) => {
       const domain1Repo = manager.getRepository(Domain1);
       const existDomain1 = await domain1Repo.findOne({
@@ -81,7 +81,7 @@ export class Domain1Service extends BaseService<Domain1> {
     return this.manager.transaction('READ COMMITTED', update);
   }
 
-  async removeOne(id: string, metadata: ServiceMetadata) {
+  async removeOne(id: string, metadata: IServiceMetadata) {
     const remove = async (manager: EntityManager) => {
       const domain1Repo = manager.getRepository(Domain1);
 

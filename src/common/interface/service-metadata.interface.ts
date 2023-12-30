@@ -3,7 +3,7 @@ import { EntityManager } from 'typeorm';
 
 import { IGraphQLContext } from './graphql-context.interface';
 
-export interface ServiceMetadata {
+export interface IServiceMetadata {
   user: User;
   context?: IGraphQLContext;
   manager?: EntityManager;
