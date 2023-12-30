@@ -14,6 +14,9 @@ type CreateDomain1Output {
 input CreateUserInput {
   """user001"""
   user001: Int!
+
+  """user002"""
+  user002: Int!
 }
 
 type CreateUserOutput {
@@ -61,8 +64,16 @@ type Domain1Page implements NodePage {
 }
 
 input Domain1WhereInput {
-  """Example Field"""
-  id: String
+  createUserId: ID
+  createdAt: DateTime
+  deleteUserId: ID
+  deletedAt: DateTime
+
+  """domain1001"""
+  domain1001: Int
+  id: ID
+  updateUserId: ID
+  updatedAt: DateTime
 }
 
 interface MetaEntity {
@@ -186,6 +197,9 @@ input UpdateUserInput {
 
   """user001"""
   user001: Int
+
+  """user002"""
+  user002: Int
 }
 
 type UpdateUserOutput {
@@ -231,6 +245,17 @@ type UserPage implements NodePage {
 }
 
 input UserWhereInput {
-  """Example Field"""
-  id: String
+  createUserId: ID
+  createdAt: DateTime
+  deleteUserId: ID
+  deletedAt: DateTime
+  id: ID
+  updateUserId: ID
+  updatedAt: DateTime
+
+  """user001"""
+  user001: Int
+
+  """user002"""
+  user002: Int
 }

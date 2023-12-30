@@ -1,8 +1,7 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { Maybe } from 'graphql/jsutils/Maybe';
+import { InputType } from '@nestjs/graphql';
+import { PartialAndOmitType } from 'src/common/partial-and-omit-type';
+
+import { User } from '../user.entity';
 
 @InputType()
-export class UserWhereInput {
-  @Field(() => String, { nullable: true, description: 'Example Field' })
-  id?: Maybe<string>;
-}
+export class UserWhereInput extends PartialAndOmitType(User, []) {}

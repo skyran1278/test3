@@ -1,4 +1,6 @@
 import { ArgsType, Field } from '@nestjs/graphql';
+import { Type } from 'class-transformer';
+import { ValidateNested } from 'class-validator';
 import { NonNegativeIntResolver } from 'graphql-scalars';
 import { Maybe } from 'graphql/jsutils/Maybe';
 
@@ -19,12 +21,16 @@ export class Domain1PageArgs {
   })
   skip?: Maybe<number>;
 
+  @ValidateNested()
+  @Type(() => Domain1OrderInput)
   @Field(() => Domain1OrderInput, {
     description: '排序欄位與方式',
     defaultValue: new Domain1OrderInput(),
   })
   order: Domain1OrderInput = new Domain1OrderInput();
 
+  @ValidateNested()
+  @Type(() => Domain1WhereInput)
   @Field(() => Domain1WhereInput, {
     description: '查詢條件',
     defaultValue: new Domain1WhereInput(),

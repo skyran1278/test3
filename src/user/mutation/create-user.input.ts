@@ -1,7 +1,7 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
+import { OmitMetaEntityType } from 'src/common/omit-meta-entity-type';
+
+import { User } from '../user.entity';
 
 @InputType()
-export class CreateUserInput {
-  @Field(() => Int, { description: 'user001' })
-  user001!: number;
-}
+export class CreateUserInput extends OmitMetaEntityType(User, []) {}

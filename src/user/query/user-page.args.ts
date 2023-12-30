@@ -1,4 +1,6 @@
 import { ArgsType, Field } from '@nestjs/graphql';
+import { Type } from 'class-transformer';
+import { ValidateNested } from 'class-validator';
 import { NonNegativeIntResolver } from 'graphql-scalars';
 import { Maybe } from 'graphql/jsutils/Maybe';
 
@@ -19,12 +21,16 @@ export class UserPageArgs {
   })
   skip?: Maybe<number>;
 
+  @ValidateNested()
+  @Type(() => UserOrderInput)
   @Field(() => UserOrderInput, {
     description: '排序欄位與方式',
     defaultValue: new UserOrderInput(),
   })
   order: UserOrderInput = new UserOrderInput();
 
+  @ValidateNested()
+  @Type(() => UserWhereInput)
   @Field(() => UserWhereInput, {
     description: '查詢條件',
     defaultValue: new UserWhereInput(),

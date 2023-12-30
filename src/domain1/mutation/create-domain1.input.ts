@@ -1,8 +1,7 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
-import { Maybe } from 'graphql/jsutils/Maybe';
+import { InputType } from '@nestjs/graphql';
+import { OmitMetaEntityType } from 'src/common/omit-meta-entity-type';
+
+import { Domain1 } from '../domain1.entity';
 
 @InputType()
-export class CreateDomain1Input {
-  @Field(() => Int, { description: 'domain1001', nullable: true })
-  domain1001?: Maybe<number>;
-}
+export class CreateDomain1Input extends OmitMetaEntityType(Domain1, []) {}
