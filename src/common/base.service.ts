@@ -13,20 +13,10 @@ import {
   Repository,
 } from 'typeorm';
 
+import { Nullable } from './interface/nullable.interface';
 import { IServiceMetadata } from './interface/service-metadata.interface';
 import { MetaEntity } from './meta.entity';
 import { NodePage } from './query/node-page.type';
-
-export type NullableProperty<Property> = Property extends Record<
-  string,
-  unknown
->
-  ? Nullable<Property>
-  : Property | null;
-
-export type Nullable<T> = {
-  [P in keyof T]?: NullableProperty<T[P]>;
-};
 
 interface NodePageInput<Entity extends ObjectLiteral> {
   take?: Maybe<number>;

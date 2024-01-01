@@ -1,5 +1,5 @@
 import { InputType } from '@nestjs/graphql';
-import { Nullable } from 'src/common/base.service';
+import { Nullable } from 'src/common/interface/nullable.interface';
 import { PartialAndOmitType } from 'src/common/partial-and-omit-type';
 import { FindOptionsWhere } from 'typeorm';
 

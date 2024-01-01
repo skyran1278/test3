@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/base.service';
 import { IServiceMetadata } from 'src/common/interface/service-metadata.interface';
 import { NodeIdNotFoundError } from 'src/common/node-id-not-found.error';
-import { EntityManager, FindOneOptions, Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 
 import { Domain1 } from './domain1.entity';
 import { CreateDomain1Input } from './mutation/create-domain1.input';
@@ -15,7 +15,7 @@ export class Domain1Service extends BaseService<Domain1> {
   constructor(
     private readonly manager: EntityManager,
     @InjectRepository(Domain1)
-    private readonly repo: Repository<Domain1>,
+    readonly repo: Repository<Domain1>,
   ) {
     super(repo);
   }
@@ -38,16 +38,6 @@ export class Domain1Service extends BaseService<Domain1> {
     }
 
     return this.manager.transaction('READ COMMITTED', create);
-  }
-
-  findOne(
-    options: FindOneOptions<Domain1>,
-    metadata?: IServiceMetadata,
-  ): Promise<Domain1 | null> {
-    const domain1Repo = metadata?.manager
-      ? metadata.manager.getRepository(Domain1)
-      : this.repo;
-    return domain1Repo.findOne(options);
   }
 
   findPage(args: Domain1PageArgs, metadata?: IServiceMetadata) {
