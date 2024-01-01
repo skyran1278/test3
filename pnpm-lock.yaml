@@ -58,6 +58,9 @@ dependencies:
     version: 0.3.17(pg@8.11.3)(ts-node@10.9.1)
 
 devDependencies:
+  4itech-schematics:
+    specifier: ^11.0.0
+    version: 11.0.0(typescript@5.3.2)
   '@nestjs/cli':
     specifier: ^10.0.0
     version: 10.2.1
@@ -132,6 +135,21 @@ devDependencies:
     version: 5.3.2
 
 packages:
+
+  /4itech-schematics@11.0.0(typescript@5.3.2):
+    resolution: {integrity: sha512-DSaVK3y42v/x/imyUks4BM8drKTyY9W+sAnW2Ee2ELOkpqUt9MFGXxxqsleyCIVbqaCHu5xXbmmV7U1sG7aObA==}
+    peerDependencies:
+      typescript: '>=4.8.2'
+    dependencies:
+      '@angular-devkit/core': 16.2.8(chokidar@3.5.3)
+      '@angular-devkit/schematics': 16.2.8(chokidar@3.5.3)
+      comment-json: 4.2.3
+      jsonc-parser: 3.2.0
+      pluralize: 8.0.0
+      typescript: 5.3.2
+    transitivePeerDependencies:
+      - chokidar
+    dev: true
 
   /@aashutoshrathi/word-wrap@1.2.6:
     resolution: {integrity: sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==}
