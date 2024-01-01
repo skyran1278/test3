@@ -1,26 +1,13 @@
 import { ArgsType, Field } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 import { ValidateNested } from 'class-validator';
-import { NonNegativeIntResolver } from 'graphql-scalars';
-import { Maybe } from 'graphql/jsutils/Maybe';
+import { NodePageArgs } from 'src/common/query/node.page.args';
 
 import { UserOrderInput } from './user-order.input';
 import { UserWhereInput } from './user-where.input';
 
 @ArgsType()
-export class UserPageArgs {
-  @Field(() => NonNegativeIntResolver, {
-    description: 'Maximum amount of nodes in this page',
-    nullable: true,
-  })
-  take?: Maybe<number>;
-
-  @Field(() => NonNegativeIntResolver, {
-    description: 'Amount of nodes to skip from the beginning of this page',
-    nullable: true,
-  })
-  skip?: Maybe<number>;
-
+export class UserPageArgs extends NodePageArgs {
   @ValidateNested()
   @Type(() => UserOrderInput)
   @Field(() => UserOrderInput, {
