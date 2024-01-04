@@ -5,6 +5,7 @@ import {
   DeepPartial,
   FindManyOptions,
   FindOneOptions,
+  FindOperator,
   FindOptionsOrder,
   FindOptionsRelations,
   FindOptionsWhere,
@@ -232,14 +233,8 @@ export abstract class BaseService<Entity extends MetaEntity> {
     const order = options?.order ? this.omitNullFields(options.order) : {};
     const where = options?.where ? this.transformNullFields(options.where) : [];
 
-    const relations2 = this.getRelationsByWhereAndOrder(
+    const relations = this.getRelationsByWhereAndOrder(
       Array.isArray(where) ? [...where, order] : [where, order],
-    );
-
-    // convert where to relations
-    const whereToRelations = options?.where;
-    const relations = this.extractRelations(
-      whereToRelations as Record<string, unknown>,
     );
 
     this.logger.debug({
@@ -247,9 +242,9 @@ export abstract class BaseService<Entity extends MetaEntity> {
         take,
         skip,
         order,
+        whereInput: options?.where,
         where,
         relations,
-        relations2,
       },
     });
 
@@ -278,6 +273,12 @@ export abstract class BaseService<Entity extends MetaEntity> {
     );
   }
 
+  private notFindOperatorObject(obj: unknown): obj is Record<string, unknown> {
+    return (
+      typeof obj === 'object' && obj !== null && !(obj instanceof FindOperator)
+    );
+  }
+
   private omitNullFields<T extends Record<string, unknown>>(
     nullableRecord: Nullable<T>,
   ): Partial<T> {
@@ -287,7 +288,7 @@ export abstract class BaseService<Entity extends MetaEntity> {
       const value = nullableRecord[key];
 
       if (value !== null) {
-        if (this.isPlainObject(value)) {
+        if (this.notFindOperatorObject(value)) {
           // Recursively omit null fields in nested plain objects
           result[key as keyof T] = this.omitNullFields(value) as T[keyof T];
         } else {
@@ -322,7 +323,7 @@ export abstract class BaseService<Entity extends MetaEntity> {
         result[key] = IsNull() as T[keyof T];
       } else if (Array.isArray(value)) {
         result[key] = this.transformNullFields(value) as T[keyof T];
-      } else if (this.isPlainObject(value)) {
+      } else if (this.notFindOperatorObject(value)) {
         result[key] = this.nullToIsNull(value) as T[keyof T];
       } else {
         result[key] = value as T[keyof T];
@@ -376,7 +377,7 @@ export abstract class BaseService<Entity extends MetaEntity> {
 
     Object.keys(record).forEach((key) => {
       const value = record[key];
-      if (this.isPlainObject(value)) {
+      if (this.notFindOperatorObject(value)) {
         const shouldJoin = this.toTruthyObject(value);
         if (shouldJoin) {
           truthyObject[key] = shouldJoin;
@@ -391,45 +392,5 @@ export abstract class BaseService<Entity extends MetaEntity> {
       return truthyObject;
     }
     return hasValue;
-  }
-
-  private extractRelations(
-    where: Record<string, unknown>,
-  ): Record<string, unknown> {
-    let relations: Record<string, unknown> = {};
-
-    const checkAndExtract = (
-      obj: Record<string, unknown>,
-    ): boolean | Record<string, unknown> => {
-      let hasValue = false;
-      const tempObj: Record<string, unknown> = {};
-
-      for (const key in obj) {
-        const value = obj[key];
-
-        if (value !== undefined && value !== null) {
-          if (this.isPlainObject(value)) {
-            const isChildHasValue = checkAndExtract(value);
-
-            if (isChildHasValue && typeof isChildHasValue === 'object') {
-              tempObj[key] = isChildHasValue;
-            } else if (isChildHasValue && typeof isChildHasValue !== 'object') {
-              tempObj[key] = true;
-            }
-          } else {
-            hasValue = true;
-          }
-        } else {
-          hasValue = false;
-        }
-      }
-
-      relations = { ...tempObj };
-      return hasValue || tempObj;
-    };
-
-    checkAndExtract(where);
-
-    return relations;
   }
 }
