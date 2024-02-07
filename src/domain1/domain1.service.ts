@@ -24,7 +24,7 @@ export class Domain1Service extends BaseService<Domain1> {
     input: CreateDomain1Input | Domain1,
     metadata?: IServiceMetadata,
   ): Promise<Domain1> {
-    const create = async (manager: EntityManager) => {
+    const transaction = async (manager: EntityManager) => {
       const dao = input instanceof Domain1 ? input : this.create(input);
       if (metadata?.user) {
         dao.createUserId = metadata.user.id;
@@ -33,11 +33,9 @@ export class Domain1Service extends BaseService<Domain1> {
       return this.save(dao, { manager });
     };
 
-    if (metadata?.manager) {
-      return create(metadata.manager);
-    }
-
-    return this.manager.transaction('READ COMMITTED', create);
+    return metadata?.manager
+      ? transaction(metadata.manager)
+      : this.manager.transaction('READ COMMITTED', transaction);
   }
 
   findPage(args: Domain1PageArgs, metadata?: IServiceMetadata) {
@@ -45,7 +43,7 @@ export class Domain1Service extends BaseService<Domain1> {
   }
 
   async updateOne(input: UpdateDomain1Input, metadata: IServiceMetadata) {
-    const update = async (manager: EntityManager) => {
+    const transaction = async (manager: EntityManager) => {
       const domain1Repo = manager.getRepository(Domain1);
       const existDomain1 = await domain1Repo.findOne({
         where: { id: input.id },
@@ -64,15 +62,13 @@ export class Domain1Service extends BaseService<Domain1> {
       );
     };
 
-    if (metadata?.manager) {
-      return update(metadata.manager);
-    }
-
-    return this.manager.transaction('READ COMMITTED', update);
+    return metadata?.manager
+      ? transaction(metadata.manager)
+      : this.manager.transaction('READ COMMITTED', transaction);
   }
 
   async removeOne(id: string, metadata: IServiceMetadata) {
-    const remove = async (manager: EntityManager) => {
+    const transaction = async (manager: EntityManager) => {
       const domain1Repo = manager.getRepository(Domain1);
 
       const domain1 = await domain1Repo.findOneBy({ id });
@@ -83,10 +79,8 @@ export class Domain1Service extends BaseService<Domain1> {
       return domain1Repo.softRemove(domain1);
     };
 
-    if (metadata?.manager) {
-      return remove(metadata.manager);
-    }
-
-    return this.manager.transaction('READ COMMITTED', remove);
+    return metadata?.manager
+      ? transaction(metadata.manager)
+      : this.manager.transaction('READ COMMITTED', transaction);
   }
 }
