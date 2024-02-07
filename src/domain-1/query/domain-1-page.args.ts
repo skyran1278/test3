@@ -3,8 +3,8 @@ import { Type } from 'class-transformer';
 import { ValidateNested } from 'class-validator';
 import { NodePageArgs } from 'src/common/query/node.page.args';
 
-import { Domain1OrderInput } from './domain1-order.input';
-import { Domain1WhereInput } from './domain1-where.input';
+import { Domain1OrderInput } from './domain-1-order.input';
+import { Domain1WhereInput } from './domain-1-where.input';
 
 @ArgsType()
 export class Domain1PageArgs extends NodePageArgs {

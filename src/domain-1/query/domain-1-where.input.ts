@@ -3,7 +3,7 @@ import { Nullable } from 'src/common/interface/nullable.interface';
 import { PartialAndOmitType } from 'src/common/partial-and-omit-type';
 import { FindOptionsWhere } from 'typeorm';
 
-import { Domain1 } from '../domain1.entity';
+import { Domain1 } from '../domain-1.entity';
 
 @InputType()
 export class Domain1WhereInput extends PartialAndOmitType(Domain1, []) {

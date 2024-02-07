@@ -5,10 +5,10 @@ import { IServiceMetadata } from 'src/common/interface/service-metadata.interfac
 import { NodeIdNotFoundError } from 'src/common/node-id-not-found.error';
 import { EntityManager, Repository } from 'typeorm';
 
-import { Domain1 } from './domain1.entity';
-import { CreateDomain1Input } from './mutation/create-domain1.input';
-import { UpdateDomain1Input } from './mutation/update-domain1.input';
-import { Domain1PageArgs } from './query/domain1-page.args';
+import { Domain1 } from './domain-1.entity';
+import { CreateDomain1Input } from './mutation/create-domain-1.input';
+import { UpdateDomain1Input } from './mutation/update-domain-1.input';
+import { Domain1PageArgs } from './query/domain-1-page.args';
 
 @Injectable()
 export class Domain1Service extends BaseService<Domain1> {

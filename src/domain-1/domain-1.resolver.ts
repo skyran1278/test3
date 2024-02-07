@@ -3,16 +3,16 @@ import { Maybe } from 'graphql/jsutils/Maybe';
 import { UserDecorator } from 'src/common/security/user.decorator';
 import { User } from 'src/user/user.entity';
 
-import { Domain1 } from './domain1.entity';
-import { Domain1Service } from './domain1.service';
-import { CreateDomain1Input } from './mutation/create-domain1.input';
-import { CreateDomain1Output } from './mutation/create-domain1.output';
-import { RemoveDomain1Input } from './mutation/remove-domain1.input';
-import { RemoveDomain1Output } from './mutation/remove-domain1.output';
-import { UpdateDomain1Input } from './mutation/update-domain1.input';
-import { UpdateDomain1Output } from './mutation/update-domain1.output';
-import { Domain1PageArgs } from './query/domain1-page.args';
-import { Domain1Page } from './query/domain1-page.type';
+import { Domain1 } from './domain-1.entity';
+import { Domain1Service } from './domain-1.service';
+import { CreateDomain1Input } from './mutation/create-domain-1.input';
+import { CreateDomain1Output } from './mutation/create-domain-1.output';
+import { RemoveDomain1Input } from './mutation/remove-domain-1.input';
+import { RemoveDomain1Output } from './mutation/remove-domain-1.output';
+import { UpdateDomain1Input } from './mutation/update-domain-1.input';
+import { UpdateDomain1Output } from './mutation/update-domain-1.output';
+import { Domain1PageArgs } from './query/domain-1-page.args';
+import { Domain1Page } from './query/domain-1-page.type';
 
 @Resolver(() => Domain1)
 export class Domain1Resolver {
