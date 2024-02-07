@@ -1,6 +1,6 @@
 import { InputType } from '@nestjs/graphql';
-import { Nullable } from 'src/common/base.service';
 import { PartialAndOmitType } from 'src/common/partial-and-omit-type';
+import { Nullable } from 'src/common/repo.proxy';
 import { FindOptionsWhere } from 'typeorm';
 
 import { User } from '../user.entity';
