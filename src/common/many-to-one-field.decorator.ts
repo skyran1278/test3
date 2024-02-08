@@ -1,25 +1,29 @@
 import { applyDecorators } from '@nestjs/common';
-import { Field } from '@nestjs/graphql';
+import { Field, FieldOptions } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 import { ManyToOne, ObjectType, RelationOptions } from 'typeorm';
 
-interface RelationOptionsWithComment extends RelationOptions {
-  comment?: string;
-}
+type RelationAndFieldOptions = Omit<RelationOptions, 'nullable'> &
+  Pick<FieldOptions, 'deprecationReason' | 'nullable'> & {
+    /**
+     * Description of the field.
+     */
+    comment?: string;
+  };
 
-export function FieldManyToOne<T>(
+export function ManyToOneField<T>(
   typeFunctionOrTarget: (type?: unknown) => ObjectType<T>,
-  options?: RelationOptionsWithComment,
+  options?: RelationAndFieldOptions,
 ): PropertyDecorator;
-export function FieldManyToOne<T>(
+export function ManyToOneField<T>(
   typeFunctionOrTarget: (type?: unknown) => ObjectType<T>,
   inverseSide?: (object: T) => unknown,
-  options?: RelationOptionsWithComment,
+  options?: RelationAndFieldOptions,
 ): PropertyDecorator;
-export function FieldManyToOne<T>(
+export function ManyToOneField<T>(
   typeFunctionOrTarget: (type?: unknown) => ObjectType<T>,
-  inverseSideOrOptions?: ((object: T) => unknown) | RelationOptionsWithComment,
-  options?: RelationOptionsWithComment,
+  inverseSideOrOptions?: ((object: T) => unknown) | RelationAndFieldOptions,
+  options?: RelationAndFieldOptions,
 ): PropertyDecorator {
   let inverseSideProperty: ((object: T) => unknown) | undefined;
   if (
@@ -36,7 +40,11 @@ export function FieldManyToOne<T>(
     Field(typeFunctionOrTarget, {
       description: options?.comment,
       nullable: options?.nullable,
+      deprecationReason: options?.deprecationReason,
     }),
-    ManyToOne(typeFunctionOrTarget, inverseSideProperty, options),
+    ManyToOne(typeFunctionOrTarget, inverseSideProperty, {
+      ...options,
+      nullable: options?.nullable === true,
+    }),
   );
 }
