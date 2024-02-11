@@ -12,22 +12,25 @@ import { ValidateNested } from 'class-validator';
 type FieldOptionsExtractor<T> = T extends [GqlTypeReference<infer P>]
   ? FieldOptions<P[]>
   : T extends GqlTypeReference<infer P>
-  ? FieldOptions<P>
-  : never;
+    ? FieldOptions<P>
+    : never;
 
 export function TypeField<T extends ReturnTypeFuncValue>(
   returnTypeFunction: ReturnTypeFunc<T>,
   options?: FieldOptionsExtractor<T>,
 ): PropertyDecorator & MethodDecorator {
-  const returnTypeFunc = returnTypeFunction();
-  const typeFunction =
-    returnTypeFunc instanceof Array ? returnTypeFunc[0] : returnTypeFunc;
+  const returnTypeInstance = returnTypeFunction();
+  const isArray = returnTypeInstance instanceof Array;
+  const typeFunction = isArray ? returnTypeInstance[0] : returnTypeInstance;
+
+  const typeDecorators = [];
+
   if (typeFunction instanceof Function) {
-    return applyDecorators(
-      ValidateNested(),
-      Type(() => typeFunction),
-      Field(returnTypeFunction, options),
+    typeDecorators.push(
+      isArray ? ValidateNested({ each: true }) : ValidateNested(),
     );
+    typeDecorators.push(Type(() => typeFunction));
   }
-  return applyDecorators(Field(returnTypeFunction, options));
+
+  return applyDecorators(...typeDecorators, Field(returnTypeFunction, options));
 }
