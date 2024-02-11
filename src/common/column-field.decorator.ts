@@ -30,10 +30,7 @@ export function ColumnField(options: ColumnAndFieldOptions) {
 }
 
 export function getFieldDecorator(options: ColumnAndFieldOptions) {
-  let defaultValue: unknown = options.default;
-  if (defaultValue != null && options.type === 'decimal') {
-    defaultValue = new Decimal(defaultValue as string | number | Decimal);
-  }
+  const defaultValue = getDefaultValue(options);
 
   return Field(getReturnTypeFunc(options), {
     description: options.comment,
@@ -41,6 +38,13 @@ export function getFieldDecorator(options: ColumnAndFieldOptions) {
     deprecationReason: options.deprecationReason,
     defaultValue,
   });
+}
+
+function getDefaultValue(options: ColumnAndFieldOptions): unknown {
+  if (options.default != null && options.type === 'decimal') {
+    return new Decimal(options.default as string | number | Decimal);
+  }
+  return options.default;
 }
 
 function getReturnTypeFunc(
@@ -114,18 +118,19 @@ function getClassValidatorDecorators(options: ColumnAndFieldOptions) {
 }
 
 function getColumnDecorator(options: ColumnAndFieldOptions) {
+  const columnOptions: ColumnOptions = {
+    ...options,
+    nullable: options.nullable === true,
+  };
+
   if (options.type === 'decimal') {
-    return Column({
+    Object.assign(columnOptions, {
       type: 'decimal',
       precision: 32,
       scale: 6,
       transformer: DecimalTransformer.transformer,
-      ...options,
-      nullable: options.nullable === true,
     });
   }
-  return Column({
-    ...options,
-    nullable: options.nullable === true,
-  });
+
+  return Column(columnOptions);
 }
