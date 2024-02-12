@@ -46,6 +46,8 @@ type Domain1 implements MetaEntity {
 
 input Domain1OrderInput {
   createdAt: NodeOrderEnum
+  deletedAt: NodeOrderEnum
+  domain1001: NodeOrderEnum
   updatedAt: NodeOrderEnum = DESC
 }
 
@@ -227,7 +229,10 @@ type User implements MetaEntity {
 
 input UserOrderInput {
   createdAt: NodeOrderEnum
+  deletedAt: NodeOrderEnum
   updatedAt: NodeOrderEnum = DESC
+  user001: NodeOrderEnum
+  user002: NodeOrderEnum
 }
 
 type UserPage implements NodePage {
