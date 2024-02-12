@@ -27,8 +27,8 @@ export class UserService extends BaseService<User> {
     const create = async (manager: EntityManager) => {
       const dao = input instanceof User ? input : this.create(input);
       if (metadata?.user) {
-        dao.createUserId = metadata.user.id;
-        dao.updateUserId = metadata.user.id;
+        dao.createdUserId = metadata.user.id;
+        dao.updatedUserId = metadata.user.id;
       }
       return this.save(dao, { manager });
     };
@@ -68,7 +68,7 @@ export class UserService extends BaseService<User> {
         {
           ...existUser,
           ...input,
-          updateUserId: metadata.user.id,
+          updatedUserId: metadata.user.id,
         },
         { manager },
       );

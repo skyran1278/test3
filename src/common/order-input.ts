@@ -20,7 +20,7 @@ export function OrderInput<T extends MetaEntity>(
   classRef: Type<T>,
   decorator: ClassDecoratorFactory = InputType,
 ) {
-  const keys = ['id', 'createUserId', 'updateUserId', 'deleteUserId'];
+  const keys = ['id', 'createdUserId', 'updatedUserId', 'deletedUserId'];
   const { fields, decoratorFactory } = getFieldsAndDecoratorForType(classRef);
 
   const isInheritedPredicate = (propertyKey: string) =>

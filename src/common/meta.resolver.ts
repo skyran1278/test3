@@ -11,25 +11,25 @@ export class MetaEntityResolver {
 
   @ResolveField(() => User, { nullable: true })
   async createUser(
-    @Parent() { createUserId }: MetaEntity,
+    @Parent() { createdUserId }: MetaEntity,
   ): Promise<Maybe<User>> {
-    if (!createUserId) return;
-    return this.userService.findOne({ where: { id: createUserId } });
+    if (!createdUserId) return;
+    return this.userService.findOne({ where: { id: createdUserId } });
   }
 
   @ResolveField(() => User, { nullable: true })
   async updateUser(
-    @Parent() { updateUserId }: MetaEntity,
+    @Parent() { updatedUserId }: MetaEntity,
   ): Promise<Maybe<User>> {
-    if (!updateUserId) return;
-    return this.userService.findOne({ where: { id: updateUserId } });
+    if (!updatedUserId) return;
+    return this.userService.findOne({ where: { id: updatedUserId } });
   }
 
   @ResolveField(() => User, { nullable: true })
   async deleteUser(
-    @Parent() { deleteUserId }: MetaEntity,
+    @Parent() { deletedUserId }: MetaEntity,
   ): Promise<Maybe<User>> {
-    if (!deleteUserId) return;
-    return this.userService.findOne({ where: { id: deleteUserId } });
+    if (!deletedUserId) return;
+    return this.userService.findOne({ where: { id: deletedUserId } });
   }
 }

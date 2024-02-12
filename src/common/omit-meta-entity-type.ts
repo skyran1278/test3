@@ -33,12 +33,12 @@ export const OmitMetaEntityType = <T extends MetaEntity, K extends keyof T>(
     'createdAt',
     'updatedAt',
     'deletedAt',
-    'createUserId',
-    'createUser',
-    'updateUserId',
-    'updateUser',
-    'deleteUserId',
-    'deleteUser',
+    'createdUserId',
+    'createdUser',
+    'updatedUserId',
+    'updatedUser',
+    'deletedUserId',
+    'deletedUser',
     ...keys,
   ] as const;
 

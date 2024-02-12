@@ -27,8 +27,8 @@ export class Domain1Service extends BaseService<Domain1> {
     const transaction = async (manager: EntityManager) => {
       const dao = input instanceof Domain1 ? input : this.create(input);
       if (metadata?.user) {
-        dao.createUserId = metadata.user.id;
-        dao.updateUserId = metadata.user.id;
+        dao.createdUserId = metadata.user.id;
+        dao.updatedUserId = metadata.user.id;
       }
       return this.save(dao, { manager });
     };
@@ -56,7 +56,7 @@ export class Domain1Service extends BaseService<Domain1> {
         {
           ...existDomain1,
           ...input,
-          updateUserId: metadata?.user?.id,
+          updatedUserId: metadata?.user?.id,
         },
         { manager },
       );

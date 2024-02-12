@@ -33,19 +33,19 @@ export abstract class MetaEntity {
 
   @Field(() => ID, { nullable: true })
   @Column({ type: 'uuid', nullable: true })
-  createUserId?: Maybe<string>;
+  createdUserId?: Maybe<string>;
   @ManyToOne('User', { nullable: true })
-  createUser?: Maybe<User>;
+  createdUser?: Maybe<User>;
 
   @Field(() => ID, { nullable: true })
   @Column({ type: 'uuid', nullable: true })
-  updateUserId?: Maybe<string>;
+  updatedUserId?: Maybe<string>;
   @ManyToOne('User', { nullable: true })
-  updateUser?: Maybe<User>;
+  updatedUser?: Maybe<User>;
 
   @Field(() => ID, { nullable: true })
   @Column({ type: 'uuid', nullable: true })
-  deleteUserId?: Maybe<string>;
+  deletedUserId?: Maybe<string>;
   @ManyToOne('User', { nullable: true })
-  deleteUser?: Maybe<User>;
+  deletedUser?: Maybe<User>;
 }
