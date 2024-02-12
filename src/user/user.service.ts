@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/base.service';
-import { IServiceMetadata } from 'src/common/interface/service-metadata.interface';
+import { ServiceMetadata } from 'src/common/interface/service-metadata.interface';
 import { NodeIdNotFoundError } from 'src/common/node-id-not-found.error';
 import { EntityManager, FindOneOptions, Repository } from 'typeorm';
 
@@ -22,7 +22,7 @@ export class UserService extends BaseService<User> {
 
   async createOne(
     input: CreateUserInput | User,
-    metadata?: IServiceMetadata,
+    metadata?: ServiceMetadata,
   ): Promise<User> {
     const create = async (manager: EntityManager) => {
       const dao = input instanceof User ? input : this.create(input);
@@ -42,7 +42,7 @@ export class UserService extends BaseService<User> {
 
   findOne(
     options: FindOneOptions<User>,
-    metadata?: IServiceMetadata,
+    metadata?: ServiceMetadata,
   ): Promise<User | null> {
     const userRepo = metadata?.manager
       ? metadata.manager.getRepository(User)
@@ -50,11 +50,11 @@ export class UserService extends BaseService<User> {
     return userRepo.findOne(options);
   }
 
-  findPage(args: UserPageArgs, metadata?: IServiceMetadata) {
+  findPage(args: UserPageArgs, metadata?: ServiceMetadata) {
     return this.findNodePage(args, metadata);
   }
 
-  async updateOne(input: UpdateUserInput, metadata: IServiceMetadata) {
+  async updateOne(input: UpdateUserInput, metadata: ServiceMetadata) {
     const update = async (manager: EntityManager) => {
       const userRepo = manager.getRepository(User);
       const existUser = await userRepo.findOne({
@@ -81,7 +81,7 @@ export class UserService extends BaseService<User> {
     return this.manager.transaction('READ COMMITTED', update);
   }
 
-  async removeOne(id: string, metadata: IServiceMetadata) {
+  async removeOne(id: string, metadata: ServiceMetadata) {
     const remove = async (manager: EntityManager) => {
       const userRepo = manager.getRepository(User);
 

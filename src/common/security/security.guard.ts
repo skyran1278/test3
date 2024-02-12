@@ -10,7 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { User } from 'src/user/user.entity';
 
-import { IGraphQLContext } from '../interface/graphql-context.interface';
+import { GraphQLContext } from '../interface/graphql-context.interface';
 import { NoAuthentication } from './no-authentication.decorator';
 
 @Injectable()
@@ -37,7 +37,7 @@ export class SecurityGuard implements CanActivate {
 
   private authentication(context: ExecutionContext): boolean {
     const ctx = GqlExecutionContext.create(context);
-    const gqlContext: IGraphQLContext = ctx.getContext();
+    const gqlContext: GraphQLContext = ctx.getContext();
 
     // prevent multiple query
     if (gqlContext.user) {

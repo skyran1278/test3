@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/base.service';
-import { IServiceMetadata } from 'src/common/interface/service-metadata.interface';
+import { ServiceMetadata } from 'src/common/interface/service-metadata.interface';
 import { NodeIdNotFoundError } from 'src/common/node-id-not-found.error';
 import { EntityManager, Repository } from 'typeorm';
 
@@ -22,7 +22,7 @@ export class Domain1Service extends BaseService<Domain1> {
 
   async createOne(
     input: CreateDomain1Input | Domain1,
-    metadata?: IServiceMetadata,
+    metadata?: ServiceMetadata,
   ): Promise<Domain1> {
     const transaction = async (manager: EntityManager) => {
       const dao = input instanceof Domain1 ? input : this.create(input);
@@ -38,11 +38,11 @@ export class Domain1Service extends BaseService<Domain1> {
       : this.manager.transaction('READ COMMITTED', transaction);
   }
 
-  findPage(args: Domain1PageArgs, metadata?: IServiceMetadata) {
+  findPage(args: Domain1PageArgs, metadata?: ServiceMetadata) {
     return this.findNodePage(args, metadata);
   }
 
-  async updateOne(input: UpdateDomain1Input, metadata: IServiceMetadata) {
+  async updateOne(input: UpdateDomain1Input, metadata: ServiceMetadata) {
     const transaction = async (manager: EntityManager) => {
       const domain1Repo = manager.getRepository(Domain1);
       const existDomain1 = await domain1Repo.findOne({
@@ -67,7 +67,7 @@ export class Domain1Service extends BaseService<Domain1> {
       : this.manager.transaction('READ COMMITTED', transaction);
   }
 
-  async removeOne(id: string, metadata: IServiceMetadata) {
+  async removeOne(id: string, metadata: ServiceMetadata) {
     const transaction = async (manager: EntityManager) => {
       const domain1Repo = manager.getRepository(Domain1);
 

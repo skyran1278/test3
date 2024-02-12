@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/base.service';
-import { IServiceMetadata } from 'src/common/interface/service-metadata.interface';
+import { ServiceMetadata } from 'src/common/interface/service-metadata.interface';
 import { User } from 'src/user/user.entity';
 import { UserService } from 'src/user/user.service';
 import { FindOneOptions, Repository } from 'typeorm';
@@ -23,7 +23,7 @@ export class AuthService extends BaseService<User> {
 
   async signIn(
     input: SignInInput,
-    metadata?: IServiceMetadata,
+    metadata?: ServiceMetadata,
   ): Promise<SignInOutput> {
     const user = await this.userService.findOne(
       {
@@ -45,7 +45,7 @@ export class AuthService extends BaseService<User> {
 
   findOne(
     options: FindOneOptions<User>,
-    metadata?: IServiceMetadata,
+    metadata?: ServiceMetadata,
   ): Promise<User | null> {
     const authRepo = metadata?.manager
       ? metadata.manager.getRepository(User)
