@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/base.service';
-import { ServiceMetadata } from 'src/common/interface/service-metadata.interface';
-import { NodeIdNotFoundError } from 'src/common/node-id-not-found.error';
+import { NodeIdNotFoundError } from 'src/common/error/node-id-not-found.error';
+import { ServiceMetadata } from 'src/common/service-metadata.interface';
 import { EntityManager, FindOneOptions, Repository } from 'typeorm';
 
 import { CreateUserInput } from './mutation/create-user.input';

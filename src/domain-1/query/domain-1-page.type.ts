@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { NodePage } from 'src/common/query/node-page.type';
+import { NodePage } from 'src/common/graphql/node-page.type';
 
 import { Domain1 } from '../domain-1.entity';
 

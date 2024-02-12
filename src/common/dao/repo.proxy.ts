@@ -10,15 +10,13 @@ import {
   Repository,
 } from 'typeorm';
 
+import { NodePage } from '../graphql/node-page.type';
 import { MetaEntity } from './meta.entity';
-import { NodePage } from './query/node-page.type';
 
-export type NullableProperty<Property> = Property extends Record<
-  string,
-  unknown
->
-  ? Nullable<Property>
-  : Property | null;
+export type NullableProperty<Property> =
+  Property extends Record<string, unknown>
+    ? Nullable<Property>
+    : Property | null;
 
 export type Nullable<T> = {
   [P in keyof T]?: NullableProperty<T[P]>;

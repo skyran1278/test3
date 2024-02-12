@@ -1,7 +1,7 @@
 import { User } from 'src/user/user.entity';
 import { EntityManager } from 'typeorm';
 
-import { GraphQLContext } from './graphql-context.interface';
+import { GraphQLContext } from './graphql/graphql-context.interface';
 
 export interface ServiceMetadata {
   user: User;

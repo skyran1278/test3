@@ -1,6 +1,6 @@
 import { ObjectType } from '@nestjs/graphql';
 import { ColumnField } from 'src/common/column-field.decorator';
-import { MetaEntity } from 'src/common/meta.entity';
+import { MetaEntity } from 'src/common/dao/meta.entity';
 import { Entity } from 'typeorm';
 
 @Entity()

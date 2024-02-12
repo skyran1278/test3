@@ -14,10 +14,10 @@ import {
   Repository,
 } from 'typeorm';
 
-import { Nullable } from './interface/nullable.interface';
-import { ServiceMetadata } from './interface/service-metadata.interface';
-import { MetaEntity } from './meta.entity';
-import { NodePage } from './query/node-page.type';
+import { MetaEntity } from './dao/meta.entity';
+import { NodePage } from './graphql/node-page.type';
+import { Nullable } from './nullable.interface';
+import { ServiceMetadata } from './service-metadata.interface';
 
 interface NodePageInput<Entity extends ObjectLiteral> {
   take?: Maybe<number>;

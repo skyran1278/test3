@@ -1,7 +1,7 @@
 import { ArgsType, Field } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 import { ValidateNested } from 'class-validator';
-import { NodePageArgs } from 'src/common/query/node.page.args';
+import { NodePageArgs } from 'src/common/graphql/node.page.args';
 
 import { Domain1OrderInput } from './domain-1-order.input';
 import { Domain1WhereInput } from './domain-1-where.input';

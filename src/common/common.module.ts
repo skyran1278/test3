@@ -2,10 +2,10 @@ import { Global, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
-import { RepoProxy } from 'src/common/repo.proxy';
+import { RepoProxy } from 'src/common/dao/repo.proxy';
 import { UserModule } from 'src/user/user.module';
 
-import { MetaEntityResolver } from './meta.resolver';
+import { MetaEntityResolver } from './dao/meta.resolver';
 import { SecurityGuard } from './security/security.guard';
 
 @Global()

@@ -10,7 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { User } from 'src/user/user.entity';
 
-import { GraphQLContext } from '../interface/graphql-context.interface';
+import { GraphQLContext } from '../graphql/graphql-context.interface';
 import { NoAuthentication } from './no-authentication.decorator';
 
 @Injectable()

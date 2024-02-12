@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/base.service';
-import { ServiceMetadata } from 'src/common/interface/service-metadata.interface';
+import { ServiceMetadata } from 'src/common/service-metadata.interface';
 import { User } from 'src/user/user.entity';
 import { UserService } from 'src/user/user.service';
 import { FindOneOptions, Repository } from 'typeorm';

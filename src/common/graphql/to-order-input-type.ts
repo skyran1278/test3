@@ -12,11 +12,11 @@ import {
   inheritValidationMetadata,
 } from '@nestjs/mapped-types';
 
-import { MetaEntity } from './meta.entity';
-import { NodeOrderEnum } from './query/node-order.enum';
-import { NodeOrderInput } from './query/node-order.input';
+import { MetaEntity } from '../dao/meta.entity';
+import { NodeOrderEnum } from './node-order.enum';
+import { NodeOrderInput } from './node-order.input';
 
-export function OrderInput<T extends MetaEntity>(
+export function ToOrderInputType<T extends MetaEntity>(
   classRef: Type<T>,
   decorator: ClassDecoratorFactory = InputType,
 ) {

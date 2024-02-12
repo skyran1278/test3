@@ -1,7 +1,7 @@
 import { InputType } from '@nestjs/graphql';
-import { OmitMetaEntityType } from 'src/common/omit-meta-entity-type';
+import { ToCreateInputType } from 'src/common/graphql/to-create-input-type';
 
 import { User } from '../user.entity';
 
 @InputType()
-export class CreateUserInput extends OmitMetaEntityType(User, []) {}
+export class CreateUserInput extends ToCreateInputType(User, []) {}

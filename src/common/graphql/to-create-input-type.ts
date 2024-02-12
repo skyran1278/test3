@@ -7,7 +7,7 @@ import {
   OmitType,
 } from '@nestjs/graphql';
 
-import { MetaEntity } from './meta.entity';
+import { MetaEntity } from '../dao/meta.entity';
 
 export type ClassDecoratorFactory =
   | typeof ArgsType
@@ -23,7 +23,7 @@ export type ClassDecoratorFactory =
  * @param decorator
  * @returns
  */
-export const OmitMetaEntityType = <T extends MetaEntity, K extends keyof T>(
+export const ToCreateInputType = <T extends MetaEntity, K extends keyof T>(
   classRef: Type<T>,
   keys: readonly K[],
   decorator: ClassDecoratorFactory | undefined = InputType,

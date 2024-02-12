@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/base.service';
-import { ServiceMetadata } from 'src/common/interface/service-metadata.interface';
-import { NodeIdNotFoundError } from 'src/common/node-id-not-found.error';
+import { NodeIdNotFoundError } from 'src/common/error/node-id-not-found.error';
+import { ServiceMetadata } from 'src/common/service-metadata.interface';
 import { EntityManager, Repository } from 'typeorm';
 
 import { Domain1 } from './domain-1.entity';

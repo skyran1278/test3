@@ -15,8 +15,8 @@ import Decimal from 'decimal.js';
 import { DateResolver } from 'graphql-scalars';
 import { Column, ColumnOptions } from 'typeorm';
 
-import DecimalScalar from './decimal.scalar';
-import { DecimalTransformer } from './decimal.transformer';
+import DecimalScalar from './decimal/decimal.scalar';
+import { DecimalTransformer } from './decimal/decimal.transformer';
 
 type ColumnAndFieldOptions = Omit<ColumnOptions, 'nullable'> &
   Pick<FieldOptions, 'deprecationReason' | 'nullable'>;

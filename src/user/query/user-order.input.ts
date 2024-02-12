@@ -1,7 +1,7 @@
 import { InputType } from '@nestjs/graphql';
-import { OrderInput } from 'src/common/order-input';
+import { ToOrderInputType } from 'src/common/graphql/to-order-input-type';
 
 import { User } from '../user.entity';
 
 @InputType()
-export class UserOrderInput extends OrderInput(User) {}
+export class UserOrderInput extends ToOrderInputType(User) {}
