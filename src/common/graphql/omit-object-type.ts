@@ -1,6 +1,6 @@
 import { Type } from '@nestjs/common';
 import { isFunction } from '@nestjs/common/utils/shared.utils';
-import { Field, InputType } from '@nestjs/graphql';
+import { Field } from '@nestjs/graphql';
 import { ClassDecoratorFactory } from '@nestjs/graphql/dist/interfaces/class-decorator-factory.interface';
 import { MetadataLoader } from '@nestjs/graphql/dist/plugin/metadata-loader';
 import { PropertyMetadata } from '@nestjs/graphql/dist/schema-builder/metadata';
@@ -14,20 +14,15 @@ import {
 
 export function OmitObjectType<T>(
   classRef: Type<T>,
-  decorator: ClassDecoratorFactory = InputType,
+  decorator: ClassDecoratorFactory,
 ) {
-  const { fields, decoratorFactory } = getFieldsAndDecoratorForType(classRef);
+  const { fields } = getFieldsAndDecoratorForType(classRef);
 
+  @decorator({ isAbstract: true })
   class OmitObjectTypeClass {
     constructor() {
       inheritPropertyInitializers(this, classRef);
     }
-  }
-  decoratorFactory({ isAbstract: true })(OmitObjectTypeClass);
-  if (decorator) {
-    decorator({ isAbstract: true })(OmitObjectTypeClass);
-  } else {
-    decoratorFactory({ isAbstract: true })(OmitObjectTypeClass);
   }
 
   inheritValidationMetadata(classRef, OmitObjectTypeClass);
@@ -36,8 +31,12 @@ export function OmitObjectType<T>(
   function applyFields(items: PropertyMetadata[]) {
     items
       .filter((item) => {
-        if (isFunction(item.typeFn) && item.typeFn() instanceof Function)
-          return false;
+        if (isFunction(item.typeFn)) {
+          const typeFn = item.typeFn();
+          if (isFunction(typeFn) && typeFn !== Date) {
+            return false;
+          }
+        }
         return true;
       })
       .forEach((item) => {

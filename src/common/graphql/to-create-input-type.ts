@@ -26,5 +26,8 @@ export const ToCreateInputType = <T extends MetaEntity>(
     'deletedUserId',
   ] as const;
 
-  return OmitObjectType(OmitType(classRef, omitMetaEntityFields, decorator));
+  return OmitObjectType(
+    OmitType(classRef, omitMetaEntityFields, decorator),
+    decorator,
+  );
 };

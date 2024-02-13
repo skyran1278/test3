@@ -21,7 +21,7 @@ export function ToOrderInputType<T extends MetaEntity>(
   classRef: Type<T>,
   decorator: ClassDecoratorFactory = InputType,
 ) {
-  const omitObjectTypeClassRef = OmitObjectType(classRef);
+  const omitObjectTypeClassRef = OmitObjectType(classRef, decorator);
   const keys = ['id', 'createdUserId', 'updatedUserId', 'deletedUserId'];
   const { fields } = getFieldsAndDecoratorForType(omitObjectTypeClassRef);
 

@@ -8,5 +8,5 @@ export const ToWhereInputType = <T>(
   classRef: Type<T>,
   decorator: ClassDecoratorFactory | undefined = InputType,
 ): Type<Partial<T>> => {
-  return PartialType(OmitObjectType(classRef), decorator);
+  return PartialType(OmitObjectType(classRef, decorator), decorator);
 };
