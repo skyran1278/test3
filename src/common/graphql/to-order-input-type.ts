@@ -23,12 +23,12 @@ export function ToOrderInputType<T extends MetaEntity>(
 ) {
   const omitObjectTypeClassRef = OmitObjectType(classRef);
   const keys = ['id', 'createdUserId', 'updatedUserId', 'deletedUserId'];
-  const { fields, decoratorFactory } = getFieldsAndDecoratorForType(
-    omitObjectTypeClassRef,
-  );
+  const { fields } = getFieldsAndDecoratorForType(omitObjectTypeClassRef);
 
   const isInheritedPredicate = (propertyKey: string) =>
     !keys.includes(propertyKey);
+
+  @decorator({ isAbstract: true })
   abstract class OrderInputType extends NodeOrderInput {
     constructor() {
       super();
@@ -38,12 +38,6 @@ export function ToOrderInputType<T extends MetaEntity>(
         isInheritedPredicate,
       );
     }
-  }
-  decoratorFactory({ isAbstract: true })(OrderInputType);
-  if (decorator) {
-    decorator({ isAbstract: true })(OrderInputType);
-  } else {
-    decoratorFactory({ isAbstract: true })(OrderInputType);
   }
 
   inheritValidationMetadata(
