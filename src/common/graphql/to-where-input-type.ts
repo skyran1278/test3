@@ -1,7 +1,6 @@
 import { Type } from '@nestjs/common';
 import { InputType, OmitType, PartialType } from '@nestjs/graphql';
-
-import { ClassDecoratorFactory } from './to-create-input-type';
+import { ClassDecoratorFactory } from '@nestjs/graphql/dist/interfaces/class-decorator-factory.interface';
 
 export const ToWhereInputType = <T, K extends keyof T>(
   classRef: Type<T>,
