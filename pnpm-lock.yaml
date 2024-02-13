@@ -41,6 +41,9 @@ dependencies:
   class-validator:
     specifier: ^0.14.1
     version: 0.14.1
+  dataloader:
+    specifier: ^2.2.2
+    version: 2.2.2
   decimal.js:
     specifier: ^10.4.3
     version: 10.4.3
@@ -2876,6 +2879,10 @@ packages:
 
   /cssfilter@0.0.10:
     resolution: {integrity: sha512-FAaLDaplstoRsDR8XGYH51znUN0UY7nMc6Z9/fvE8EXGwvJE9hu7W2vHwx1+bd6gCYnln9nLbzxFTrcO9YQDZw==}
+    dev: false
+
+  /dataloader@2.2.2:
+    resolution: {integrity: sha512-8YnDaaf7N3k/q5HnTJVuzSyLETjoZjVmHc4AeKAzOvKHEFQKcn64OKBfzHYtE9zGjctNM7V9I0MfnUVLpi7M5g==}
     dev: false
 
   /dayjs@1.11.10:
