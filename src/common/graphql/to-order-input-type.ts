@@ -52,10 +52,11 @@ export function ToOrderInputType<T extends MetaEntity>(
           item.typeFn();
         }
 
-        Field(() => NodeOrderEnum, { nullable: true })(
-          OrderInputType.prototype,
-          item.name,
-        );
+        Field(() => NodeOrderEnum, {
+          description: item.description,
+          deprecationReason: item.deprecationReason,
+          nullable: true,
+        })(OrderInputType.prototype, item.name);
         applyFieldDecorators(OrderInputType, item);
       });
   }
