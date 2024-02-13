@@ -29,18 +29,18 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Domain1 implements MetaEntity {
-  createUser: User
   createdAt: DateTime!
+  createdUser: User
   createdUserId: ID
-  deleteUser: User
   deletedAt: DateTime
+  deletedUser: User
   deletedUserId: ID
 
   """domain1001"""
   domain1001: Int
   id: ID!
-  updateUser: User
   updatedAt: DateTime!
+  updatedUser: User
   updatedUserId: ID
 }
 
@@ -79,15 +79,15 @@ input Domain1WhereInput {
 }
 
 interface MetaEntity {
-  createUser: User
   createdAt: DateTime!
+  createdUser: User
   createdUserId: ID
-  deleteUser: User
   deletedAt: DateTime
+  deletedUser: User
   deletedUserId: ID
   id: ID!
-  updateUser: User
   updatedAt: DateTime!
+  updatedUser: User
   updatedUserId: ID
 }
 
@@ -209,15 +209,15 @@ type UpdateUserOutput {
 }
 
 type User implements MetaEntity {
-  createUser: User
   createdAt: DateTime!
+  createdUser: User
   createdUserId: ID
-  deleteUser: User
   deletedAt: DateTime
+  deletedUser: User
   deletedUserId: ID
   id: ID!
-  updateUser: User
   updatedAt: DateTime!
+  updatedUser: User
   updatedUserId: ID
 
   """user001"""

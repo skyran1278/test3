@@ -5,7 +5,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { RepoProxy } from 'src/common/dao/repo.proxy';
 import { UserModule } from 'src/user/user.module';
 
-import { MetaEntityResolver } from './dao/meta.resolver';
+import { MetaEntityResolver } from './graphql/meta.resolver';
 import { SecurityGuard } from './security/security.guard';
 
 @Global()

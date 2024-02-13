@@ -3,14 +3,14 @@ import { Maybe } from 'graphql/jsutils/Maybe';
 import { User } from 'src/user/user.entity';
 import { UserService } from 'src/user/user.service';
 
-import { MetaEntity } from './meta.entity';
+import { MetaEntity } from '../dao/meta.entity';
 
 @Resolver(() => MetaEntity)
 export class MetaEntityResolver {
   constructor(private readonly userService: UserService) {}
 
   @ResolveField(() => User, { nullable: true })
-  async createUser(
+  async createdUser(
     @Parent() { createdUserId }: MetaEntity,
   ): Promise<Maybe<User>> {
     if (!createdUserId) return;
@@ -18,7 +18,7 @@ export class MetaEntityResolver {
   }
 
   @ResolveField(() => User, { nullable: true })
-  async updateUser(
+  async updatedUser(
     @Parent() { updatedUserId }: MetaEntity,
   ): Promise<Maybe<User>> {
     if (!updatedUserId) return;
@@ -26,7 +26,7 @@ export class MetaEntityResolver {
   }
 
   @ResolveField(() => User, { nullable: true })
-  async deleteUser(
+  async deletedUser(
     @Parent() { deletedUserId }: MetaEntity,
   ): Promise<Maybe<User>> {
     if (!deletedUserId) return;
