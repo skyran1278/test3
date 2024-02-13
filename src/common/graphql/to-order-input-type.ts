@@ -15,20 +15,28 @@ import {
 import { MetaEntity } from '../dao/meta.entity';
 import { NodeOrderEnum } from './node-order.enum';
 import { NodeOrderInput } from './node-order.input';
+import { OmitObjectType } from './omit-object-type';
 
 export function ToOrderInputType<T extends MetaEntity>(
   classRef: Type<T>,
   decorator: ClassDecoratorFactory = InputType,
 ) {
+  const omitObjectTypeClassRef = OmitObjectType(classRef);
   const keys = ['id', 'createdUserId', 'updatedUserId', 'deletedUserId'];
-  const { fields, decoratorFactory } = getFieldsAndDecoratorForType(classRef);
+  const { fields, decoratorFactory } = getFieldsAndDecoratorForType(
+    omitObjectTypeClassRef,
+  );
 
   const isInheritedPredicate = (propertyKey: string) =>
     !keys.includes(propertyKey);
   abstract class OrderInputType extends NodeOrderInput {
     constructor() {
       super();
-      inheritPropertyInitializers(this, classRef, isInheritedPredicate);
+      inheritPropertyInitializers(
+        this,
+        omitObjectTypeClassRef,
+        isInheritedPredicate,
+      );
     }
   }
   decoratorFactory({ isAbstract: true })(OrderInputType);
@@ -38,8 +46,16 @@ export function ToOrderInputType<T extends MetaEntity>(
     decoratorFactory({ isAbstract: true })(OrderInputType);
   }
 
-  inheritValidationMetadata(classRef, OrderInputType, isInheritedPredicate);
-  inheritTransformationMetadata(classRef, OrderInputType, isInheritedPredicate);
+  inheritValidationMetadata(
+    omitObjectTypeClassRef,
+    OrderInputType,
+    isInheritedPredicate,
+  );
+  inheritTransformationMetadata(
+    omitObjectTypeClassRef,
+    OrderInputType,
+    isInheritedPredicate,
+  );
 
   function applyFields(items: PropertyMetadata[]) {
     items
@@ -64,9 +80,12 @@ export function ToOrderInputType<T extends MetaEntity>(
   // Register a refresh hook to update the fields when the serialized metadata
   // is loaded from file.
   MetadataLoader.addRefreshHook(() => {
-    const { fields: items } = getFieldsAndDecoratorForType(classRef, {
-      overrideFields: true,
-    });
+    const { fields: items } = getFieldsAndDecoratorForType(
+      omitObjectTypeClassRef,
+      {
+        overrideFields: true,
+      },
+    );
     applyFields(items);
   });
 
