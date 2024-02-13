@@ -1,35 +1,38 @@
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
+import { UserByIdLoader } from 'src/user/user-by-id.loader';
 import { User } from 'src/user/user.entity';
-import { UserService } from 'src/user/user.service';
 
 import { MetaEntity } from '../dao/meta.entity';
 
 @Resolver(() => MetaEntity)
 export class MetaEntityResolver {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userByIdLoader: UserByIdLoader) {}
 
   @ResolveField(() => User, { nullable: true })
   async createdUser(
-    @Parent() { createdUserId }: MetaEntity,
+    @Parent() { createdUser, createdUserId }: MetaEntity,
   ): Promise<Maybe<User>> {
-    if (!createdUserId) return;
-    return this.userService.findOne({ where: { id: createdUserId } });
+    if (createdUser) return createdUser;
+    if (createdUserId) return this.userByIdLoader.load(createdUserId);
+    return null;
   }
 
   @ResolveField(() => User, { nullable: true })
   async updatedUser(
-    @Parent() { updatedUserId }: MetaEntity,
+    @Parent() { updatedUser, updatedUserId }: MetaEntity,
   ): Promise<Maybe<User>> {
-    if (!updatedUserId) return;
-    return this.userService.findOne({ where: { id: updatedUserId } });
+    if (updatedUser) return updatedUser;
+    if (updatedUserId) return this.userByIdLoader.load(updatedUserId);
+    return null;
   }
 
   @ResolveField(() => User, { nullable: true })
   async deletedUser(
-    @Parent() { deletedUserId }: MetaEntity,
+    @Parent() { deletedUser, deletedUserId }: MetaEntity,
   ): Promise<Maybe<User>> {
-    if (!deletedUserId) return;
-    return this.userService.findOne({ where: { id: deletedUserId } });
+    if (deletedUser) return deletedUser;
+    if (deletedUserId) return this.userByIdLoader.load(deletedUserId);
+    return null;
   }
 }
