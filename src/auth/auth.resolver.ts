@@ -1,5 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
+import { NoAuthentication } from 'src/common/security/no-authentication.decorator';
 import { NoAuthorization } from 'src/common/security/no-authorization.decorator';
 import { UserDecorator } from 'src/common/security/user.decorator';
 import { User } from 'src/user/user.entity';
@@ -12,6 +13,7 @@ import { SignInOutput } from './mutation/sign-in.output';
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
+  @NoAuthentication()
   @Mutation(() => SignInOutput)
   async signIn(
     @Args('input') input: SignInInput,
