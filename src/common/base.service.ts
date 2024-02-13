@@ -1,6 +1,5 @@
 import { Logger } from '@nestjs/common';
 import { Maybe } from 'graphql/jsutils/Maybe';
-import { User } from 'src/user/user.entity';
 import {
   DeepPartial,
   FindManyOptions,
@@ -33,6 +32,16 @@ export abstract class BaseService<Entity extends MetaEntity> {
 
   constructor(private readonly repository: Repository<Entity>) {}
 
+  hasId(entity: Entity): boolean {
+    return this.repository.hasId(entity);
+  }
+
+  /**
+   * prevent repeat create entity, if entity is already exist, return it
+   * because of typeorm's promise issue, repeat create entity will cause promise value gone
+   * @param input
+   * @returns
+   */
   create(entityLikeArray: DeepPartial<Entity>[]): Entity[];
   create(entityLike: DeepPartial<Entity>): Entity;
   create(
@@ -49,22 +58,28 @@ export abstract class BaseService<Entity extends MetaEntity> {
     return input instanceof MetaEntity ? input : this.repository.create(input);
   }
 
+  /**
+   * if is not entity, auto create entity
+   * @param input
+   * @param metadata
+   * @returns
+   */
   async save(
     entity: DeepPartial<Entity>,
-    metadata?: Partial<ServiceMetadata>,
+    metadata: Partial<ServiceMetadata>,
   ): Promise<Entity>;
   async save(
     entities: DeepPartial<Entity>[],
-    metadata?: Partial<ServiceMetadata>,
+    metadata: Partial<ServiceMetadata>,
   ): Promise<Entity[]>;
   async save(
     input: DeepPartial<Entity> | DeepPartial<Entity>[],
-    metadata?: Partial<ServiceMetadata>,
+    metadata: Partial<ServiceMetadata>,
   ): Promise<Entity | Entity[]> {
     const repo = this.getRepo(metadata);
 
     this.logger.debug({
-      [`create ${repo.metadata.targetName}`]: { input },
+      [`save ${repo.metadata.targetName}`]: { input },
     });
 
     if (Array.isArray(input)) {
@@ -82,6 +97,14 @@ export abstract class BaseService<Entity extends MetaEntity> {
   ): Promise<Entity | null> {
     const repo = this.getRepo(metadata);
     return repo.findOne(options);
+  }
+
+  findOneBy(
+    where: FindOptionsWhere<Entity>[] | FindOptionsWhere<Entity>,
+    metadata?: ServiceMetadata,
+  ): Promise<Entity | null> {
+    const repo = this.getRepo(metadata);
+    return repo.findOneBy(where);
   }
 
   findOneOrFail(
@@ -108,11 +131,11 @@ export abstract class BaseService<Entity extends MetaEntity> {
     return repo.find(options);
   }
 
-  softRemove(entities: Entity[], metadata?: ServiceMetadata): Promise<Entity[]>;
-  softRemove(entity: Entity, metadata?: ServiceMetadata): Promise<Entity>;
+  softRemove(entities: Entity[], metadata: ServiceMetadata): Promise<Entity[]>;
+  softRemove(entity: Entity, metadata: ServiceMetadata): Promise<Entity>;
   softRemove(
     input: Entity | Entity[],
-    metadata?: ServiceMetadata,
+    metadata: ServiceMetadata,
   ): Promise<Entity | Entity[]> {
     this.logger.debug({
       [`softRemove ${this.repository.metadata.targetName}`]: input,
@@ -125,11 +148,11 @@ export abstract class BaseService<Entity extends MetaEntity> {
     return repo.softRemove(input);
   }
 
-  remove(entities: Entity[], metadata?: ServiceMetadata): Promise<Entity[]>;
-  remove(entity: Entity, metadata?: ServiceMetadata): Promise<Entity>;
+  remove(entities: Entity[], metadata: ServiceMetadata): Promise<Entity[]>;
+  remove(entity: Entity, metadata: ServiceMetadata): Promise<Entity>;
   remove(
     input: Entity | Entity[],
-    metadata?: ServiceMetadata,
+    metadata: ServiceMetadata,
   ): Promise<Entity | Entity[]> {
     this.logger.debug({
       [`remove ${this.repository.metadata.targetName}`]: input,
@@ -153,10 +176,10 @@ export abstract class BaseService<Entity extends MetaEntity> {
   async syncEntityArray(
     oldEntities: Entity[] | undefined,
     newEntities: DeepPartial<Entity>[],
-    user: User,
-    metadata?: ServiceMetadata,
+    metadata: Pick<ServiceMetadata, 'manager' | 'user'>,
   ): Promise<Entity[]> {
     const repo = this.getRepo(metadata);
+    const user = metadata.user;
 
     const oldEntitiesMap = oldEntities
       ? new Map(oldEntities.map((entity) => [entity.id, entity]))
