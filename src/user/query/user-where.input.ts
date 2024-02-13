@@ -6,7 +6,7 @@ import { FindOptionsWhere } from 'typeorm';
 import { User } from '../user.entity';
 
 @InputType()
-export class UserWhereInput extends ToWhereInputType(User, []) {
+export class UserWhereInput extends ToWhereInputType(User) {
   toFindOptionsWhere(): Nullable<FindOptionsWhere<User>> | undefined {
     const { ...where } = this;
     return { ...where };

@@ -6,7 +6,7 @@ import { FindOptionsWhere } from 'typeorm';
 import { Domain1 } from '../domain-1.entity';
 
 @InputType()
-export class Domain1WhereInput extends ToWhereInputType(Domain1, []) {
+export class Domain1WhereInput extends ToWhereInputType(Domain1) {
   toFindOptionsWhere(): Nullable<FindOptionsWhere<Domain1>> | undefined {
     const { ...where } = this;
     return { ...where };
