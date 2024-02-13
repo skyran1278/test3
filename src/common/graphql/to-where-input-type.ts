@@ -7,6 +7,6 @@ import { OmitObjectType } from './omit-object-type';
 export const ToWhereInputType = <T>(
   classRef: Type<T>,
   decorator: ClassDecoratorFactory | undefined = InputType,
-) => {
-  return OmitObjectType(PartialType(classRef, decorator));
+): Type<Partial<T>> => {
+  return PartialType(OmitObjectType(classRef), decorator);
 };
