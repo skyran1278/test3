@@ -1,3 +1,4 @@
+import { AuthenticationError } from '@nestjs/apollo';
 import {
   CanActivate,
   ExecutionContext,
@@ -46,7 +47,7 @@ export class SecurityGuard implements CanActivate {
 
     const token = this.extractTokenFromHeader(gqlContext.req);
     if (!token) {
-      throw new UnauthorizedException();
+      throw new AuthenticationError('Unauthenticated');
     }
     try {
       const user = this.jwtService.verify<User>(token);
