@@ -25,7 +25,6 @@ export function ToOrderInputType<T extends MetaEntity>(
 
   const isInheritedPredicate = (propertyKey: string) =>
     !keys.includes(propertyKey);
-  // eslint-disable-next-line @typescript-eslint/no-extraneous-class
   abstract class OrderInputType extends NodeOrderInput {
     constructor() {
       super();

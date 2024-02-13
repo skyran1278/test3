@@ -32,6 +32,7 @@ module.exports = {
       'warn',
       {
         allowEmpty: true,
+        allowConstructorOnly: true,
       },
     ],
     '@typescript-eslint/no-unused-vars': ['warn', { ignoreRestSiblings: true }],

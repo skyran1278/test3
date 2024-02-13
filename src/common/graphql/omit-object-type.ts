@@ -18,7 +18,6 @@ export function OmitObjectType<T>(
 ) {
   const { fields, decoratorFactory } = getFieldsAndDecoratorForType(classRef);
 
-  // eslint-disable-next-line @typescript-eslint/no-extraneous-class
   class OmitObjectTypeClass {
     constructor() {
       inheritPropertyInitializers(this, classRef);
