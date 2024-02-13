@@ -2,13 +2,14 @@ import { Field, ID, InterfaceType } from '@nestjs/graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
 import { User } from 'src/user/user.entity';
 import {
-  Column,
   CreateDateColumn,
   DeleteDateColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
+import { ColumnField } from '../column-field.decorator';
 
 @InterfaceType()
 export abstract class MetaEntity {
@@ -31,20 +32,17 @@ export abstract class MetaEntity {
   @DeleteDateColumn({ nullable: true })
   deletedAt?: Maybe<Date>;
 
-  @Field(() => ID, { nullable: true })
-  @Column({ type: 'uuid', nullable: true })
+  @ColumnField({ type: 'uuid', nullable: true })
   createdUserId?: Maybe<string>;
   @ManyToOne('User', { nullable: true })
   createdUser?: Maybe<User>;
 
-  @Field(() => ID, { nullable: true })
-  @Column({ type: 'uuid', nullable: true })
+  @ColumnField({ type: 'uuid', nullable: true })
   updatedUserId?: Maybe<string>;
   @ManyToOne('User', { nullable: true })
   updatedUser?: Maybe<User>;
 
-  @Field(() => ID, { nullable: true })
-  @Column({ type: 'uuid', nullable: true })
+  @ColumnField({ type: 'uuid', nullable: true })
   deletedUserId?: Maybe<string>;
   @ManyToOne('User', { nullable: true })
   deletedUser?: Maybe<User>;
