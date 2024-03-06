@@ -28,7 +28,7 @@ interface NodePageInput<Entity extends ObjectLiteral> {
 }
 
 export abstract class BaseService<Entity extends MetaEntity> {
-  private readonly logger = new Logger(this.constructor.name);
+  readonly logger = new Logger(this.constructor.name);
 
   constructor(private readonly repository: Repository<Entity>) {}
 
