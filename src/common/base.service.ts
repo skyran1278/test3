@@ -173,7 +173,7 @@ export abstract class BaseService<Entity extends MetaEntity> {
    * @param metadata
    * @returns
    */
-  async syncEntityArray(
+  async updateMany(
     oldEntities: Entity[] | undefined,
     newEntities: DeepPartial<Entity>[],
     metadata: Pick<ServiceMetadata, 'manager' | 'user'>,
