@@ -11,15 +11,43 @@ import {
   inheritTransformationMetadata,
   inheritValidationMetadata,
 } from '@nestjs/mapped-types';
+import Decimal from 'decimal.js';
+import { Maybe } from 'graphql/jsutils/Maybe';
 
-export function OmitObjectType<T>(
+import { MetaEntity } from '../dao/meta.entity';
+
+export type PickBasicTypeProperty<T> = {
+  [P in keyof T as T[P] extends
+    | string
+    | number
+    | Date
+    | Buffer
+    | Decimal
+    | Array<string | number | boolean | Date | Buffer | Decimal>
+    | Maybe<string | number | boolean | Date | Buffer | Decimal>
+    | undefined
+    ? P
+    : never]: T[P];
+};
+
+export type OmitObjectTypeProperty2<T> = {
+  [P in keyof T as T[P] extends
+    | MetaEntity
+    | undefined
+    | Promise<MetaEntity>
+    | Array<MetaEntity>
+    ? never
+    : P]: T[P];
+};
+
+export function PickBasicType<T>(
   classRef: Type<T>,
   decorator: ClassDecoratorFactory,
-) {
+): Type<PickBasicTypeProperty<T>> {
   const { fields } = getFieldsAndDecoratorForType(classRef);
 
   @decorator({ isAbstract: true })
-  class OmitObjectTypeClass {
+  abstract class OmitObjectTypeClass {
     constructor() {
       inheritPropertyInitializers(this, classRef);
     }
@@ -33,7 +61,13 @@ export function OmitObjectType<T>(
       .filter((item) => {
         if (isFunction(item.typeFn)) {
           const typeFn = item.typeFn();
-          if (isFunction(typeFn) && typeFn !== Date) {
+          if (
+            // TODO: 想測試 enum, 且使用正向選取
+            typeFn !== String &&
+            typeFn !== Date &&
+            typeFn !== Boolean &&
+            isFunction(typeFn)
+          ) {
             return false;
           }
         }
@@ -64,5 +98,5 @@ export function OmitObjectType<T>(
     applyFields(items);
   });
 
-  return OmitObjectTypeClass;
+  return OmitObjectTypeClass as Type<PickBasicTypeProperty<T>>;
 }

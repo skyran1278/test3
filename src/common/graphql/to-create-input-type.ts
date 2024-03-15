@@ -3,7 +3,7 @@ import { InputType, OmitType } from '@nestjs/graphql';
 import { ClassDecoratorFactory } from '@nestjs/graphql/dist/interfaces/class-decorator-factory.interface';
 
 import { MetaEntity } from '../dao/meta.entity';
-import { OmitObjectType } from './omit-object-type';
+import { PickBasicType } from './pick-basic-type';
 
 /**
  * Omit meta entity type, such as id, createdAt, updatedAt, deletedAt, createUser, updateUser, deleteUser
@@ -26,7 +26,7 @@ export const ToCreateInputType = <T extends MetaEntity>(
     'deletedUserId',
   ] as const;
 
-  return OmitObjectType(
+  return PickBasicType(
     OmitType(classRef, omitMetaEntityFields, decorator),
     decorator,
   );

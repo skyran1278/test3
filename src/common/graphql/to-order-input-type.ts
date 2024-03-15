@@ -1,6 +1,6 @@
 import { Type } from '@nestjs/common';
 import { isFunction } from '@nestjs/common/utils/shared.utils';
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, PartialType } from '@nestjs/graphql';
 import { ClassDecoratorFactory } from '@nestjs/graphql/dist/interfaces/class-decorator-factory.interface';
 import { MetadataLoader } from '@nestjs/graphql/dist/plugin/metadata-loader';
 import { PropertyMetadata } from '@nestjs/graphql/dist/schema-builder/metadata';
@@ -11,19 +11,27 @@ import {
   inheritTransformationMetadata,
   inheritValidationMetadata,
 } from '@nestjs/mapped-types';
+import { Maybe } from 'graphql/jsutils/Maybe';
 
 import { MetaEntity } from '../dao/meta.entity';
 import { NodeOrderEnum } from './node-order.enum';
 import { NodeOrderInput } from './node-order.input';
-import { OmitObjectType } from './omit-object-type';
+import { PickBasicType, PickBasicTypeProperty } from './pick-basic-type';
+
+export type ToNodeOrderEnumProperty<T> = {
+  [P in keyof T]: Maybe<NodeOrderEnum>;
+};
 
 export function ToOrderInputType<T extends MetaEntity>(
   classRef: Type<T>,
   decorator: ClassDecoratorFactory = InputType,
-) {
-  const omitObjectTypeClassRef = OmitObjectType(classRef, decorator);
+): Type<ToNodeOrderEnumProperty<PickBasicTypeProperty<T>>> {
+  const basicTypeClassRef = PickBasicType(
+    PartialType(classRef, decorator),
+    decorator,
+  );
   const keys = ['id', 'createdUserId', 'updatedUserId', 'deletedUserId'];
-  const { fields } = getFieldsAndDecoratorForType(omitObjectTypeClassRef);
+  const { fields } = getFieldsAndDecoratorForType(basicTypeClassRef);
 
   const isInheritedPredicate = (propertyKey: string) =>
     !keys.includes(propertyKey);
@@ -34,19 +42,19 @@ export function ToOrderInputType<T extends MetaEntity>(
       super();
       inheritPropertyInitializers(
         this,
-        omitObjectTypeClassRef,
+        basicTypeClassRef,
         isInheritedPredicate,
       );
     }
   }
 
   inheritValidationMetadata(
-    omitObjectTypeClassRef,
+    basicTypeClassRef,
     OrderInputType,
     isInheritedPredicate,
   );
   inheritTransformationMetadata(
-    omitObjectTypeClassRef,
+    basicTypeClassRef,
     OrderInputType,
     isInheritedPredicate,
   );
@@ -74,14 +82,13 @@ export function ToOrderInputType<T extends MetaEntity>(
   // Register a refresh hook to update the fields when the serialized metadata
   // is loaded from file.
   MetadataLoader.addRefreshHook(() => {
-    const { fields: items } = getFieldsAndDecoratorForType(
-      omitObjectTypeClassRef,
-      {
-        overrideFields: true,
-      },
-    );
+    const { fields: items } = getFieldsAndDecoratorForType(basicTypeClassRef, {
+      overrideFields: true,
+    });
     applyFields(items);
   });
 
-  return OrderInputType;
+  return OrderInputType as unknown as Type<
+    ToNodeOrderEnumProperty<PickBasicTypeProperty<T>>
+  >;
 }
