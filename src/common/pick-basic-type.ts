@@ -1,5 +1,5 @@
 import { Type } from '@nestjs/common';
-import { isFunction } from '@nestjs/common/utils/shared.utils';
+import { isFunction, isPlainObject } from '@nestjs/common/utils/shared.utils';
 import { Field } from '@nestjs/graphql';
 import { ClassDecoratorFactory } from '@nestjs/graphql/dist/interfaces/class-decorator-factory.interface';
 import { MetadataLoader } from '@nestjs/graphql/dist/plugin/metadata-loader';
@@ -12,6 +12,7 @@ import {
   inheritValidationMetadata,
 } from '@nestjs/mapped-types';
 import Decimal from 'decimal.js';
+import { GraphQLScalarType } from 'graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
 
 import { MetaEntity } from './meta.entity';
@@ -47,45 +48,35 @@ export function PickBasicType<T>(
   const { fields } = getFieldsAndDecoratorForType(classRef);
 
   @decorator({ isAbstract: true })
-  abstract class OmitObjectTypeClass {
+  abstract class PickBasicTypeClass {
     constructor() {
       inheritPropertyInitializers(this, classRef);
     }
   }
 
-  inheritValidationMetadata(classRef, OmitObjectTypeClass);
-  inheritTransformationMetadata(classRef, OmitObjectTypeClass);
+  inheritValidationMetadata(classRef, PickBasicTypeClass);
+  inheritTransformationMetadata(classRef, PickBasicTypeClass);
 
   function applyFields(items: PropertyMetadata[]) {
-    items
-      .filter((item) => {
-        if (isFunction(item.typeFn)) {
-          const typeFn = item.typeFn();
-          if (
-            // TODO: 想測試 enum, 且使用正向選取
-            typeFn !== String &&
-            typeFn !== Date &&
-            typeFn !== Boolean &&
-            isFunction(typeFn)
-          ) {
-            return false;
-          }
-        }
-        return true;
-      })
-      .forEach((item) => {
-        if (isFunction(item.typeFn)) {
-          // Execute type function eagerly to update the type options object (before "clone" operation)
-          // when the passed function (e.g., @Field(() => Type)) lazily returns an array.
-          item.typeFn();
-        }
+    items.forEach((item) => {
+      // Execute type function eagerly to update the type options object (before "clone" operation)
+      // when the passed function (e.g., @Field(() => Type)) lazily returns an array.
+      const typeFnResult = isFunction(item.typeFn) ? item.typeFn() : null;
 
-        Field(item.typeFn, { ...item.options })(
-          OmitObjectTypeClass.prototype,
-          item.name,
-        );
-        applyFieldDecorators(OmitObjectTypeClass, item);
-      });
+      const isBasicType =
+        typeFnResult instanceof GraphQLScalarType ||
+        typeFnResult === Date ||
+        isPlainObject(typeFnResult) ||
+        typeFnResult === null;
+
+      if (!isBasicType) return;
+
+      Field(item.typeFn, { ...item.options })(
+        PickBasicTypeClass.prototype,
+        item.name,
+      );
+      applyFieldDecorators(PickBasicTypeClass, item);
+    });
   }
   applyFields(fields);
 
@@ -98,5 +89,5 @@ export function PickBasicType<T>(
     applyFields(items);
   });
 
-  return OmitObjectTypeClass as Type<PickBasicTypeProperty<T>>;
+  return PickBasicTypeClass as Type<PickBasicTypeProperty<T>>;
 }
