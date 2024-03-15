@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/base.service';
-import { NodeIdNotFoundError } from 'src/common/error/node-id-not-found.error';
 import { ServiceMetadata } from 'src/common/service-metadata.interface';
 import { EntityManager, Repository } from 'typeorm';
 
@@ -22,7 +21,7 @@ export class Domain1Service extends BaseService<Domain1> {
 
   async createOne(
     input: CreateDomain1Input | Domain1,
-    metadata?: ServiceMetadata,
+    metadata: ServiceMetadata,
   ): Promise<Domain1> {
     const transaction = async (manager: EntityManager) => {
       const dao = input instanceof Domain1 ? input : this.create(input);
@@ -30,7 +29,7 @@ export class Domain1Service extends BaseService<Domain1> {
         dao.createdUserId = metadata.user.id;
         dao.updatedUserId = metadata.user.id;
       }
-      return this.save(dao, { manager });
+      return this.save(dao, { manager, user: metadata.user });
     };
 
     return metadata?.manager
@@ -45,20 +44,16 @@ export class Domain1Service extends BaseService<Domain1> {
   async updateOne(input: UpdateDomain1Input, metadata: ServiceMetadata) {
     const transaction = async (manager: EntityManager) => {
       const domain1Repo = manager.getRepository(Domain1);
-      const existDomain1 = await domain1Repo.findOne({
+      const existDomain1 = await domain1Repo.findOneOrFail({
         where: { id: input.id },
       });
-      if (!existDomain1) {
-        throw new NodeIdNotFoundError(Domain1, input.id);
-      }
 
       return this.save(
         {
           ...existDomain1,
           ...input,
-          updatedUserId: metadata?.user?.id,
         },
-        { manager },
+        { manager, user: metadata?.user },
       );
     };
 
@@ -69,14 +64,9 @@ export class Domain1Service extends BaseService<Domain1> {
 
   async removeOne(id: string, metadata: ServiceMetadata) {
     const transaction = async (manager: EntityManager) => {
-      const domain1Repo = manager.getRepository(Domain1);
+      const domain1 = await this.findOneByOrFail({ id });
 
-      const domain1 = await domain1Repo.findOneBy({ id });
-      if (!domain1) {
-        throw new NodeIdNotFoundError(Domain1, id);
-      }
-
-      return domain1Repo.softRemove(domain1);
+      return this.softRemove(domain1, { manager, user: metadata?.user });
     };
 
     return metadata?.manager

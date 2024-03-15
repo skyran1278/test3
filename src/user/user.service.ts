@@ -22,7 +22,7 @@ export class UserService extends BaseService<User> {
 
   async createOne(
     input: CreateUserInput | User,
-    metadata?: ServiceMetadata,
+    metadata: ServiceMetadata,
   ): Promise<User> {
     const create = async (manager: EntityManager) => {
       const dao = input instanceof User ? input : this.create(input);
@@ -30,7 +30,7 @@ export class UserService extends BaseService<User> {
         dao.createdUserId = metadata.user.id;
         dao.updatedUserId = metadata.user.id;
       }
-      return this.save(dao, { manager });
+      return this.save(dao, { manager, user: metadata.user });
     };
 
     if (metadata?.manager) {
@@ -70,7 +70,7 @@ export class UserService extends BaseService<User> {
           ...input,
           updatedUserId: metadata.user.id,
         },
-        { manager },
+        { manager, user: metadata.user },
       );
     };
 

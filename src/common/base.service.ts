@@ -66,15 +66,15 @@ export abstract class BaseService<Entity extends MetaEntity> {
    */
   async save(
     entity: DeepPartial<Entity>,
-    metadata: Partial<ServiceMetadata>,
+    metadata: Required<ServiceMetadata>,
   ): Promise<Entity>;
   async save(
     entities: DeepPartial<Entity>[],
-    metadata: Partial<ServiceMetadata>,
+    metadata: Required<ServiceMetadata>,
   ): Promise<Entity[]>;
   async save(
     input: DeepPartial<Entity> | DeepPartial<Entity>[],
-    metadata: Partial<ServiceMetadata>,
+    metadata: Required<ServiceMetadata>,
   ): Promise<Entity | Entity[]> {
     const repo = this.getRepo(metadata);
 
@@ -83,17 +83,27 @@ export abstract class BaseService<Entity extends MetaEntity> {
     });
 
     if (Array.isArray(input)) {
-      const dao = this.create(input);
+      const dao = this.create(
+        input.map((item) => ({
+          ...item,
+          createdUserId: item.createdUserId ?? metadata.user.id,
+          updatedUserId: metadata.user.id,
+        })),
+      );
       return repo.save(dao);
     }
 
-    const dao = this.create(input);
+    const dao = this.create({
+      ...input,
+      createdUserId: input.createdUserId ?? metadata.user.id,
+      updatedUserId: metadata.user.id,
+    });
     return repo.save(dao);
   }
 
   findOne(
     options: FindOneOptions<Entity>,
-    metadata?: ServiceMetadata,
+    metadata?: Pick<ServiceMetadata, 'manager'>,
   ): Promise<Entity | null> {
     const repo = this.getRepo(metadata);
     return repo.findOne(options);
@@ -101,7 +111,7 @@ export abstract class BaseService<Entity extends MetaEntity> {
 
   findOneBy(
     where: FindOptionsWhere<Entity>[] | FindOptionsWhere<Entity>,
-    metadata?: ServiceMetadata,
+    metadata?: Pick<ServiceMetadata, 'manager'>,
   ): Promise<Entity | null> {
     const repo = this.getRepo(metadata);
     return repo.findOneBy(where);
@@ -109,7 +119,7 @@ export abstract class BaseService<Entity extends MetaEntity> {
 
   findOneOrFail(
     options: FindOneOptions<Entity>,
-    metadata?: ServiceMetadata,
+    metadata?: Pick<ServiceMetadata, 'manager'>,
   ): Promise<Entity> {
     const repo = this.getRepo(metadata);
     return repo.findOneOrFail(options);
@@ -117,7 +127,7 @@ export abstract class BaseService<Entity extends MetaEntity> {
 
   findOneByOrFail(
     where: FindOptionsWhere<Entity>[] | FindOptionsWhere<Entity>,
-    metadata?: ServiceMetadata,
+    metadata?: Pick<ServiceMetadata, 'manager'>,
   ): Promise<Entity> {
     const repo = this.getRepo(metadata);
     return repo.findOneByOrFail(where);
@@ -125,7 +135,7 @@ export abstract class BaseService<Entity extends MetaEntity> {
 
   async find(
     options: FindManyOptions<Entity>,
-    metadata?: ServiceMetadata,
+    metadata?: Pick<ServiceMetadata, 'manager'>,
   ): Promise<Entity[]> {
     const repo = this.getRepo(metadata);
     return repo.find(options);
@@ -148,11 +158,17 @@ export abstract class BaseService<Entity extends MetaEntity> {
     return repo.softRemove(input);
   }
 
-  remove(entities: Entity[], metadata: ServiceMetadata): Promise<Entity[]>;
-  remove(entity: Entity, metadata: ServiceMetadata): Promise<Entity>;
+  remove(
+    entities: Entity[],
+    metadata: Pick<ServiceMetadata, 'manager'>,
+  ): Promise<Entity[]>;
+  remove(
+    entity: Entity,
+    metadata: Pick<ServiceMetadata, 'manager'>,
+  ): Promise<Entity>;
   remove(
     input: Entity | Entity[],
-    metadata: ServiceMetadata,
+    metadata: Pick<ServiceMetadata, 'manager'>,
   ): Promise<Entity | Entity[]> {
     this.logger.debug({
       [`remove ${this.repository.metadata.targetName}`]: input,
@@ -176,7 +192,7 @@ export abstract class BaseService<Entity extends MetaEntity> {
   async updateMany(
     oldEntities: Entity[] | undefined,
     newEntities: DeepPartial<Entity>[],
-    metadata: Pick<ServiceMetadata, 'manager' | 'user'>,
+    metadata: Required<ServiceMetadata>,
   ): Promise<Entity[]> {
     const repo = this.getRepo(metadata);
     const user = metadata.user;
