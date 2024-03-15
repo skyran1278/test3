@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/base.service';
-import { ServiceMetadata } from 'src/common/service-metadata.interface';
+import { ServiceOptions } from 'src/common/service-options.interface';
 import { EntityManager, Repository } from 'typeorm';
 
 import { Domain1 } from './domain-1.entity';
@@ -21,56 +21,53 @@ export class Domain1Service extends BaseService<Domain1> {
 
   async createOne(
     input: CreateDomain1Input | Domain1,
-    metadata: ServiceMetadata,
+    options: ServiceOptions,
   ): Promise<Domain1> {
     const transaction = async (manager: EntityManager) => {
-      const dao = input instanceof Domain1 ? input : this.create(input);
-      if (metadata?.user) {
-        dao.createdUserId = metadata.user.id;
-        dao.updatedUserId = metadata.user.id;
-      }
-      return this.save(dao, { manager, user: metadata.user });
+      return this.save(input, { manager, user: options.user });
     };
 
-    return metadata?.manager
-      ? transaction(metadata.manager)
+    return options.manager
+      ? transaction(options.manager)
       : this.manager.transaction('READ COMMITTED', transaction);
   }
 
-  findPage(args: Domain1PageArgs, metadata?: ServiceMetadata) {
-    return this.findNodePage(args, metadata);
+  findPage(args: Domain1PageArgs, options?: ServiceOptions) {
+    return this.findNodePage(args, options);
   }
 
-  async updateOne(input: UpdateDomain1Input, metadata: ServiceMetadata) {
+  async updateOne(input: UpdateDomain1Input, options: ServiceOptions) {
     const transaction = async (manager: EntityManager) => {
-      const domain1Repo = manager.getRepository(Domain1);
-      const existDomain1 = await domain1Repo.findOneOrFail({
-        where: { id: input.id },
-      });
+      const existDomain1 = await this.findOneOrFail(
+        {
+          where: { id: input.id },
+        },
+        { manager },
+      );
 
       return this.save(
         {
           ...existDomain1,
           ...input,
         },
-        { manager, user: metadata?.user },
+        { manager, user: options.user },
       );
     };
 
-    return metadata?.manager
-      ? transaction(metadata.manager)
+    return options.manager
+      ? transaction(options.manager)
       : this.manager.transaction('READ COMMITTED', transaction);
   }
 
-  async removeOne(id: string, metadata: ServiceMetadata) {
+  async removeOne(id: string, options: ServiceOptions) {
     const transaction = async (manager: EntityManager) => {
       const domain1 = await this.findOneByOrFail({ id });
 
-      return this.softRemove(domain1, { manager, user: metadata?.user });
+      return this.softRemove(domain1, { manager, user: options?.user });
     };
 
-    return metadata?.manager
-      ? transaction(metadata.manager)
+    return options.manager
+      ? transaction(options.manager)
       : this.manager.transaction('READ COMMITTED', transaction);
   }
 }

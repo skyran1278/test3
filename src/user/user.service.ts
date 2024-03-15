@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/base.service';
-import { NodeIdNotFoundError } from 'src/common/error/node-id-not-found.error';
-import { ServiceMetadata } from 'src/common/service-metadata.interface';
-import { EntityManager, FindOneOptions, Repository } from 'typeorm';
+import { ServiceOptions } from 'src/common/service-options.interface';
+import { EntityManager, Repository } from 'typeorm';
 
 import { CreateUserInput } from './mutation/create-user.input';
 import { UpdateUserInput } from './mutation/update-user.input';
@@ -15,88 +14,60 @@ export class UserService extends BaseService<User> {
   constructor(
     private readonly manager: EntityManager,
     @InjectRepository(User)
-    private readonly userRepo: Repository<User>,
+    readonly userRepo: Repository<User>,
   ) {
     super(userRepo);
   }
 
   async createOne(
     input: CreateUserInput | User,
-    metadata: ServiceMetadata,
+    options: ServiceOptions,
   ): Promise<User> {
-    const create = async (manager: EntityManager) => {
-      const dao = input instanceof User ? input : this.create(input);
-      if (metadata?.user) {
-        dao.createdUserId = metadata.user.id;
-        dao.updatedUserId = metadata.user.id;
-      }
-      return this.save(dao, { manager, user: metadata.user });
+    const transaction = async (manager: EntityManager) => {
+      return this.save(input, { manager, user: options.user });
     };
 
-    if (metadata?.manager) {
-      return create(metadata.manager);
-    }
-
-    return this.manager.transaction('READ COMMITTED', create);
+    return options.manager
+      ? transaction(options.manager)
+      : this.manager.transaction('READ COMMITTED', transaction);
   }
 
-  findOne(
-    options: FindOneOptions<User>,
-    metadata?: ServiceMetadata,
-  ): Promise<User | null> {
-    const userRepo = metadata?.manager
-      ? metadata.manager.getRepository(User)
-      : this.userRepo;
-    return userRepo.findOne(options);
+  findPage(args: UserPageArgs, options?: ServiceOptions) {
+    return this.findNodePage(args, options);
   }
 
-  findPage(args: UserPageArgs, metadata?: ServiceMetadata) {
-    return this.findNodePage(args, metadata);
-  }
-
-  async updateOne(input: UpdateUserInput, metadata: ServiceMetadata) {
-    const update = async (manager: EntityManager) => {
-      const userRepo = manager.getRepository(User);
-      const existUser = await userRepo.findOne({
-        where: { id: input.id },
-      });
-      if (!existUser) {
-        throw new NodeIdNotFoundError(User, input.id);
-      }
+  async updateOne(input: UpdateUserInput, options: ServiceOptions) {
+    const transaction = async (manager: EntityManager) => {
+      const existUser = await this.findOneOrFail(
+        {
+          where: { id: input.id },
+        },
+        { manager },
+      );
 
       return this.save(
         {
           ...existUser,
           ...input,
-          updatedUserId: metadata.user.id,
         },
-        { manager, user: metadata.user },
+        { manager, user: options.user },
       );
     };
 
-    if (metadata?.manager) {
-      return update(metadata.manager);
-    }
-
-    return this.manager.transaction('READ COMMITTED', update);
+    return options.manager
+      ? transaction(options.manager)
+      : this.manager.transaction('READ COMMITTED', transaction);
   }
 
-  async removeOne(id: string, metadata: ServiceMetadata) {
-    const remove = async (manager: EntityManager) => {
-      const userRepo = manager.getRepository(User);
+  async removeOne(id: string, options: ServiceOptions) {
+    const transaction = async (manager: EntityManager) => {
+      const user = await this.findOneByOrFail({ id });
 
-      const user = await userRepo.findOneBy({ id });
-      if (!user) {
-        throw new NodeIdNotFoundError(User, id);
-      }
-
-      return userRepo.softRemove(user);
+      return this.softRemove(user, { manager, user: options.user });
     };
 
-    if (metadata?.manager) {
-      return remove(metadata.manager);
-    }
-
-    return this.manager.transaction('READ COMMITTED', remove);
+    return options.manager
+      ? transaction(options.manager)
+      : this.manager.transaction('READ COMMITTED', transaction);
   }
 }

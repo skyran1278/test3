@@ -16,7 +16,7 @@ import {
 import { MetaEntity } from './dao/meta.entity';
 import { NodePage } from './graphql/node-page.type';
 import { Nullable } from './nullable.interface';
-import { ServiceMetadata } from './service-metadata.interface';
+import { ServiceOptions } from './service-options.interface';
 
 interface NodePageInput<Entity extends ObjectLiteral> {
   take?: Maybe<number>;
@@ -61,22 +61,22 @@ export abstract class BaseService<Entity extends MetaEntity> {
   /**
    * if is not entity, auto create entity
    * @param input
-   * @param metadata
+   * @param options
    * @returns
    */
   async save(
     entity: DeepPartial<Entity>,
-    metadata: Required<ServiceMetadata>,
+    options: Required<ServiceOptions>,
   ): Promise<Entity>;
   async save(
     entities: DeepPartial<Entity>[],
-    metadata: Required<ServiceMetadata>,
+    options: Required<ServiceOptions>,
   ): Promise<Entity[]>;
   async save(
     input: DeepPartial<Entity> | DeepPartial<Entity>[],
-    metadata: Required<ServiceMetadata>,
+    options: Required<ServiceOptions>,
   ): Promise<Entity | Entity[]> {
-    const repo = this.getRepo(metadata);
+    const repo = this.getRepo(options);
 
     this.logger.debug({
       [`save ${repo.metadata.targetName}`]: { input },
@@ -86,8 +86,8 @@ export abstract class BaseService<Entity extends MetaEntity> {
       const dao = this.create(
         input.map((item) => ({
           ...item,
-          createdUserId: item.createdUserId ?? metadata.user.id,
-          updatedUserId: metadata.user.id,
+          createdUserId: item.createdUserId ?? options.user.id,
+          updatedUserId: options.user.id,
         })),
       );
       return repo.save(dao);
@@ -95,63 +95,63 @@ export abstract class BaseService<Entity extends MetaEntity> {
 
     const dao = this.create({
       ...input,
-      createdUserId: input.createdUserId ?? metadata.user.id,
-      updatedUserId: metadata.user.id,
+      createdUserId: input.createdUserId ?? options.user.id,
+      updatedUserId: options.user.id,
     });
     return repo.save(dao);
   }
 
   findOne(
     options: FindOneOptions<Entity>,
-    metadata?: Pick<ServiceMetadata, 'manager'>,
+    serviceOptions?: Pick<ServiceOptions, 'manager'>,
   ): Promise<Entity | null> {
-    const repo = this.getRepo(metadata);
+    const repo = this.getRepo(serviceOptions);
     return repo.findOne(options);
   }
 
   findOneBy(
     where: FindOptionsWhere<Entity>[] | FindOptionsWhere<Entity>,
-    metadata?: Pick<ServiceMetadata, 'manager'>,
+    serviceOptions?: Pick<ServiceOptions, 'manager'>,
   ): Promise<Entity | null> {
-    const repo = this.getRepo(metadata);
+    const repo = this.getRepo(serviceOptions);
     return repo.findOneBy(where);
   }
 
   findOneOrFail(
     options: FindOneOptions<Entity>,
-    metadata?: Pick<ServiceMetadata, 'manager'>,
+    serviceOptions?: Pick<ServiceOptions, 'manager'>,
   ): Promise<Entity> {
-    const repo = this.getRepo(metadata);
+    const repo = this.getRepo(serviceOptions);
     return repo.findOneOrFail(options);
   }
 
   findOneByOrFail(
     where: FindOptionsWhere<Entity>[] | FindOptionsWhere<Entity>,
-    metadata?: Pick<ServiceMetadata, 'manager'>,
+    serviceOptions?: Pick<ServiceOptions, 'manager'>,
   ): Promise<Entity> {
-    const repo = this.getRepo(metadata);
+    const repo = this.getRepo(serviceOptions);
     return repo.findOneByOrFail(where);
   }
 
   async find(
     options: FindManyOptions<Entity>,
-    metadata?: Pick<ServiceMetadata, 'manager'>,
+    serviceOptions?: Pick<ServiceOptions, 'manager'>,
   ): Promise<Entity[]> {
-    const repo = this.getRepo(metadata);
+    const repo = this.getRepo(serviceOptions);
     return repo.find(options);
   }
 
-  softRemove(entities: Entity[], metadata: ServiceMetadata): Promise<Entity[]>;
-  softRemove(entity: Entity, metadata: ServiceMetadata): Promise<Entity>;
+  softRemove(entities: Entity[], options: ServiceOptions): Promise<Entity[]>;
+  softRemove(entity: Entity, options: ServiceOptions): Promise<Entity>;
   softRemove(
     input: Entity | Entity[],
-    metadata: ServiceMetadata,
+    options: ServiceOptions,
   ): Promise<Entity | Entity[]> {
     this.logger.debug({
       [`softRemove ${this.repository.metadata.targetName}`]: input,
     });
 
-    const repo = this.getRepo(metadata);
+    const repo = this.getRepo(options);
     if (Array.isArray(input)) {
       return repo.softRemove(input);
     }
@@ -160,21 +160,21 @@ export abstract class BaseService<Entity extends MetaEntity> {
 
   remove(
     entities: Entity[],
-    metadata: Pick<ServiceMetadata, 'manager'>,
+    options: Pick<ServiceOptions, 'manager'>,
   ): Promise<Entity[]>;
   remove(
     entity: Entity,
-    metadata: Pick<ServiceMetadata, 'manager'>,
+    options: Pick<ServiceOptions, 'manager'>,
   ): Promise<Entity>;
   remove(
     input: Entity | Entity[],
-    metadata: Pick<ServiceMetadata, 'manager'>,
+    options: Pick<ServiceOptions, 'manager'>,
   ): Promise<Entity | Entity[]> {
     this.logger.debug({
       [`remove ${this.repository.metadata.targetName}`]: input,
     });
 
-    const repo = this.getRepo(metadata);
+    const repo = this.getRepo(options);
     if (Array.isArray(input)) {
       return repo.remove(input);
     }
@@ -186,16 +186,16 @@ export abstract class BaseService<Entity extends MetaEntity> {
    * @param oldEntities
    * @param newEntities
    * @param user
-   * @param metadata
+   * @param options
    * @returns
    */
   async updateMany(
     oldEntities: Entity[] | undefined,
     newEntities: DeepPartial<Entity>[],
-    metadata: Required<ServiceMetadata>,
+    options: Required<ServiceOptions>,
   ): Promise<Entity[]> {
-    const repo = this.getRepo(metadata);
-    const user = metadata.user;
+    const repo = this.getRepo(options);
+    const user = options.user;
 
     const oldEntitiesMap = oldEntities
       ? new Map(oldEntities.map((entity) => [entity.id, entity]))
@@ -209,7 +209,7 @@ export abstract class BaseService<Entity extends MetaEntity> {
           this.create({
             ...oldEntitiesMap.get(entity.id),
             ...entity,
-            updatedBy: user.id,
+            updatedUserId: user.id,
           }),
         );
         oldEntitiesMap.delete(entity.id);
@@ -217,8 +217,8 @@ export abstract class BaseService<Entity extends MetaEntity> {
         createEntities.push(
           this.create({
             ...entity,
-            createdBy: user.id,
-            updatedBy: user.id,
+            createdUserId: user.id,
+            updatedUserId: user.id,
           }),
         );
       }
@@ -226,7 +226,7 @@ export abstract class BaseService<Entity extends MetaEntity> {
     const deleteEntities = [...oldEntitiesMap.values()].map((entity) =>
       this.create({
         ...entity,
-        deletedBy: user.id,
+        deletedUserId: user.id,
       }),
     );
 
@@ -259,9 +259,9 @@ export abstract class BaseService<Entity extends MetaEntity> {
 
   async findNodePage(
     options?: NodePageInput<Entity>,
-    metadata?: Partial<ServiceMetadata>,
+    serviceOptions?: Partial<ServiceOptions>,
   ): Promise<NodePage<Entity>> {
-    const repo = this.getRepo(metadata);
+    const repo = this.getRepo(serviceOptions);
 
     // transform null properties to undefined
     const take = options?.take ?? undefined;
@@ -296,9 +296,9 @@ export abstract class BaseService<Entity extends MetaEntity> {
     return { take, skip, nodes, total };
   }
 
-  private getRepo(metadata?: Partial<ServiceMetadata>) {
-    const repo = metadata?.manager
-      ? metadata.manager.getRepository(this.repository.target)
+  private getRepo(options?: Partial<ServiceOptions>) {
+    const repo = options?.manager
+      ? options.manager.getRepository(this.repository.target)
       : this.repository;
     return repo;
   }
