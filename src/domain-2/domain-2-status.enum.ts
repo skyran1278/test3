@@ -6,12 +6,12 @@ import { registerEnumType } from '@nestjs/graphql';
  * I prefer the key and value to be identical;
  * therefore, I use UPPERCASE_SNAKE_CASE.
  */
-export enum Domain1StatusEnum {
+export enum Domain2StatusEnum {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
 }
 
-registerEnumType(Domain1StatusEnum, {
-  name: 'Domain1StatusEnum',
+registerEnumType(Domain2StatusEnum, {
+  name: 'Domain2StatusEnum',
   description: 'status',
 });
