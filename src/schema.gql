@@ -80,6 +80,52 @@ input Domain1WhereInput {
   updatedUserId: ID
 }
 
+type Domain2 implements MetaEntity {
+  createdAt: DateTime!
+  createdUser: User
+  createdUserId: ID
+  deletedAt: DateTime
+  deletedUser: User
+  deletedUserId: ID
+
+  """domain3s"""
+  domain3s: [Domain3!]
+
+  """domain2001"""
+  domain2001: Int
+
+  """status"""
+  domain2002: Domain2StatusEnum
+  id: ID!
+  updatedAt: DateTime!
+  updatedUser: User
+  updatedUserId: ID
+}
+
+"""status"""
+enum Domain2StatusEnum {
+  ACTIVE
+  INACTIVE
+}
+
+type Domain3 implements MetaEntity {
+  createdAt: DateTime!
+  createdUser: User
+  createdUserId: ID
+  deletedAt: DateTime
+  deletedUser: User
+  deletedUserId: ID
+  domain2: Domain2!
+  domain2Id: ID!
+
+  """domain3001"""
+  domain3001: Int
+  id: ID!
+  updatedAt: DateTime!
+  updatedUser: User
+  updatedUserId: ID
+}
+
 interface MetaEntity {
   createdAt: DateTime!
   createdUser: User

@@ -15,6 +15,8 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { Domain1Module } from './domain-1/domain-1.module';
+import { Domain2Module } from './domain-2/domain-2.module';
+import { Domain3Module } from './domain-3/domain-3.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -62,6 +64,8 @@ import { UserModule } from './user/user.module';
     UserModule,
     AuthModule,
     Domain1Module,
+    Domain2Module,
+    Domain3Module,
   ],
   controllers: [AppController],
   providers: [AppService],

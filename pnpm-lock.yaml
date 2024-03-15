@@ -68,8 +68,8 @@ dependencies:
 
 devDependencies:
   4itech-schematics:
-    specifier: ^11.2.1
-    version: 11.2.1(typescript@5.3.3)
+    specifier: ^11.3.2
+    version: 11.3.2(typescript@5.3.3)
   '@nestjs/cli':
     specifier: ^10.3.1
     version: 10.3.1
@@ -148,15 +148,15 @@ devDependencies:
 
 packages:
 
-  /4itech-schematics@11.2.1(typescript@5.3.3):
-    resolution: {integrity: sha512-hvXEVNhsoRGgcTJRCyCoHdc0exvV74FsIyyvP3eMxGu/KlLtMi215zIvYv/bqK78rIo/820QkIGICyNZQqMxag==}
+  /4itech-schematics@11.3.2(typescript@5.3.3):
+    resolution: {integrity: sha512-Zc8NXHGSIWwKQCxONiHD4qxScaI4N89jikAQ16SseMzANh7DoExnByqGWb8cnU8PIeUzZ6tJmnozPENUoKsHxA==}
     peerDependencies:
       typescript: '>=4.8.2'
     dependencies:
-      '@angular-devkit/core': 16.2.8(chokidar@3.5.3)
-      '@angular-devkit/schematics': 16.2.8(chokidar@3.5.3)
+      '@angular-devkit/core': 17.1.2(chokidar@3.5.3)
+      '@angular-devkit/schematics': 17.1.2(chokidar@3.5.3)
       comment-json: 4.2.3
-      jsonc-parser: 3.2.0
+      jsonc-parser: 3.2.1
       pluralize: 8.0.0
       typescript: 5.3.3
     transitivePeerDependencies:
@@ -4563,6 +4563,10 @@ packages:
 
   /jsonc-parser@3.2.0:
     resolution: {integrity: sha512-gfFQZrcTc8CnKXp6Y4/CBT3fTc0OVuDofpre4aEeEpSBPV5X5v4+Vmx+8snU7RLPrNHPKSgLxGo9YuQzz20o+w==}
+    dev: true
+
+  /jsonc-parser@3.2.1:
+    resolution: {integrity: sha512-AilxAyFOAcK5wA1+LeaySVBrHsGQvUFCDWXKpZjzaL0PqW+xfBOttn8GNtWKFWqneyMZj41MWF9Kl6iPWLwgOA==}
     dev: true
 
   /jsonfile@6.1.0:
