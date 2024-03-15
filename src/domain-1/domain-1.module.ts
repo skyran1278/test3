@@ -7,6 +7,11 @@ import { Domain1Service } from './domain-1.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Domain1])],
-  providers: [Domain1Resolver, Domain1Service],
+  providers: [
+    Domain1Resolver,
+    Domain1Service,
+    // Domain1IdLoader,
+    // Domain1IdResolver,
+  ],
 })
 export class Domain1Module {}
