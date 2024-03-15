@@ -1,6 +1,6 @@
 import { InputType } from '@nestjs/graphql';
-import { Nullable } from 'src/common/dao/repo.proxy';
-import { ToWhereInputType } from 'src/common/graphql/to-where-input-type';
+import { Nullable } from 'src/common/repo.proxy';
+import { ToWhereInputType } from 'src/common/to-where-input-type';
 import { FindOptionsWhere } from 'typeorm';
 
 import { User } from '../user.entity';

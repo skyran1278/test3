@@ -13,8 +13,8 @@ import {
   Repository,
 } from 'typeorm';
 
-import { MetaEntity } from './dao/meta.entity';
-import { NodePage } from './graphql/node-page.type';
+import { MetaEntity } from './meta.entity';
+import { NodePage } from './node-page.type';
 import { Nullable } from './nullable.interface';
 import { ServiceOptions } from './service-options.interface';
 

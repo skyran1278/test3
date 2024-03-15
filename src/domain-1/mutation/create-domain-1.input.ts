@@ -1,5 +1,5 @@
 import { InputType, OmitType } from '@nestjs/graphql';
-import { ToCreateInputType } from 'src/common/graphql/to-create-input-type';
+import { ToCreateInputType } from 'src/common/to-create-input-type';
 
 import { Domain1 } from '../domain-1.entity';
 

@@ -1,7 +1,7 @@
 import { Type } from '@nestjs/common';
 import { GraphQLError } from 'graphql';
 
-import { MetaEntity } from '../dao/meta.entity';
+import { MetaEntity } from './meta.entity';
 
 export class NodeIdNotFoundError<
   Entity extends MetaEntity,

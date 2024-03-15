@@ -2,7 +2,7 @@ import { Field, InterfaceType } from '@nestjs/graphql';
 import { NonNegativeIntResolver } from 'graphql-scalars';
 import { Maybe } from 'graphql/jsutils/Maybe';
 
-import { MetaEntity } from '../dao/meta.entity';
+import { MetaEntity } from './meta.entity';
 
 @InterfaceType()
 export abstract class NodePage<Node extends MetaEntity = MetaEntity> {

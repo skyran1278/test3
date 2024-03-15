@@ -2,7 +2,7 @@ import { Type } from '@nestjs/common';
 import { InputType, OmitType } from '@nestjs/graphql';
 import { ClassDecoratorFactory } from '@nestjs/graphql/dist/interfaces/class-decorator-factory.interface';
 
-import { MetaEntity } from '../dao/meta.entity';
+import { MetaEntity } from './meta.entity';
 import { PickBasicType } from './pick-basic-type';
 
 /**

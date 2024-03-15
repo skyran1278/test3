@@ -1,5 +1,5 @@
 import { InputType } from '@nestjs/graphql';
-import { ToCreateInputType } from 'src/common/graphql/to-create-input-type';
+import { ToCreateInputType } from 'src/common/to-create-input-type';
 
 import { User } from '../user.entity';
 

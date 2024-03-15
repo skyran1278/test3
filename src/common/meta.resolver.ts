@@ -3,7 +3,7 @@ import { Maybe } from 'graphql/jsutils/Maybe';
 import { UserByIdLoader } from 'src/user/user-by-id.loader';
 import { User } from 'src/user/user.entity';
 
-import { MetaEntity } from '../dao/meta.entity';
+import { MetaEntity } from './meta.entity';
 
 @Resolver(() => MetaEntity)
 export class MetaEntityResolver {

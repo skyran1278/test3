@@ -14,7 +14,7 @@ import {
 import Decimal from 'decimal.js';
 import { Maybe } from 'graphql/jsutils/Maybe';
 
-import { MetaEntity } from '../dao/meta.entity';
+import { MetaEntity } from './meta.entity';
 
 export type PickBasicTypeProperty<T> = {
   [P in keyof T as T[P] extends

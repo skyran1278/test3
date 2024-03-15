@@ -15,7 +15,7 @@ import Decimal from 'decimal.js';
 import { JSONObjectResolver } from 'graphql-scalars';
 import { Maybe } from 'graphql/jsutils/Maybe';
 
-import DecimalScalar from '../decimal/decimal.scalar';
+import DecimalScalar from './decimal.scalar';
 import { PickBasicType, PickBasicTypeProperty } from './pick-basic-type';
 
 export type OmitDecimalProperty<T> = {

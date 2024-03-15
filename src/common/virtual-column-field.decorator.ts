@@ -6,7 +6,7 @@ import { VirtualColumn } from 'typeorm';
 import { VirtualColumnOptions } from 'typeorm/decorator/options/VirtualColumnOptions';
 
 import { getFieldDecorator } from './column-field.decorator';
-import { DecimalTransformer } from './decimal/decimal.transformer';
+import { DecimalTransformer } from './decimal.transformer';
 
 type VirtualColumnAndFieldOptions = Omit<VirtualColumnOptions, 'nullable'> &
   Pick<FieldOptions, 'deprecationReason' | 'nullable'>;

@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { ColumnField } from '../column-field.decorator';
+import { ColumnField } from './column-field.decorator';
 
 @InterfaceType()
 export abstract class MetaEntity {

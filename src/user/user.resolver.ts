@@ -1,6 +1,6 @@
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
-import { UserDecorator } from 'src/common/security/user.decorator';
+import { UserDecorator } from 'src/common/user.decorator';
 
 import { CreateUserInput } from './mutation/create-user.input';
 import { CreateUserOutput } from './mutation/create-user.output';

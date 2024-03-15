@@ -1,5 +1,5 @@
 import { ArgsType } from '@nestjs/graphql';
-import { NodePageArgs } from 'src/common/graphql/node.page.args';
+import { NodePageArgs } from 'src/common/node.page.args';
 import { TypeField } from 'src/common/type-field.decorator';
 
 import { Domain1OrderInput } from './domain-1-order.input';

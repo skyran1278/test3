@@ -13,7 +13,7 @@ import {
 } from '@nestjs/mapped-types';
 import { Maybe } from 'graphql/jsutils/Maybe';
 
-import { MetaEntity } from '../dao/meta.entity';
+import { MetaEntity } from './meta.entity';
 import { NodeOrderEnum } from './node-order.enum';
 import { NodeOrderInput } from './node-order.input';
 import { PickBasicType, PickBasicTypeProperty } from './pick-basic-type';
