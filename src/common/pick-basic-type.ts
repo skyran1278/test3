@@ -19,13 +19,13 @@ import { MetaEntity } from './meta.entity';
 
 export type PickBasicTypeProperty<T> = {
   [P in keyof T as T[P] extends
-    | string
     | number
+    | string
     | Date
     | Buffer
     | Decimal
-    | Array<string | number | boolean | Date | Buffer | Decimal>
-    | Maybe<string | number | boolean | Date | Buffer | Decimal>
+    | Array<boolean | number | string | Date | Buffer | Decimal>
+    | Maybe<boolean | number | string | Date | Buffer | Decimal>
     | undefined
     ? P
     : never]: T[P];
@@ -64,10 +64,12 @@ export function PickBasicType<T>(
       const typeFnResult = isFunction(item.typeFn) ? item.typeFn() : null;
 
       const isBasicType =
-        typeFnResult instanceof GraphQLScalarType ||
+        typeFnResult === Boolean ||
+        typeFnResult === String ||
         typeFnResult === Date ||
-        isPlainObject(typeFnResult) ||
-        typeFnResult === null;
+        typeFnResult instanceof GraphQLScalarType || // ID, Int, Float, DecimalScalar, DateResolver
+        isPlainObject(typeFnResult) || // enum
+        typeFnResult === null; // not function
 
       if (!isBasicType) return;
 
