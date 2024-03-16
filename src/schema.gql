@@ -24,9 +24,17 @@ type CreateUserOutput {
 }
 
 """
+A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar Date
+
+"""
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+"""A decimal string, such as 1.234, compliant with decimal.js format."""
+scalar Decimal
 
 type Domain1 implements MetaEntity {
   createdAt: DateTime!
@@ -88,14 +96,29 @@ type Domain2 implements MetaEntity {
   deletedUser: User
   deletedUserId: ID
 
-  """domain3s"""
+  """OneToMany"""
   domain3s: [Domain3!]
 
-  """domain2001"""
-  domain2001: Int
+  """boolean"""
+  domain2001: Boolean
 
-  """status"""
-  domain2002: Domain2StatusEnum
+  """int"""
+  domain2002: Int
+
+  """string"""
+  domain2003: String
+
+  """date"""
+  domain2004: Date
+
+  """decimal"""
+  domain2005: Decimal
+
+  """enum"""
+  domain2006: Domain2StatusEnum
+
+  """Array<int>"""
+  domain2011: [Int!]
   id: ID!
   updatedAt: DateTime!
   updatedUser: User
