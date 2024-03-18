@@ -1,8 +1,18 @@
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  ID,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
 import { UserDecorator } from 'src/common/user.decorator';
 import { User } from 'src/user/user.entity';
 
+import { Domain3 } from 'src/domain-3/domain-3.entity';
+import { Domain3Service } from 'src/domain-3/domain-3.service';
 import { Domain2 } from './domain-2.entity';
 import { Domain2Service } from './domain-2.service';
 import { CreateDomain2Input } from './mutation/create-domain-2.input';
@@ -16,7 +26,10 @@ import { Domain2Page } from './query/domain-2-page.type';
 
 @Resolver(() => Domain2)
 export class Domain2Resolver {
-  constructor(private readonly domain2Service: Domain2Service) {}
+  constructor(
+    private readonly domain2Service: Domain2Service,
+    private readonly domain3Service: Domain3Service,
+  ) {}
 
   @Mutation(() => CreateDomain2Output)
   async createDomain2(
@@ -59,5 +72,14 @@ export class Domain2Resolver {
       user,
     });
     return { domain2 };
+  }
+
+  @ResolveField(() => [Domain3])
+  async domain3s(@Parent() { id, domain3s }: Domain2): Promise<Domain3[]> {
+    if (domain3s) return domain3s;
+
+    return this.domain3Service.findBy({
+      domain2Id: id,
+    });
   }
 }
