@@ -23,8 +23,8 @@ interface NodePageInput<Entity extends ObjectLiteral> {
   skip?: Maybe<number>;
   order?: Nullable<FindOptionsOrder<Entity>>;
   where?:
-    | Nullable<FindOptionsWhere<Entity>>[]
-    | Nullable<FindOptionsWhere<Entity>>;
+    | Maybe<Nullable<FindOptionsWhere<Entity>>[]>
+    | Maybe<Nullable<FindOptionsWhere<Entity>>>;
 }
 
 export abstract class BaseService<Entity extends MetaEntity> {

@@ -208,7 +208,7 @@ type Query {
     take: NonNegativeInt
 
     """查詢條件"""
-    where: Domain1WhereInput! = {}
+    where: [Domain1WhereInput!]
   ): Domain1Page!
   me: User
   user(id: ID!): User!

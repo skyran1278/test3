@@ -1,4 +1,5 @@
 import { ArgsType } from '@nestjs/graphql';
+import { Maybe } from 'graphql/jsutils/Maybe';
 import { NodePageArgs } from 'src/common/node.page.args';
 import { TypeField } from 'src/common/type-field.decorator';
 
@@ -15,7 +16,7 @@ export class Domain2PageArgs extends NodePageArgs {
 
   @TypeField(() => Domain2WhereInput, {
     description: '查詢條件',
-    defaultValue: new Domain2WhereInput(),
+    nullable: true,
   })
-  where: Domain2WhereInput = new Domain2WhereInput();
+  where?: Maybe<Domain2WhereInput[]>;
 }

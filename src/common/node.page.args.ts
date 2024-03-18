@@ -19,5 +19,5 @@ export abstract class NodePageArgs {
   skip?: Maybe<number>;
 
   abstract order: NodeOrderInput;
-  abstract where: unknown;
+  abstract where?: unknown;
 }
