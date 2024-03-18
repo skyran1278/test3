@@ -141,6 +141,14 @@ export abstract class BaseService<Entity extends MetaEntity> {
     return repo.find(options);
   }
 
+  async findBy(
+    where: FindOptionsWhere<Entity>[] | FindOptionsWhere<Entity>,
+    serviceOptions?: Pick<ServiceOptions, 'manager'>,
+  ): Promise<Entity[]> {
+    const repo = this.getRepo(serviceOptions);
+    return repo.findBy(where);
+  }
+
   softRemove(entities: Entity[], options: ServiceOptions): Promise<Entity[]>;
   softRemove(entity: Entity, options: ServiceOptions): Promise<Entity>;
   softRemove(
