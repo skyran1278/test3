@@ -3,6 +3,8 @@ import { Type } from 'class-transformer';
 import { ValidateNested } from 'class-validator';
 import { NodePageArgs } from 'src/common/node.page.args';
 
+import { Maybe } from 'graphql/jsutils/Maybe';
+import { TypeField } from 'src/common/type-field.decorator';
 import { UserOrderInput } from './user-order.input';
 import { UserWhereInput } from './user-where.input';
 
@@ -16,11 +18,9 @@ export class UserPageArgs extends NodePageArgs {
   })
   order: UserOrderInput = new UserOrderInput();
 
-  @ValidateNested()
-  @Type(() => UserWhereInput)
-  @Field(() => UserWhereInput, {
+  @TypeField(() => [UserWhereInput], {
     description: '查詢條件',
-    defaultValue: new UserWhereInput(),
+    nullable: true,
   })
-  where: UserWhereInput = new UserWhereInput();
+  where?: Maybe<UserWhereInput[]>;
 }

@@ -223,7 +223,7 @@ type Query {
     take: NonNegativeInt
 
     """查詢條件"""
-    where: UserWhereInput! = {}
+    where: [UserWhereInput!]
   ): UserPage!
 }
 
