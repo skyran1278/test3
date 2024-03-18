@@ -36,8 +36,7 @@ import { UserModule } from './user/user.module';
         autoLoadEntities: true, // every entity registered through the forFeature() method will be automatically added to the entities array of the configuration object.
         logging: !!configService.get('DB_LOGGING'),
         subscribers: [join(__dirname, '**', '*.subscriber.{ts,js}')],
-        migrations: ['dist/migrations/*.js'],
-        migrationsRun: true,
+        migrations: ['dist/migration/migrations/*.js'],
       }),
     }),
     GraphQLModule.forRootAsync<ApolloDriverConfig>({

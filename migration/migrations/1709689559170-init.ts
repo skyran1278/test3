@@ -56,6 +56,19 @@ export class Init1709689559170 implements MigrationInterface {
     await queryRunner.query(sql`
       ALTER TABLE "user" ADD CONSTRAINT "FK_e5f3d1e13026597fc95060f6da0" FOREIGN KEY ("deletedUserId") REFERENCES "user" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION
     `);
+
+    await queryRunner.query(sql`
+      INSERT INTO
+        public.user (id, user001, user002)
+      VALUES
+        ('94107a27-4c24-4912-be7b-6f4b0b462acb', 1, 1);
+    `);
+    await queryRunner.query(sql`
+      INSERT INTO
+        public.domain1 (id, domain1001)
+      VALUES
+        ('0bc02b9c-585e-438f-ad6e-8bc0a16cb6fb', 1);
+    `);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
