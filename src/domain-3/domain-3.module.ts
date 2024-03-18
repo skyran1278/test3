@@ -12,5 +12,6 @@ import { Domain3Service } from './domain-3.service';
     // Domain3IdLoader,
     // Domain3IdResolver,
   ],
+  exports: [Domain3Service],
 })
 export class Domain3Module {}
