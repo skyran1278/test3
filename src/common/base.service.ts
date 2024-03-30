@@ -59,6 +59,28 @@ export abstract class BaseService<Entity extends MetaEntity> {
   }
 
   /**
+   * set createdUserId, updatedUserId
+   * @param entity
+   * @param user
+   */
+  private setUserId(entity: MetaEntity, user: ServiceOptions['user']) {
+    entity.createdUserId = entity.createdUserId ?? user.id;
+    entity.updatedUserId = user.id;
+
+    for (const key in entity) {
+      if (Object.prototype.hasOwnProperty.call(entity, key)) {
+        const column = entity[<keyof typeof entity>key];
+        const values = Array.isArray(column) ? column : [column];
+        values.forEach((item: unknown) => {
+          if (item instanceof MetaEntity) {
+            this.setUserId(item, user);
+          }
+        });
+      }
+    }
+  }
+
+  /**
    * if is not entity, auto create entity
    * @param input
    * @param options
@@ -83,21 +105,14 @@ export abstract class BaseService<Entity extends MetaEntity> {
     });
 
     if (Array.isArray(input)) {
-      const dao = this.create(
-        input.map((item) => ({
-          ...item,
-          createdUserId: item.createdUserId ?? options.user.id,
-          updatedUserId: options.user.id,
-        })),
-      );
+      const dao = this.create(input);
+      dao.forEach((entity) => this.setUserId(entity, options.user));
       return repo.save(dao);
     }
 
-    const dao = this.create({
-      ...input,
-      createdUserId: input.createdUserId ?? options.user.id,
-      updatedUserId: options.user.id,
-    });
+    const dao = this.create(input);
+    this.setUserId(dao, options.user);
+
     return repo.save(dao);
   }
 
