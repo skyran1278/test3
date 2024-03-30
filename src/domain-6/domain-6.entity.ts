@@ -45,6 +45,12 @@ export class Domain6 extends MetaEntity {
   })
   domain6006?: Maybe<Domain6StatusEnum>;
 
+  @ColumnField({ type: 'jsonb', comment: 'jsonb', nullable: true })
+  domain6007?: Maybe<Record<string, unknown>>;
+
+  @ColumnField({ type: 'json', comment: 'json', nullable: true })
+  domain6008?: Maybe<Record<string, unknown>>;
+
   @ColumnField({
     type: 'int',
     array: true,

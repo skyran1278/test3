@@ -12,7 +12,7 @@ import {
 import { Transform, Type } from 'class-transformer';
 import { IsOptional } from 'class-validator';
 import Decimal from 'decimal.js';
-import { DateResolver } from 'graphql-scalars';
+import { DateResolver, JSONObjectResolver } from 'graphql-scalars';
 import { Column, ColumnOptions } from 'typeorm';
 
 import DecimalScalar from './decimal.scalar';
@@ -86,6 +86,11 @@ function getReturnTypeFunc(
     }
     case 'boolean': {
       returnTypeFunc = () => Boolean;
+      break;
+    }
+    case 'json':
+    case 'jsonb': {
+      returnTypeFunc = () => JSONObjectResolver;
       break;
     }
 
