@@ -7,6 +7,7 @@ import { UserModule } from 'src/user/user.module';
 
 import { MetaEntityResolver } from './meta.resolver';
 import { SecurityGuard } from './security.guard';
+import { WinstonLogger } from './winston-logger.service';
 
 @Global()
 @Module({
@@ -27,7 +28,8 @@ import { SecurityGuard } from './security.guard';
       provide: APP_GUARD,
       useClass: SecurityGuard,
     },
+    WinstonLogger,
   ],
-  exports: [RepoProxy],
+  exports: [RepoProxy, WinstonLogger],
 })
 export class CommonModule {}
