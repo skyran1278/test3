@@ -18,6 +18,7 @@ import { Domain1Module } from './domain-1/domain-1.module';
 import { Domain2Module } from './domain-2/domain-2.module';
 import { Domain3Module } from './domain-3/domain-3.module';
 import { UserModule } from './user/user.module';
+import { Domain6Module } from './domain-6/domain-6.module';
 
 @Module({
   imports: [
@@ -65,6 +66,7 @@ import { UserModule } from './user/user.module';
     Domain1Module,
     Domain2Module,
     Domain3Module,
+    Domain6Module,
   ],
   controllers: [AppController],
   providers: [AppService],
