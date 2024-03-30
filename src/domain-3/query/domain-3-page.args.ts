@@ -14,7 +14,7 @@ export class Domain3PageArgs extends NodePageArgs {
   })
   order: Domain3OrderInput = new Domain3OrderInput();
 
-  @TypeField(() => Domain3WhereInput, {
+  @TypeField(() => [Domain3WhereInput], {
     description: '查詢條件',
     nullable: true,
   })
