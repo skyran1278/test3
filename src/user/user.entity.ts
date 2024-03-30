@@ -4,7 +4,7 @@ import { MetaEntity } from 'src/common/meta.entity';
 import { Entity } from 'typeorm';
 
 @Entity()
-@ObjectType({ implements: MetaEntity })
+@ObjectType({ implements: [MetaEntity] })
 export class User extends MetaEntity {
   @ColumnField({ type: 'int', comment: 'user001' })
   user001!: number;

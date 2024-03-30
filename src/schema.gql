@@ -331,7 +331,7 @@ type Query {
     take: NonNegativeInt
 
     """查詢條件"""
-    where: Domain2WhereInput
+    where: [Domain2WhereInput!]
   ): Domain2Page!
   me: User
   user(id: ID!): User!

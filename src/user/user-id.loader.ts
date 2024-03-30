@@ -7,19 +7,19 @@ import { In, Repository } from 'typeorm';
 import { User } from './user.entity';
 
 @Injectable({ scope: Scope.REQUEST })
-export class UserByIdLoader extends DataLoader<string, Maybe<User>> {
+export class UserIdLoader extends DataLoader<string, Maybe<User>> {
   constructor(
     @InjectRepository(User)
-    private readonly userRepo: Repository<User>,
+    private readonly repo: Repository<User>,
   ) {
-    super(async (ids: readonly string[]): Promise<Maybe<User>[]> => {
-      const users = await this.userRepo.find({
+    super(async (keys: readonly string[]): Promise<Maybe<User>[]> => {
+      const daoArray = await this.repo.find({
         where: {
-          id: In(ids),
+          id: In(keys),
         },
       });
-      const userMap = new Map(users.map((user) => [user.id, user]));
-      return ids.map((key) => userMap.get(key));
+      const daoMap = new Map(daoArray.map((dao) => [dao.id, dao]));
+      return keys.map((key) => daoMap.get(key));
     });
   }
 }

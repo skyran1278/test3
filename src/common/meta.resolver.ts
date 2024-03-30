@@ -1,13 +1,13 @@
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
-import { UserByIdLoader } from 'src/user/user-by-id.loader';
+import { UserIdLoader } from 'src/user/user-id.loader';
 import { User } from 'src/user/user.entity';
 
 import { MetaEntity } from './meta.entity';
 
 @Resolver(() => MetaEntity)
 export class MetaEntityResolver {
-  constructor(private readonly userByIdLoader: UserByIdLoader) {}
+  constructor(private readonly userByIdLoader: UserIdLoader) {}
 
   @ResolveField(() => User, { nullable: true })
   async createdUser(

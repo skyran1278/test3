@@ -4,19 +4,19 @@ import { BaseService } from 'src/common/base.service';
 import { ServiceOptions } from 'src/common/service-options.interface';
 import { EntityManager, Repository } from 'typeorm';
 
+import { User } from './user.entity';
 import { CreateUserInput } from './mutation/create-user.input';
 import { UpdateUserInput } from './mutation/update-user.input';
 import { UserPageArgs } from './query/user-page.args';
-import { User } from './user.entity';
 
 @Injectable()
 export class UserService extends BaseService<User> {
   constructor(
     private readonly manager: EntityManager,
     @InjectRepository(User)
-    readonly userRepo: Repository<User>,
+    readonly repo: Repository<User>,
   ) {
-    super(userRepo);
+    super(repo);
   }
 
   async createOne(
@@ -63,7 +63,7 @@ export class UserService extends BaseService<User> {
     const transaction = async (manager: EntityManager) => {
       const user = await this.findOneByOrFail({ id });
 
-      return this.softRemove(user, { manager, user: options.user });
+      return this.softRemove(user, { manager, user: options?.user });
     };
 
     return options.manager
