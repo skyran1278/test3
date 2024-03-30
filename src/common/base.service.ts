@@ -79,7 +79,7 @@ export abstract class BaseService<Entity extends MetaEntity> {
     const repo = this.getRepo(options);
 
     this.logger.debug({
-      [`save ${repo.metadata.targetName}`]: { input },
+      [`save ${repo.metadata.targetName}`]: input,
     });
 
     if (Array.isArray(input)) {
