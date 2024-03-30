@@ -4,10 +4,11 @@ import { ColumnField } from 'src/common/column-field.decorator';
 import { ManyToOneField } from 'src/common/many-to-one-field.decorator';
 import { MetaEntity } from 'src/common/meta.entity';
 import { Domain2 } from 'src/domain-2/domain-2.entity';
+import { Domain2Id } from 'src/domain-2/query/domain-2-id.type';
 import { Entity } from 'typeorm';
 
 @Entity()
-@ObjectType({ implements: MetaEntity })
+@ObjectType({ implements: [MetaEntity, Domain2Id] })
 export class Domain3 extends MetaEntity {
   @ColumnField({ type: 'int', nullable: true, comment: 'domain3001' })
   domain3001?: Maybe<number>;

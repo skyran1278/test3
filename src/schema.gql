@@ -160,6 +160,11 @@ type Domain2 implements MetaEntity {
   updatedUserId: ID
 }
 
+interface Domain2Id {
+  domain2: Domain2
+  domain2Id: ID
+}
+
 input Domain2OrderInput {
   createdAt: NodeOrderEnum
   deletedAt: NodeOrderEnum
@@ -232,7 +237,7 @@ input Domain2WhereInput {
   updatedUserId: ID
 }
 
-type Domain3 implements MetaEntity {
+type Domain3 implements Domain2Id & MetaEntity {
   createdAt: DateTime!
   createdUser: User
   createdUserId: ID
