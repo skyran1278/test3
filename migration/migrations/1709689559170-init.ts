@@ -1,5 +1,6 @@
-import { sql } from 'src/common/sql';
 import { MigrationInterface, QueryRunner } from 'typeorm';
+
+import { sql } from 'src/common/sql';
 
 export class Init1709689559170 implements MigrationInterface {
   name = 'Init1709689559170';
@@ -57,6 +58,7 @@ export class Init1709689559170 implements MigrationInterface {
       ALTER TABLE "user" ADD CONSTRAINT "FK_e5f3d1e13026597fc95060f6da0" FOREIGN KEY ("deletedUserId") REFERENCES "user" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION
     `);
 
+    // Insert data
     await queryRunner.query(sql`
       INSERT INTO
         public.user (id, user001, user002)
