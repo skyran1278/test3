@@ -53,6 +53,9 @@ dependencies:
   graphql-scalars:
     specifier: ^1.22.4
     version: 1.22.4(graphql@16.8.1)
+  lodash:
+    specifier: ^4.17.21
+    version: 4.17.21
   pg:
     specifier: ^8.11.3
     version: 8.11.3
@@ -88,6 +91,9 @@ devDependencies:
   '@types/jest':
     specifier: ^29.5.12
     version: 29.5.12
+  '@types/lodash':
+    specifier: ^4.17.0
+    version: 4.17.0
   '@types/node':
     specifier: ^20.11.16
     version: 20.11.16
@@ -1965,6 +1971,10 @@ packages:
     dependencies:
       '@types/node': 20.11.16
     dev: false
+
+  /@types/lodash@4.17.0:
+    resolution: {integrity: sha512-t7dhREVv6dbNj0q17X12j7yDG4bD/DHYX7o5/DbDxobP0HnGPgpRz2Ej77aL7TZT3DSw13fqUTj8J4mMnqa7WA==}
+    dev: true
 
   /@types/long@4.0.2:
     resolution: {integrity: sha512-MqTGEo5bj5t157U6fA/BiDynNkn0YknVdh48CMPkTSpFTVmvao5UQmm7uEF6xBEo7qIMAlY/JSleYaE6VOdpaA==}
