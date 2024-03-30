@@ -16,6 +16,8 @@ export abstract class MetaEntity {
   /** @see https://github.com/typestack/class-validator#validation-groups */
   validationGroups?: string[] | string;
 
+  noValidate?: boolean;
+
   @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   id!: string;

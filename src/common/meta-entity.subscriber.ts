@@ -7,23 +7,30 @@ import {
   UpdateEvent,
 } from 'typeorm';
 
+import { Logger } from '@nestjs/common';
+import { validate } from 'class-validator';
+import { GraphQLError } from 'graphql';
 import { MetaEntity } from './meta.entity';
 
 @EventSubscriber()
 export class MetaEntitySubscriber
   implements EntitySubscriberInterface<MetaEntity>
 {
+  private readonly logger = new Logger(this.constructor.name);
+
   listenTo = () => MetaEntity;
 
-  beforeInsert(event: InsertEvent<MetaEntity>) {
-    this.validate(event);
+  async beforeInsert(event: InsertEvent<MetaEntity>) {
+    await this.validate(event);
   }
 
-  beforeUpdate(event: UpdateEvent<MetaEntity>) {
-    this.validate(event);
+  async beforeUpdate(event: UpdateEvent<MetaEntity>) {
+    await this.validate(event);
   }
 
-  private validate(event: InsertEvent<MetaEntity> | UpdateEvent<MetaEntity>) {
+  private async validate(
+    event: InsertEvent<MetaEntity> | UpdateEvent<MetaEntity>,
+  ) {
     /**
      * @description
      * - beforeInsert
@@ -38,8 +45,22 @@ export class MetaEntitySubscriber
     assert(
       entity instanceof MetaEntity,
       new TypeError(
-        'Entity should instanceof CustomBaseEntity or can not be validated',
+        `Entity should instanceof MetaEntity or can not be validated: (${JSON.stringify(entity)})`,
       ),
     );
+
+    if (entity.noValidate) return;
+
+    const errors = await validate(entity);
+
+    if (!errors.length) return;
+
+    this.logger.verbose({
+      'class-validator validation failed': { entity, errors },
+    });
+
+    throw new GraphQLError('class-validator validation failed', {
+      extensions: { errors },
+    });
   }
 }
