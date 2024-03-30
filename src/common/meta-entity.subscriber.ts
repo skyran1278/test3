@@ -1,5 +1,3 @@
-import assert from 'assert';
-
 import {
   EntitySubscriberInterface,
   EventSubscriber,
@@ -8,6 +6,7 @@ import {
 } from 'typeorm';
 
 import { Logger } from '@nestjs/common';
+import assert from 'assert';
 import { validate } from 'class-validator';
 import { GraphQLError } from 'graphql';
 import { MetaEntity } from './meta.entity';
@@ -48,6 +47,15 @@ export class MetaEntitySubscriber
         `Entity should instanceof MetaEntity or can not be validated: (${JSON.stringify(entity)})`,
       ),
     );
+
+    // if (!(entity instanceof MetaEntity)) {
+    //   this.logger.verbose({
+    //     'Entity should instanceof MetaEntity or can not be validated': {
+    //       entity,
+    //     },
+    //   });
+    //   return;
+    // }
 
     if (entity.noValidate) return;
 
