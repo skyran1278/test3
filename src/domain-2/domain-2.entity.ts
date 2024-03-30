@@ -10,7 +10,7 @@ import { Entity } from 'typeorm';
 import { Domain2StatusEnum } from './domain-2-status.enum';
 
 @Entity()
-@ObjectType({ implements: MetaEntity })
+@ObjectType({ implements: [MetaEntity] })
 export class Domain2 extends MetaEntity {
   @ColumnField({ type: 'boolean', nullable: true, comment: 'boolean' })
   domain2001?: Maybe<boolean>;

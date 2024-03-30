@@ -5,7 +5,7 @@ import { MetaEntity } from 'src/common/meta.entity';
 import { Entity } from 'typeorm';
 
 @Entity()
-@ObjectType({ implements: MetaEntity })
+@ObjectType({ implements: [MetaEntity] })
 export class Domain1 extends MetaEntity {
   @ColumnField({ type: 'int', nullable: true, comment: 'domain1001' })
   domain1001?: Maybe<number>;
