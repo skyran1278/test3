@@ -15,6 +15,10 @@ export class Domain3 extends MetaEntity {
 
   @ColumnField({ type: 'uuid' })
   domain2Id!: string;
-  @ManyToOneField(() => Domain2, { onDelete: 'CASCADE' })
+  @ManyToOneField(() => Domain2, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    orphanedRowAction: 'delete',
+  })
   domain2?: Domain2;
 }

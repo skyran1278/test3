@@ -398,7 +398,7 @@ type UpdateDomain1Output {
 
 input UpdateDomain2Input {
   """domain3s"""
-  domain3s: [CreateDomain3Input!]
+  domain3s: [UpdateDomain3Input!]!
 
   """boolean"""
   domain2001: Boolean
@@ -425,6 +425,12 @@ input UpdateDomain2Input {
 
 type UpdateDomain2Output {
   domain2: Domain2!
+}
+
+input UpdateDomain3Input {
+  """domain3001"""
+  domain3001: Int
+  id: ID!
 }
 
 input UpdateUserInput {
