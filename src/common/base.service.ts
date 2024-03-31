@@ -117,10 +117,10 @@ export abstract class BaseService<Entity extends MetaEntity> {
   }
 
   /**
-   * if is not entity, auto create entity
-   * @param input
-   * @param options
-   * @returns
+   * Persists the provided entity or entities into the database.
+   * @param input Entity or entities to be saved.
+   * @param options Configuration options for the save operation.
+   * @returns The saved entity or entities.
    */
   async save(
     entity: DeepPartial<Entity>,
@@ -141,11 +141,10 @@ export abstract class BaseService<Entity extends MetaEntity> {
     });
 
     const inputArray = Array.isArray(input) ? input : [input];
-    const entities = this.create(inputArray);
-
-    if (Array.isArray(entities) && entities.length === 0) {
-      return Promise.resolve([]);
+    if (inputArray.length === 0) {
+      return [];
     }
+    const entities = this.create(inputArray);
 
     await this.setUserId(entities, options);
     await repo.save(entities);
