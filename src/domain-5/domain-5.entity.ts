@@ -14,6 +14,9 @@ export class Domain5 extends MetaEntity {
 
   @ColumnField({ type: 'uuid', comment: 'domain4Id' })
   domain4Id!: string;
-  @ManyToOneField(() => Domain4, { comment: 'ManyToOne' })
+  @ManyToOneField(() => Domain4, {
+    comment: 'ManyToOne',
+    orphanedRowAction: 'delete',
+  })
   domain4?: Domain4;
 }
