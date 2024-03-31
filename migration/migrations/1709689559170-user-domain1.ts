@@ -2,8 +2,8 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 
 import { sql } from 'src/common/sql';
 
-export class Init1709689559170 implements MigrationInterface {
-  name = 'Init1709689559170';
+export class UserDomain11709689559170 implements MigrationInterface {
+  name = 'UserDomain11709689559170';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(sql`
@@ -63,13 +63,15 @@ export class Init1709689559170 implements MigrationInterface {
       INSERT INTO
         public.user (id, user001, user002)
       VALUES
-        ('94107a27-4c24-4912-be7b-6f4b0b462acb', 1, 1);
+        ('94107a27-4c24-4912-be7b-6f4b0b462acb', 1, 1),
+        ('f4e1b2a3-8c4a-4a1b-8c6e-3e3b0b1e2c1b', 2, 2);
     `);
     await queryRunner.query(sql`
       INSERT INTO
         public.domain1 (id, domain1001)
       VALUES
-        ('0bc02b9c-585e-438f-ad6e-8bc0a16cb6fb', 1);
+        ('0bc02b9c-585e-438f-ad6e-8bc0a16cb6fb', 1),
+        ('1b2c3a4d-5e6f-7a8b-9c0d-1e2a3b4c5d6e', 2);
     `);
   }
 

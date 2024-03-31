@@ -64,7 +64,8 @@ export class Domain2Domain31711819664999 implements MigrationInterface {
       INSERT INTO
         public.domain2 (id, domain2001)
       VALUES
-        ('0cbbc06c-95f5-4cc3-8646-5e4d27a69b33', 1);
+        ('0cbbc06c-95f5-4cc3-8646-5e4d27a69b33', 10),
+        ('c4347881-40d0-42c2-8996-44f2827acab7', 20);
     `);
     await queryRunner.query(sql`
       INSERT INTO
@@ -72,18 +73,23 @@ export class Domain2Domain31711819664999 implements MigrationInterface {
       VALUES
         (
           '281edeb4-449a-4774-be78-b49558f02634',
-          1,
+          11,
           '0cbbc06c-95f5-4cc3-8646-5e4d27a69b33'
-        );
-    `);
-    await queryRunner.query(sql`
-      INSERT INTO
-        public.domain3 (id, domain3001, "domain2Id")
-      VALUES
+        ),
         (
           '10c32da9-54d4-48ed-ad5e-fc2d06c0ba93',
-          2,
+          12,
           '0cbbc06c-95f5-4cc3-8646-5e4d27a69b33'
+        ),
+        (
+          'b3f3b4d5-4e3b-4b0d-8a9b-4b4b6c1d7b9b',
+          21,
+          'c4347881-40d0-42c2-8996-44f2827acab7'
+        ),
+        (
+          'd4b1b7f4-5f8c-4b0b-8b3b-4b4b6c1d7b9b',
+          22,
+          'c4347881-40d0-42c2-8996-44f2827acab7'
         );
     `);
   }
