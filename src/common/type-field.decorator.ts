@@ -6,7 +6,7 @@ import {
   ReturnTypeFunc,
   ReturnTypeFuncValue,
 } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { ValidateNested } from 'class-validator';
 
 type FieldOptionsExtractor<T> = T extends [GqlTypeReference<infer P>]
@@ -30,6 +30,15 @@ export function TypeField<T extends ReturnTypeFuncValue>(
       isArray ? ValidateNested({ each: true }) : ValidateNested(),
     );
     typeDecorators.push(Type(() => typeFunction));
+
+    // transform null to undefined because typeorm does not support null
+    typeDecorators.push(
+      Transform(
+        ({ value }: { value: typeof typeFunction }) =>
+          value == null ? undefined : value,
+        { toClassOnly: true },
+      ),
+    );
   }
 
   return applyDecorators(...typeDecorators, Field(returnTypeFunction, options));
