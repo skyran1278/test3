@@ -21,6 +21,8 @@ import { RemoveDomain2Input } from './mutation/remove-domain-2.input';
 import { RemoveDomain2Output } from './mutation/remove-domain-2.output';
 import { UpdateDomain2Input } from './mutation/update-domain-2.input';
 import { UpdateDomain2Output } from './mutation/update-domain-2.output';
+import { UpdateDomain2sInput } from './mutation/update-domain-2s.input';
+import { UpdateDomain2sOutput } from './mutation/update-domain-2s.output';
 import { Domain2PageArgs } from './query/domain-2-page.args';
 import { Domain2Page } from './query/domain-2-page.type';
 
@@ -61,6 +63,17 @@ export class Domain2Resolver {
       user,
     });
     return { domain2 };
+  }
+
+  @Mutation(() => UpdateDomain2sOutput)
+  async updateDomain2s(
+    @Args('input') input: UpdateDomain2sInput,
+    @UserDecorator() user: User,
+  ): Promise<UpdateDomain2sOutput> {
+    const domain2s = await this.domain2Service.updateMany(input, {
+      user,
+    });
+    return { domain2s };
   }
 
   @Mutation(() => RemoveDomain2Output)

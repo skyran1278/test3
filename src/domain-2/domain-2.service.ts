@@ -7,6 +7,7 @@ import { EntityManager, Repository } from 'typeorm';
 import { Domain2 } from './domain-2.entity';
 import { CreateDomain2Input } from './mutation/create-domain-2.input';
 import { UpdateDomain2Input } from './mutation/update-domain-2.input';
+import { UpdateDomain2sInput } from './mutation/update-domain-2s.input';
 import { Domain2PageArgs } from './query/domain-2-page.args';
 
 @Injectable()
@@ -52,6 +53,19 @@ export class Domain2Service extends BaseService<Domain2> {
         },
         { manager, user: options.user },
       );
+    };
+
+    return options.manager
+      ? transaction(options.manager)
+      : this.manager.transaction('READ COMMITTED', transaction);
+  }
+
+  async updateMany(
+    input: UpdateDomain2sInput,
+    options: ServiceOptions,
+  ): Promise<Domain2[]> {
+    const transaction = async (manager: EntityManager) => {
+      return this.save(input.domain2s, { manager, user: options.user });
     };
 
     return options.manager

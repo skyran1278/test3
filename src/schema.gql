@@ -364,6 +364,7 @@ type Mutation {
   signIn(input: SignInInput!): SignInOutput!
   updateDomain1(input: UpdateDomain1Input!): UpdateDomain1Output!
   updateDomain2(input: UpdateDomain2Input!): UpdateDomain2Output!
+  updateDomain2s(input: UpdateDomain2sInput!): UpdateDomain2sOutput!
   updateDomain6(input: UpdateDomain6Input!): UpdateDomain6Output!
   updateUser(input: UpdateUserInput!): UpdateUserOutput!
 }
@@ -507,7 +508,7 @@ type UpdateDomain1Output {
 
 input UpdateDomain2Input {
   """domain3s"""
-  domain3s: [UpdateDomain3Input!]!
+  domain3s: [UpdateDomain3Input!]
 
   """domain2001"""
   domain2001: Int
@@ -516,6 +517,15 @@ input UpdateDomain2Input {
 
 type UpdateDomain2Output {
   domain2: Domain2!
+}
+
+input UpdateDomain2sInput {
+  """domain2s"""
+  domain2s: [UpdateDomain2Input!]!
+}
+
+type UpdateDomain2sOutput {
+  domain2s: [Domain2!]!
 }
 
 input UpdateDomain3Input {

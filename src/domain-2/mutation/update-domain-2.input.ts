@@ -12,6 +12,9 @@ export class UpdateDomain2Input extends OmitType(
   @Field(() => ID)
   id!: string;
 
-  @TypeField(() => [UpdateDomain3Input], { description: 'domain3s' })
+  @TypeField(() => [UpdateDomain3Input], {
+    description: 'domain3s',
+    nullable: true,
+  })
   domain3s?: UpdateDomain3Input[];
 }
