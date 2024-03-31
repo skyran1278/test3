@@ -6,7 +6,6 @@ import {
 } from 'typeorm';
 
 import { Logger } from '@nestjs/common';
-import assert from 'assert';
 import { validate } from 'class-validator';
 import { GraphQLError } from 'graphql';
 import { MetaEntity } from './meta.entity';
@@ -38,24 +37,23 @@ export class MetaEntitySubscriber
      * - beforeUpdate
      *   - event.entity may be ObjectLiteral | undefined
      *   - event.databaseEntity is Entity
-     * TODO: check databaseEntity type is Entity
      */
     const entity = event.entity;
-    assert(
-      entity instanceof MetaEntity,
-      new TypeError(
-        `Entity should instanceof MetaEntity or can not be validated: (${JSON.stringify(entity)})`,
-      ),
-    );
 
-    // if (!(entity instanceof MetaEntity)) {
-    //   this.logger.verbose({
-    //     'Entity should instanceof MetaEntity or can not be validated': {
-    //       entity,
-    //     },
-    //   });
-    //   return;
-    // }
+    if (!(entity instanceof MetaEntity)) {
+      console.log('event', event);
+      this.logger.verbose({
+        message: 'Validation failed: Entity is not an instance of MetaEntity.',
+        details: {
+          entity,
+          reasons: [
+            'When a OneToManyField contains a many-sided object, it updates the many-sided relation and the updatedAt field.',
+            'TypeORM fails to retrieve the many-sided object, preventing validation.',
+          ],
+        },
+      });
+      return;
+    }
 
     if (entity.noValidate) return;
 
