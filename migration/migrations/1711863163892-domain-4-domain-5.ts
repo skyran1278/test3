@@ -60,6 +60,41 @@ export class Domain4Domain51711863163892 implements MigrationInterface {
     await queryRunner.query(sql`
       ALTER TABLE "domain5" ADD CONSTRAINT "FK_f8e5c27b5893020c4ac03dba351" FOREIGN KEY ("domain4Id") REFERENCES "domain4" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION
     `);
+
+    //
+    // Insert data
+    await queryRunner.query(sql`
+      INSERT INTO
+        public.domain4 (id, domain4001)
+      VALUES
+        ('2a5a45dc-812b-48e4-bb56-8f3ffd3cc997', 10),
+        ('1f44609d-797b-4c0e-ba55-336a98c1cb6d', 20);
+    `);
+    await queryRunner.query(sql`
+      INSERT INTO
+        public.domain5 (id, domain5001, "domain4Id")
+      VALUES
+        (
+          'aa7a24b7-f573-468d-afd6-a6ba416b2fc1',
+          11,
+          '2a5a45dc-812b-48e4-bb56-8f3ffd3cc997'
+        ),
+        (
+          'ec8bcf40-f348-44f2-a32f-555657d8ea95',
+          12,
+          '2a5a45dc-812b-48e4-bb56-8f3ffd3cc997'
+        ),
+        (
+          'bbe8ab43-6efd-435c-9a14-f1006d4b910d',
+          21,
+          '1f44609d-797b-4c0e-ba55-336a98c1cb6d'
+        ),
+        (
+          '71c7f77d-5cef-48c7-8ee6-47b805477e77',
+          22,
+          '1f44609d-797b-4c0e-ba55-336a98c1cb6d'
+        );
+    `);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
