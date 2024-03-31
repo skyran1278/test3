@@ -23,7 +23,7 @@ export class Domain1Resolver {
     @Args('input') input: CreateDomain1Input,
     @UserDecorator() user: User,
   ): Promise<CreateDomain1Output> {
-    const domain1 = await this.domain1Service.createOne(input, {
+    const domain1 = await this.domain1Service.saveOne(input, {
       user,
     });
     return { domain1 };
@@ -44,7 +44,7 @@ export class Domain1Resolver {
     @Args('input') input: UpdateDomain1Input,
     @UserDecorator() user: User,
   ): Promise<UpdateDomain1Output> {
-    const domain1 = await this.domain1Service.updateOne(input, {
+    const domain1 = await this.domain1Service.saveOne(input, {
       user,
     });
     return { domain1 };
