@@ -8,11 +8,13 @@ import {
   FindOptionsOrder,
   FindOptionsRelations,
   FindOptionsWhere,
+  In,
   IsNull,
   ObjectLiteral,
   Repository,
 } from 'typeorm';
 
+import { groupBy } from 'lodash';
 import { MetaEntity } from './meta.entity';
 import { NodePage } from './node-page.type';
 import { Nullable } from './nullable.interface';
@@ -59,23 +61,57 @@ export abstract class BaseService<Entity extends MetaEntity> {
   }
 
   /**
-   * set createdUserId, updatedUserId
-   * @param entity
-   * @param user
+   * Recursively loads all related entities for the given MetaEntity instances.
+   * @param entities
+   * @returns
    */
-  private setUserId(entity: MetaEntity, user: ServiceOptions['user']) {
-    entity.createdUserId = entity.createdUserId ?? user.id;
-    entity.updatedUserId = user.id;
+  private flatNestedEntities(entities: MetaEntity[]): MetaEntity[] {
+    return entities.flatMap((entity) => {
+      // Extract and flatten all nested MetaEntity instances from the current entity
+      const nestedEntities = Object.values(entity)
+        .flatMap(
+          (value) => (Array.isArray(value) ? value : [value]) as unknown[],
+        )
+        .filter((item): item is MetaEntity => item instanceof MetaEntity);
 
-    for (const key in entity) {
-      if (Object.prototype.hasOwnProperty.call(entity, key)) {
-        const column = entity[<keyof typeof entity>key];
-        const values = Array.isArray(column) ? column : [column];
-        values.forEach((item: unknown) => {
-          if (item instanceof MetaEntity) {
-            this.setUserId(item, user);
-          }
-        });
+      // Recursively flatten nested entities and include the current level entities
+      return [entity, ...this.flatNestedEntities(nestedEntities)];
+    });
+  }
+
+  /**
+   * Assigns createdUserId and updatedUserId to the given entity.
+   * Recursively updates nested MetaEntity instances.
+   *
+   * @param metaEntities The MetaEntity instance to update.
+   * @param user The user object containing the user ID.
+   */
+  private async setUserId(
+    metaEntities: MetaEntity[],
+    options: Required<ServiceOptions>,
+  ) {
+    const entityMap = groupBy(
+      this.flatNestedEntities(metaEntities),
+      'constructor.name',
+    );
+
+    for (const [constructor, entities] of Object.entries(entityMap)) {
+      const repo = options.manager.getRepository<MetaEntity>(constructor);
+
+      // Load the main set of entities based on their IDs
+      const existEntities = await repo.find({
+        where: { id: In(entities.map((e) => e.id)) },
+      });
+
+      const existEntityMap = new Map(existEntities.map((e) => [e.id, e]));
+
+      for (const entity of entities) {
+        const existEntity = existEntityMap.get(entity.id);
+        if (existEntity) {
+          entity.createdUserId = existEntity.createdUserId;
+        }
+        entity.createdUserId ||= options.user.id;
+        entity.updatedUserId = options.user.id;
       }
     }
   }
@@ -100,20 +136,24 @@ export abstract class BaseService<Entity extends MetaEntity> {
   ): Promise<Entity | Entity[]> {
     const repo = this.getRepo(options);
 
-    this.logger.debug({
+    this.logger.verbose({
       [`save ${repo.metadata.targetName}`]: input,
     });
 
-    if (Array.isArray(input)) {
-      const dao = this.create(input);
-      dao.forEach((entity) => this.setUserId(entity, options.user));
-      return repo.save(dao);
+    const inputArray = Array.isArray(input) ? input : [input];
+    const entities = this.create(inputArray);
+
+    if (Array.isArray(entities) && entities.length === 0) {
+      return Promise.resolve([]);
     }
 
-    const dao = this.create(input);
-    this.setUserId(dao, options.user);
+    await this.setUserId(entities, options);
+    await repo.save(entities);
 
-    return repo.save(dao);
+    if (Array.isArray(input)) {
+      return entities;
+    }
+    return entities[0];
   }
 
   findOne(
@@ -170,7 +210,7 @@ export abstract class BaseService<Entity extends MetaEntity> {
     input: Entity | Entity[],
     options: ServiceOptions,
   ): Promise<Entity | Entity[]> {
-    this.logger.debug({
+    this.logger.verbose({
       [`softRemove ${this.repository.metadata.targetName}`]: input,
     });
 
@@ -193,7 +233,7 @@ export abstract class BaseService<Entity extends MetaEntity> {
     input: Entity | Entity[],
     options: Pick<ServiceOptions, 'manager'>,
   ): Promise<Entity | Entity[]> {
-    this.logger.debug({
+    this.logger.verbose({
       [`remove ${this.repository.metadata.targetName}`]: input,
     });
 
@@ -202,63 +242,6 @@ export abstract class BaseService<Entity extends MetaEntity> {
       return repo.remove(input);
     }
     return repo.remove(input);
-  }
-
-  /**
-   * 比較既有 entities 的 id, 以此刪除, 更新, 新增 entities
-   * @param oldEntities
-   * @param newEntities
-   * @param user
-   * @param options
-   * @returns
-   */
-  async updateMany(
-    oldEntities: Entity[] | undefined,
-    newEntities: DeepPartial<Entity>[],
-    options: Required<ServiceOptions>,
-  ): Promise<Entity[]> {
-    const repo = this.getRepo(options);
-    const user = options.user;
-
-    const oldEntitiesMap = oldEntities
-      ? new Map(oldEntities.map((entity) => [entity.id, entity]))
-      : new Map<string, Entity>();
-
-    const updateEntities: Entity[] = [];
-    const createEntities: Entity[] = [];
-    newEntities.forEach((entity) => {
-      if (entity.id && oldEntitiesMap.get(entity.id)) {
-        updateEntities.push(
-          this.create({
-            ...oldEntitiesMap.get(entity.id),
-            ...entity,
-            updatedUserId: user.id,
-          }),
-        );
-        oldEntitiesMap.delete(entity.id);
-      } else {
-        createEntities.push(
-          this.create({
-            ...entity,
-            createdUserId: user.id,
-            updatedUserId: user.id,
-          }),
-        );
-      }
-    });
-    const deleteEntities = [...oldEntitiesMap.values()].map((entity) =>
-      this.create({
-        ...entity,
-        deletedUserId: user.id,
-      }),
-    );
-
-    await repo.save(deleteEntities);
-    await repo.softRemove(deleteEntities);
-    await repo.save(updateEntities);
-    await repo.save(createEntities);
-
-    return [...updateEntities, ...createEntities];
   }
 
   // async updateOne(
@@ -296,7 +279,7 @@ export abstract class BaseService<Entity extends MetaEntity> {
       Array.isArray(where) ? [...where, order] : [where, order],
     );
 
-    this.logger.debug({
+    this.logger.verbose({
       [`page ${repo.metadata.targetName}`]: {
         take,
         skip,
