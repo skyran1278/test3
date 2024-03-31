@@ -28,6 +28,30 @@ input CreateDomain3Input {
   domain3001: Int
 }
 
+input CreateDomain4Input {
+  """domain5s"""
+  domain5s: [CreateDomain5Input!]!
+
+  """domain4001"""
+  domain4001: Int
+}
+
+type CreateDomain4Output {
+  domain4: Domain4!
+}
+
+input CreateDomain5Input {
+  """domain4Id"""
+  domain4Id: ID!
+
+  """domain5001"""
+  domain5001: Int
+}
+
+type CreateDomain5Output {
+  domain5: Domain5!
+}
+
 input CreateDomain6Input {
   """boolean"""
   domain6001: Boolean
@@ -216,6 +240,125 @@ type Domain3 implements Domain2Id & MetaEntity {
   updatedUserId: ID
 }
 
+type Domain4 implements MetaEntity {
+  createdAt: DateTime!
+  createdUser: User
+  createdUserId: ID
+  deletedAt: DateTime
+  deletedUser: User
+  deletedUserId: ID
+
+  """OneToMany"""
+  domain5s: [Domain5!]
+
+  """domain4001"""
+  domain4001: Int
+  id: ID!
+  updatedAt: DateTime!
+  updatedUser: User
+  updatedUserId: ID
+}
+
+input Domain4OrderInput {
+  createdAt: NodeOrderEnum
+  deletedAt: NodeOrderEnum
+
+  """domain4001"""
+  domain4001: NodeOrderEnum
+  updatedAt: NodeOrderEnum = DESC
+}
+
+type Domain4Page implements NodePage {
+  """Nodes in this page"""
+  nodes: [Domain4!]!
+
+  """Amount of nodes to skip from the beginning of this page"""
+  skip: NonNegativeInt
+
+  """Maximum amount of nodes in this page"""
+  take: NonNegativeInt
+
+  """Total amount of nodes"""
+  total: NonNegativeInt
+}
+
+input Domain4WhereInput {
+  createdAt: DateTime
+  createdUserId: ID
+  deletedAt: DateTime
+  deletedUserId: ID
+
+  """domain4001"""
+  domain4001: Int
+  id: ID
+  updatedAt: DateTime
+  updatedUserId: ID
+}
+
+type Domain5 implements MetaEntity {
+  createdAt: DateTime!
+  createdUser: User
+  createdUserId: ID
+  deletedAt: DateTime
+  deletedUser: User
+  deletedUserId: ID
+
+  """ManyToOne"""
+  domain4: Domain4!
+
+  """domain4Id"""
+  domain4Id: ID!
+
+  """domain5001"""
+  domain5001: Int
+  id: ID!
+  updatedAt: DateTime!
+  updatedUser: User
+  updatedUserId: ID
+}
+
+input Domain5OrderInput {
+  createdAt: NodeOrderEnum
+  deletedAt: NodeOrderEnum
+
+  """domain4Id"""
+  domain4Id: NodeOrderEnum
+
+  """domain5001"""
+  domain5001: NodeOrderEnum
+  updatedAt: NodeOrderEnum = DESC
+}
+
+type Domain5Page implements NodePage {
+  """Nodes in this page"""
+  nodes: [Domain5!]!
+
+  """Amount of nodes to skip from the beginning of this page"""
+  skip: NonNegativeInt
+
+  """Maximum amount of nodes in this page"""
+  take: NonNegativeInt
+
+  """Total amount of nodes"""
+  total: NonNegativeInt
+}
+
+input Domain5WhereInput {
+  createdAt: DateTime
+  createdUserId: ID
+  deletedAt: DateTime
+  deletedUserId: ID
+
+  """domain4Id"""
+  domain4Id: ID
+
+  """domain5001"""
+  domain5001: Int
+  id: ID
+  updatedAt: DateTime
+  updatedUserId: ID
+}
+
 type Domain6 implements MetaEntity {
   createdAt: DateTime!
   createdUser: User
@@ -355,16 +498,22 @@ interface MetaEntity {
 type Mutation {
   createDomain1(input: CreateDomain1Input!): CreateDomain1Output!
   createDomain2(input: CreateDomain2Input!): CreateDomain2Output!
+  createDomain4(input: CreateDomain4Input!): CreateDomain4Output!
+  createDomain5(input: CreateDomain5Input!): CreateDomain5Output!
   createDomain6(input: CreateDomain6Input!): CreateDomain6Output!
   createUser(createUserInput: CreateUserInput!): CreateUserOutput!
   removeDomain1(input: RemoveDomain1Input!): RemoveDomain1Output!
   removeDomain2(input: RemoveDomain2Input!): RemoveDomain2Output!
+  removeDomain4(input: RemoveDomain4Input!): RemoveDomain4Output!
+  removeDomain5(input: RemoveDomain5Input!): RemoveDomain5Output!
   removeDomain6(input: RemoveDomain6Input!): RemoveDomain6Output!
   removeUser(input: RemoveUserInput!): RemoveUserOutput!
   signIn(input: SignInInput!): SignInOutput!
   updateDomain1(input: UpdateDomain1Input!): UpdateDomain1Output!
   updateDomain2(input: UpdateDomain2Input!): UpdateDomain2Output!
   updateDomain2s(input: UpdateDomain2sInput!): UpdateDomain2sOutput!
+  updateDomain4(input: UpdateDomain4Input!): UpdateDomain4Output!
+  updateDomain5(input: UpdateDomain5Input!): UpdateDomain5Output!
   updateDomain6(input: UpdateDomain6Input!): UpdateDomain6Output!
   updateUser(input: UpdateUserInput!): UpdateUserOutput!
 }
@@ -421,6 +570,34 @@ type Query {
     """查詢條件"""
     where: [Domain2WhereInput!]
   ): Domain2Page!
+  domain4(id: ID!): Domain4!
+  domain4Page(
+    """排序欄位與方式"""
+    order: Domain4OrderInput! = {updatedAt: DESC}
+
+    """Amount of nodes to skip from the beginning of this page"""
+    skip: NonNegativeInt
+
+    """Maximum amount of nodes in this page"""
+    take: NonNegativeInt
+
+    """查詢條件"""
+    where: [Domain4WhereInput!]
+  ): Domain4Page!
+  domain5(id: ID!): Domain5!
+  domain5Page(
+    """排序欄位與方式"""
+    order: Domain5OrderInput! = {updatedAt: DESC}
+
+    """Amount of nodes to skip from the beginning of this page"""
+    skip: NonNegativeInt
+
+    """Maximum amount of nodes in this page"""
+    take: NonNegativeInt
+
+    """查詢條件"""
+    where: [Domain5WhereInput!]
+  ): Domain5Page!
   domain6(id: ID!): Domain6!
   domain6Page(
     """排序欄位與方式"""
@@ -466,6 +643,22 @@ input RemoveDomain2Input {
 
 type RemoveDomain2Output {
   domain2: Domain2!
+}
+
+input RemoveDomain4Input {
+  id: ID!
+}
+
+type RemoveDomain4Output {
+  domain4: Domain4!
+}
+
+input RemoveDomain5Input {
+  id: ID!
+}
+
+type RemoveDomain5Output {
+  domain5: Domain5!
 }
 
 input RemoveDomain6Input {
@@ -532,6 +725,32 @@ input UpdateDomain3Input {
   """domain3001"""
   domain3001: Int
   id: ID!
+}
+
+input UpdateDomain4Input {
+  """domain5s"""
+  domain5s: [CreateDomain5Input!]
+
+  """domain4001"""
+  domain4001: Int
+  id: ID!
+}
+
+type UpdateDomain4Output {
+  domain4: Domain4!
+}
+
+input UpdateDomain5Input {
+  """domain4Id"""
+  domain4Id: ID
+
+  """domain5001"""
+  domain5001: Int
+  id: ID!
+}
+
+type UpdateDomain5Output {
+  domain5: Domain5!
 }
 
 input UpdateDomain6Input {

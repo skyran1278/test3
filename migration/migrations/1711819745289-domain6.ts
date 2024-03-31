@@ -81,7 +81,7 @@ export class Domain61711819745289 implements MigrationInterface {
           10.000000,
           'ACTIVE',
           '{"domain6007": "domain6007"}',
-          '{"domain6007": "domain6007"}',
+          '{"domain6008": "domain6008"}',
           '{1,2,3}'
         );
     `);
