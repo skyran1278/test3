@@ -41,9 +41,6 @@ type CreateDomain4Output {
 }
 
 input CreateDomain5Input {
-  """domain4Id"""
-  domain4Id: ID!
-
   """domain5001"""
   domain5001: Int
 }
@@ -599,7 +596,7 @@ input UpdateDomain3Input {
 
 input UpdateDomain4Input {
   """domain5s"""
-  domain5s: [CreateDomain5Input!]
+  domain5s: [UpdateDomain5Input!]!
 
   """domain4001"""
   domain4001: Int
@@ -608,6 +605,12 @@ input UpdateDomain4Input {
 
 type UpdateDomain4Output {
   domain4: Domain4!
+}
+
+input UpdateDomain5Input {
+  """domain5001"""
+  domain5001: Int
+  id: ID!
 }
 
 input UpdateDomain6Input {

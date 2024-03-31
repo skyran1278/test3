@@ -4,7 +4,6 @@ import { ToCreateInputType } from 'src/common/to-create-input-type';
 import { Domain5 } from '../domain-5.entity';
 
 @InputType()
-export class CreateDomain5Input extends OmitType(
-  ToCreateInputType(Domain5),
-  [],
-) {}
+export class CreateDomain5Input extends OmitType(ToCreateInputType(Domain5), [
+  'domain4Id',
+]) {}

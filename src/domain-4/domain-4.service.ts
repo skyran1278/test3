@@ -49,20 +49,20 @@ export class Domain4Service extends BaseService<Domain4> {
 
   async updateOne(input: UpdateDomain4Input, options: ServiceOptions) {
     const transaction = async (manager: EntityManager) => {
-      const existDomain4 = await this.findOneOrFail(
+      const domain4 = await this.save(input, { manager, user: options.user });
+
+      domain4.domain5s = await this.domain5Service.save(
+        input.domain5s.map((domain5) => ({
+          ...domain5,
+          domain4Id: domain4.id,
+        })),
         {
-          where: { id: input.id },
+          manager,
+          user: options.user,
         },
-        { manager },
       );
 
-      return this.save(
-        {
-          ...existDomain4,
-          ...input,
-        },
-        { manager, user: options.user },
-      );
+      return domain4;
     };
 
     return options.manager
