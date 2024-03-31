@@ -2,6 +2,7 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 // import 'dotenv/config';
 
+import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -13,6 +14,14 @@ async function bootstrap() {
   });
   // app.useLogger(app.get(WinstonLogger));
   const configService = app.get(ConfigService);
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      disableErrorMessages:
+        configService.get<string>('NODE_ENV') === 'production',
+    }),
+  );
 
   await app.listen(configService.get('PORT') ?? 3001);
 }
