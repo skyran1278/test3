@@ -11,5 +11,5 @@ export class CreateDomain4Input extends OmitType(
   [],
 ) {
   @TypeField(() => [CreateDomain5Input], { description: 'domain5s' })
-  domain5s?: CreateDomain5Input[];
+  domain5s!: CreateDomain5Input[];
 }
