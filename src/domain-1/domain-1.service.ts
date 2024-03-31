@@ -12,9 +12,9 @@ import { Domain1PageArgs } from './query/domain-1-page.args';
 @Injectable()
 export class Domain1Service extends BaseService<Domain1> {
   constructor(
-    private readonly manager: EntityManager,
     @InjectRepository(Domain1)
     readonly repo: Repository<Domain1>,
+    private readonly manager: EntityManager,
   ) {
     super(repo);
   }
@@ -24,7 +24,9 @@ export class Domain1Service extends BaseService<Domain1> {
     options: ServiceOptions,
   ): Promise<Domain1> {
     const transaction = async (manager: EntityManager) => {
-      return this.save(input, { manager, user: options.user });
+      const domain1 = await this.save(input, { manager, user: options.user });
+
+      return domain1;
     };
 
     return options.manager
