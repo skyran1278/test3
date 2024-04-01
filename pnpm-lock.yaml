@@ -77,8 +77,8 @@ dependencies:
 
 devDependencies:
   4itech-schematics:
-    specifier: ^11.3.5
-    version: 11.3.5(typescript@5.3.3)
+    specifier: ^11.3.6
+    version: 11.3.6(typescript@5.3.3)
   '@nestjs/cli':
     specifier: ^10.3.1
     version: 10.3.1
@@ -166,8 +166,8 @@ devDependencies:
 
 packages:
 
-  /4itech-schematics@11.3.5(typescript@5.3.3):
-    resolution: {integrity: sha512-yjx2eXm88Y4qUMFgB6qMxfX5SZoAs+sWMnu1WE8H9blRXVpfNRsMkGQ1GdSqNvxFDYzlNXMHTYl5PLJ9a/MnqA==}
+  /4itech-schematics@11.3.6(typescript@5.3.3):
+    resolution: {integrity: sha512-vVllGUvm1k07bod32mQ7cJBiHfvR2EzT77bhiJscQOrGlbUFxe+hwSe/xAnxpTaoyCaBDx8CjtUCfQJ2MsIf1Q==}
     peerDependencies:
       typescript: '>=4.8.2'
     dependencies:
