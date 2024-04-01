@@ -1,10 +1,11 @@
 import { join } from 'path';
 
 import {
-    ApolloServerPluginLandingPageLocalDefault,
-    ApolloServerPluginLandingPageProductionDefault,
+  ApolloServerPluginLandingPageLocalDefault,
+  ApolloServerPluginLandingPageProductionDefault,
 } from '@apollo/server/plugin/landingPage/default';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -20,9 +21,9 @@ import { Domain0003Module } from './domain-0003/domain-0003.module';
 import { Domain0004Module } from './domain-0004/domain-0004.module';
 import { Domain0005Module } from './domain-0005/domain-0005.module';
 import { Domain0006Module } from './domain-0006/domain-0006.module';
-import { UserModule } from './user/user.module';
 import { Domain0011Module } from './domain-0011/domain-0011.module';
 import { Domain0012Module } from './domain-0012/domain-0012.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -63,6 +64,16 @@ import { Domain0012Module } from './domain-0012/domain-0012.module';
           plugins,
         };
       },
+    }),
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        connection: {
+          host: configService.get('REDIS_HOST'),
+          port: +configService.get('REDIS_PORT'),
+        },
+      }),
     }),
     CommonModule,
     UserModule,
