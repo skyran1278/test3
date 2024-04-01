@@ -58,3 +58,5 @@ $ pnpm run migration:revert
 - domain-0004: one-to-many (without cascade)
 - domain-0005: many-to-one (without cascade)
 - domain-0006: multiple column type
+- domain-0011: bullmq with redis
+- domain-0012: bullmq with redis

@@ -21,6 +21,8 @@ import { Domain0004Module } from './domain-0004/domain-0004.module';
 import { Domain0005Module } from './domain-0005/domain-0005.module';
 import { Domain0006Module } from './domain-0006/domain-0006.module';
 import { UserModule } from './user/user.module';
+import { Domain0011Module } from './domain-0011/domain-0011.module';
+import { Domain0012Module } from './domain-0012/domain-0012.module';
 
 @Module({
   imports: [
@@ -71,6 +73,8 @@ import { UserModule } from './user/user.module';
     Domain0004Module,
     Domain0005Module,
     Domain0006Module,
+    Domain0011Module,
+    Domain0012Module,
   ],
   controllers: [AppController],
   providers: [AppService],
