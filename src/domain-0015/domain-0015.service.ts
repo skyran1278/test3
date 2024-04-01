@@ -24,7 +24,7 @@ export class Domain0015Service extends BaseService<Domain0015> {
     @InjectRepository(Domain0015)
     readonly repo: Repository<Domain0015>,
     private readonly manager: EntityManager,
-    @InjectQueue(QueueEnum.DOMAIN0011_DOMAIN0015)
+    @InjectQueue(QueueEnum.DOMAIN0015)
     private domain0015Queue: Queue<
       CreateDomain0015JobInput,
       CreateDomain0015JobOutput

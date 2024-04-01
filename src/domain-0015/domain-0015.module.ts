@@ -13,7 +13,7 @@ import { Domain0015Service } from './domain-0015.service';
   imports: [
     TypeOrmModule.forFeature([Domain0015]),
     BullModule.registerQueue({
-      name: QueueEnum.DOMAIN0011_DOMAIN0015,
+      name: QueueEnum.DOMAIN0015,
     }),
   ],
   providers: [

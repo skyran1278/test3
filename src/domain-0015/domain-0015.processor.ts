@@ -10,7 +10,7 @@ import {
 import { Domain0015JobEnum } from './domain-0015-job.enum';
 import { Domain0015Service } from './domain-0015.service';
 
-@Processor(QueueEnum.DOMAIN0011_DOMAIN0015)
+@Processor(QueueEnum.DOMAIN0015)
 export class Domain0015Processor extends WorkerHost {
   constructor(
     private readonly manager: EntityManager,
