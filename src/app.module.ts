@@ -1,8 +1,8 @@
 import { join } from 'path';
 
 import {
-  ApolloServerPluginLandingPageLocalDefault,
-  ApolloServerPluginLandingPageProductionDefault,
+    ApolloServerPluginLandingPageLocalDefault,
+    ApolloServerPluginLandingPageProductionDefault,
 } from '@apollo/server/plugin/landingPage/default';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
@@ -14,12 +14,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
-import { Domain1Module } from './domain-1/domain-1.module';
-import { Domain2Module } from './domain-2/domain-2.module';
-import { Domain3Module } from './domain-3/domain-3.module';
-import { Domain4Module } from './domain-4/domain-4.module';
-import { Domain5Module } from './domain-5/domain-5.module';
-import { Domain6Module } from './domain-6/domain-6.module';
+import { Domain0001Module } from './domain-0001/domain-0001.module';
+import { Domain0002Module } from './domain-0002/domain-0002.module';
+import { Domain0003Module } from './domain-0003/domain-0003.module';
+import { Domain0004Module } from './domain-0004/domain-0004.module';
+import { Domain0005Module } from './domain-0005/domain-0005.module';
+import { Domain0006Module } from './domain-0006/domain-0006.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -65,12 +65,12 @@ import { UserModule } from './user/user.module';
     CommonModule,
     UserModule,
     AuthModule,
-    Domain1Module,
-    Domain2Module,
-    Domain3Module,
-    Domain4Module,
-    Domain5Module,
-    Domain6Module,
+    Domain0001Module,
+    Domain0002Module,
+    Domain0003Module,
+    Domain0004Module,
+    Domain0005Module,
+    Domain0006Module,
   ],
   controllers: [AppController],
   providers: [AppService],

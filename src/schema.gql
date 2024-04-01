@@ -2,80 +2,80 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-input CreateDomain1Input {
-  """domain1001"""
-  domain1001: Int
+input CreateDomain0001Input {
+  """domain0001001"""
+  domain0001001: Int
 }
 
-type CreateDomain1Output {
-  domain1: Domain1!
+type CreateDomain0001Output {
+  domain0001: Domain0001!
 }
 
-input CreateDomain2Input {
-  """domain3s"""
-  domain3s: [CreateDomain3Input!]!
+input CreateDomain0002Input {
+  """domain0003s"""
+  domain0003s: [CreateDomain0003Input!]!
 
-  """domain2001"""
-  domain2001: Int
+  """domain0002001"""
+  domain0002001: Int
 }
 
-type CreateDomain2Output {
-  domain2: Domain2!
+type CreateDomain0002Output {
+  domain0002: Domain0002!
 }
 
-input CreateDomain3Input {
-  """domain3001"""
-  domain3001: Int
+input CreateDomain0003Input {
+  """domain0003001"""
+  domain0003001: Int
 }
 
-input CreateDomain4Input {
-  """domain5s"""
-  domain5s: [CreateDomain5Input!]!
+input CreateDomain0004Input {
+  """domain0005s"""
+  domain0005s: [CreateDomain0005Input!]!
 
-  """domain4001"""
-  domain4001: Int
+  """domain0004001"""
+  domain0004001: Int
 }
 
-type CreateDomain4Output {
-  domain4: Domain4!
+type CreateDomain0004Output {
+  domain0004: Domain0004!
 }
 
-input CreateDomain5Input {
-  """domain5001"""
-  domain5001: Int
+input CreateDomain0005Input {
+  """domain0005001"""
+  domain0005001: Int
 }
 
-input CreateDomain6Input {
+input CreateDomain0006Input {
   """boolean"""
-  domain6001: Boolean
+  domain0006001: Boolean
 
   """int"""
-  domain6002: Int
+  domain0006002: Int
 
   """string"""
-  domain6003: String
+  domain0006003: String
 
   """date"""
-  domain6004: Date
+  domain0006004: Date
 
   """decimal"""
-  domain6005: Decimal
+  domain0006005: Decimal
 
   """enum"""
-  domain6006: Domain6StatusEnum
+  domain0006006: Domain0006StatusEnum
 
   """jsonb"""
-  domain6007: JSONObject
+  domain0006007: JSONObject
 
   """json"""
-  domain6008: JSONObject
+  domain0006008: JSONObject
 
   """Array<int>"""
-  domain6011: [Int!]
+  domain0006011: [Int!]
 }
 
-type CreateDomain6Output {
-  domain6: Domain6!
+type CreateDomain0006Output {
+  domain0006: Domain0006!
 }
 
 input CreateUserInput {
@@ -103,7 +103,7 @@ scalar DateTime
 """A decimal string, such as 1.234, compliant with decimal.js format."""
 scalar Decimal
 
-type Domain1 implements MetaEntity {
+type Domain0001 implements MetaEntity {
   createdAt: DateTime!
   createdUser: User
   createdUserId: ID
@@ -111,26 +111,26 @@ type Domain1 implements MetaEntity {
   deletedUser: User
   deletedUserId: ID
 
-  """domain1001"""
-  domain1001: Int
+  """domain0001001"""
+  domain0001001: Int
   id: ID!
   updatedAt: DateTime!
   updatedUser: User
   updatedUserId: ID
 }
 
-input Domain1OrderInput {
+input Domain0001OrderInput {
   createdAt: NodeOrderEnum
   deletedAt: NodeOrderEnum
 
-  """domain1001"""
-  domain1001: NodeOrderEnum
+  """domain0001001"""
+  domain0001001: NodeOrderEnum
   updatedAt: NodeOrderEnum = DESC
 }
 
-type Domain1Page implements NodePage {
+type Domain0001Page implements NodePage {
   """Nodes in this page"""
-  nodes: [Domain1!]!
+  nodes: [Domain0001!]!
 
   """Amount of nodes to skip from the beginning of this page"""
   skip: NonNegativeInt
@@ -142,20 +142,20 @@ type Domain1Page implements NodePage {
   total: NonNegativeInt
 }
 
-input Domain1WhereInput {
+input Domain0001WhereInput {
   createdAt: DateTime
   createdUserId: ID
   deletedAt: DateTime
   deletedUserId: ID
 
-  """domain1001"""
-  domain1001: Int
+  """domain0001001"""
+  domain0001001: Int
   id: ID
   updatedAt: DateTime
   updatedUserId: ID
 }
 
-type Domain2 implements MetaEntity {
+type Domain0002 implements MetaEntity {
   createdAt: DateTime!
   createdUser: User
   createdUserId: ID
@@ -164,40 +164,40 @@ type Domain2 implements MetaEntity {
   deletedUserId: ID
 
   """OneToMany"""
-  domain3s: [Domain3!]
+  domain0003s: [Domain0003!]
 
-  """domain2001"""
-  domain2001: Int
+  """domain0002001"""
+  domain0002001: Int
   id: ID!
   updatedAt: DateTime!
   updatedUser: User
   updatedUserId: ID
 }
 
-interface Domain2Id {
-  domain2: Domain2
-  domain2Id: ID
+interface Domain0002Id {
+  domain0002: Domain0002
+  domain0002Id: ID
 }
 
-type Domain3 implements Domain2Id & MetaEntity {
+type Domain0003 implements Domain0002Id & MetaEntity {
   createdAt: DateTime!
   createdUser: User
   createdUserId: ID
   deletedAt: DateTime
   deletedUser: User
   deletedUserId: ID
-  domain2: Domain2!
-  domain2Id: ID!
+  domain0002: Domain0002!
+  domain0002Id: ID!
 
-  """domain3001"""
-  domain3001: Int
+  """domain0003001"""
+  domain0003001: Int
   id: ID!
   updatedAt: DateTime!
   updatedUser: User
   updatedUserId: ID
 }
 
-type Domain4 implements MetaEntity {
+type Domain0004 implements MetaEntity {
   createdAt: DateTime!
   createdUser: User
   createdUserId: ID
@@ -206,28 +206,28 @@ type Domain4 implements MetaEntity {
   deletedUserId: ID
 
   """OneToMany"""
-  domain5s: [Domain5!]
+  domain0005s: [Domain0005!]
 
-  """domain4001"""
-  domain4001: Int
+  """domain0004001"""
+  domain0004001: Int
   id: ID!
   updatedAt: DateTime!
   updatedUser: User
   updatedUserId: ID
 }
 
-input Domain4OrderInput {
+input Domain0004OrderInput {
   createdAt: NodeOrderEnum
   deletedAt: NodeOrderEnum
 
-  """domain4001"""
-  domain4001: NodeOrderEnum
+  """domain0004001"""
+  domain0004001: NodeOrderEnum
   updatedAt: NodeOrderEnum = DESC
 }
 
-type Domain4Page implements NodePage {
+type Domain0004Page implements NodePage {
   """Nodes in this page"""
-  nodes: [Domain4!]!
+  nodes: [Domain0004!]!
 
   """Amount of nodes to skip from the beginning of this page"""
   skip: NonNegativeInt
@@ -239,20 +239,20 @@ type Domain4Page implements NodePage {
   total: NonNegativeInt
 }
 
-input Domain4WhereInput {
+input Domain0004WhereInput {
   createdAt: DateTime
   createdUserId: ID
   deletedAt: DateTime
   deletedUserId: ID
 
-  """domain4001"""
-  domain4001: Int
+  """domain0004001"""
+  domain0004001: Int
   id: ID
   updatedAt: DateTime
   updatedUserId: ID
 }
 
-type Domain5 implements MetaEntity {
+type Domain0005 implements MetaEntity {
   createdAt: DateTime!
   createdUser: User
   createdUserId: ID
@@ -261,20 +261,20 @@ type Domain5 implements MetaEntity {
   deletedUserId: ID
 
   """ManyToOne"""
-  domain4: Domain4!
+  domain0004: Domain0004!
 
-  """domain4Id"""
-  domain4Id: ID!
+  """domain0004Id"""
+  domain0004Id: ID!
 
-  """domain5001"""
-  domain5001: Int
+  """domain0005001"""
+  domain0005001: Int
   id: ID!
   updatedAt: DateTime!
   updatedUser: User
   updatedUserId: ID
 }
 
-type Domain6 implements MetaEntity {
+type Domain0006 implements MetaEntity {
   createdAt: DateTime!
   createdUser: User
   createdUserId: ID
@@ -283,73 +283,73 @@ type Domain6 implements MetaEntity {
   deletedUserId: ID
 
   """boolean"""
-  domain6001: Boolean
+  domain0006001: Boolean
 
   """int"""
-  domain6002: Int
+  domain0006002: Int
 
   """string"""
-  domain6003: String
+  domain0006003: String
 
   """date"""
-  domain6004: Date
+  domain0006004: Date
 
   """decimal"""
-  domain6005: Decimal
+  domain0006005: Decimal
 
   """enum"""
-  domain6006: Domain6StatusEnum
+  domain0006006: Domain0006StatusEnum
 
   """jsonb"""
-  domain6007: JSONObject
+  domain0006007: JSONObject
 
   """json"""
-  domain6008: JSONObject
+  domain0006008: JSONObject
 
   """Array<int>"""
-  domain6011: [Int!]
+  domain0006011: [Int!]
   id: ID!
   updatedAt: DateTime!
   updatedUser: User
   updatedUserId: ID
 }
 
-input Domain6OrderInput {
+input Domain0006OrderInput {
   createdAt: NodeOrderEnum
   deletedAt: NodeOrderEnum
 
   """boolean"""
-  domain6001: NodeOrderEnum
+  domain0006001: NodeOrderEnum
 
   """int"""
-  domain6002: NodeOrderEnum
+  domain0006002: NodeOrderEnum
 
   """string"""
-  domain6003: NodeOrderEnum
+  domain0006003: NodeOrderEnum
 
   """date"""
-  domain6004: NodeOrderEnum
+  domain0006004: NodeOrderEnum
 
   """decimal"""
-  domain6005: NodeOrderEnum
+  domain0006005: NodeOrderEnum
 
   """enum"""
-  domain6006: NodeOrderEnum
+  domain0006006: NodeOrderEnum
 
   """jsonb"""
-  domain6007: NodeOrderEnum
+  domain0006007: NodeOrderEnum
 
   """json"""
-  domain6008: NodeOrderEnum
+  domain0006008: NodeOrderEnum
 
   """Array<int>"""
-  domain6011: NodeOrderEnum
+  domain0006011: NodeOrderEnum
   updatedAt: NodeOrderEnum = DESC
 }
 
-type Domain6Page implements NodePage {
+type Domain0006Page implements NodePage {
   """Nodes in this page"""
-  nodes: [Domain6!]!
+  nodes: [Domain0006!]!
 
   """Amount of nodes to skip from the beginning of this page"""
   skip: NonNegativeInt
@@ -362,31 +362,31 @@ type Domain6Page implements NodePage {
 }
 
 """status"""
-enum Domain6StatusEnum {
+enum Domain0006StatusEnum {
   ACTIVE
   INACTIVE
 }
 
-input Domain6WhereInput {
+input Domain0006WhereInput {
   createdAt: DateTime
   createdUserId: ID
   deletedAt: DateTime
   deletedUserId: ID
 
   """boolean"""
-  domain6001: Boolean
+  domain0006001: Boolean
 
   """int"""
-  domain6002: Int
+  domain0006002: Int
 
   """string"""
-  domain6003: String
+  domain0006003: String
 
   """date"""
-  domain6004: Date
+  domain0006004: Date
 
   """enum"""
-  domain6006: Domain6StatusEnum
+  domain0006006: Domain0006StatusEnum
   id: ID
   updatedAt: DateTime
   updatedUserId: ID
@@ -411,21 +411,21 @@ interface MetaEntity {
 }
 
 type Mutation {
-  createDomain1(input: CreateDomain1Input!): CreateDomain1Output!
-  createDomain2(input: CreateDomain2Input!): CreateDomain2Output!
-  createDomain4(input: CreateDomain4Input!): CreateDomain4Output!
-  createDomain6(input: CreateDomain6Input!): CreateDomain6Output!
+  createDomain0001(input: CreateDomain0001Input!): CreateDomain0001Output!
+  createDomain0002(input: CreateDomain0002Input!): CreateDomain0002Output!
+  createDomain0004(input: CreateDomain0004Input!): CreateDomain0004Output!
+  createDomain0006(input: CreateDomain0006Input!): CreateDomain0006Output!
   createUser(createUserInput: CreateUserInput!): CreateUserOutput!
-  removeDomain1(input: RemoveDomain1Input!): RemoveDomain1Output!
-  removeDomain4(input: RemoveDomain4Input!): RemoveDomain4Output!
-  removeDomain6(input: RemoveDomain6Input!): RemoveDomain6Output!
+  removeDomain0001(input: RemoveDomain0001Input!): RemoveDomain0001Output!
+  removeDomain0004(input: RemoveDomain0004Input!): RemoveDomain0004Output!
+  removeDomain0006(input: RemoveDomain0006Input!): RemoveDomain0006Output!
   removeUser(input: RemoveUserInput!): RemoveUserOutput!
   signIn(input: SignInInput!): SignInOutput!
-  updateDomain1(input: UpdateDomain1Input!): UpdateDomain1Output!
-  updateDomain2(input: UpdateDomain2Input!): UpdateDomain2Output!
-  updateDomain2s(input: UpdateDomain2sInput!): UpdateDomain2sOutput!
-  updateDomain4(input: UpdateDomain4Input!): UpdateDomain4Output!
-  updateDomain6(input: UpdateDomain6Input!): UpdateDomain6Output!
+  updateDomain0001(input: UpdateDomain0001Input!): UpdateDomain0001Output!
+  updateDomain0002(input: UpdateDomain0002Input!): UpdateDomain0002Output!
+  updateDomain0002s(input: UpdateDomain0002sInput!): UpdateDomain0002sOutput!
+  updateDomain0004(input: UpdateDomain0004Input!): UpdateDomain0004Output!
+  updateDomain0006(input: UpdateDomain0006Input!): UpdateDomain0006Output!
   updateUser(input: UpdateUserInput!): UpdateUserOutput!
 }
 
@@ -453,10 +453,10 @@ interface NodePage {
 scalar NonNegativeInt
 
 type Query {
-  domain1(id: ID!): Domain1!
-  domain1Page(
+  domain0001(id: ID!): Domain0001!
+  domain0001Page(
     """排序欄位與方式"""
-    order: Domain1OrderInput! = {updatedAt: DESC}
+    order: Domain0001OrderInput! = {updatedAt: DESC}
 
     """Amount of nodes to skip from the beginning of this page"""
     skip: NonNegativeInt
@@ -465,12 +465,12 @@ type Query {
     take: NonNegativeInt
 
     """查詢條件"""
-    where: [Domain1WhereInput!]
-  ): Domain1Page!
-  domain4(id: ID!): Domain4!
-  domain4Page(
+    where: [Domain0001WhereInput!]
+  ): Domain0001Page!
+  domain0004(id: ID!): Domain0004!
+  domain0004Page(
     """排序欄位與方式"""
-    order: Domain4OrderInput! = {updatedAt: DESC}
+    order: Domain0004OrderInput! = {updatedAt: DESC}
 
     """Amount of nodes to skip from the beginning of this page"""
     skip: NonNegativeInt
@@ -479,12 +479,12 @@ type Query {
     take: NonNegativeInt
 
     """查詢條件"""
-    where: [Domain4WhereInput!]
-  ): Domain4Page!
-  domain6(id: ID!): Domain6!
-  domain6Page(
+    where: [Domain0004WhereInput!]
+  ): Domain0004Page!
+  domain0006(id: ID!): Domain0006!
+  domain0006Page(
     """排序欄位與方式"""
-    order: Domain6OrderInput! = {updatedAt: DESC}
+    order: Domain0006OrderInput! = {updatedAt: DESC}
 
     """Amount of nodes to skip from the beginning of this page"""
     skip: NonNegativeInt
@@ -493,8 +493,8 @@ type Query {
     take: NonNegativeInt
 
     """查詢條件"""
-    where: [Domain6WhereInput!]
-  ): Domain6Page!
+    where: [Domain0006WhereInput!]
+  ): Domain0006Page!
   me: User
   user(id: ID!): User!
   userPage(
@@ -512,28 +512,28 @@ type Query {
   ): UserPage!
 }
 
-input RemoveDomain1Input {
+input RemoveDomain0001Input {
   id: ID!
 }
 
-type RemoveDomain1Output {
-  domain1: Domain1!
+type RemoveDomain0001Output {
+  domain0001: Domain0001!
 }
 
-input RemoveDomain4Input {
+input RemoveDomain0004Input {
   id: ID!
 }
 
-type RemoveDomain4Output {
-  domain4: Domain4!
+type RemoveDomain0004Output {
+  domain0004: Domain0004!
 }
 
-input RemoveDomain6Input {
+input RemoveDomain0006Input {
   id: ID!
 }
 
-type RemoveDomain6Output {
-  domain6: Domain6!
+type RemoveDomain0006Output {
+  domain0006: Domain0006!
 }
 
 input RemoveUserInput {
@@ -556,95 +556,95 @@ type SignInOutput {
   access_token: String!
 }
 
-input UpdateDomain1Input {
-  """domain1001"""
-  domain1001: Int
+input UpdateDomain0001Input {
+  """domain0001001"""
+  domain0001001: Int
   id: ID!
 }
 
-type UpdateDomain1Output {
-  domain1: Domain1!
+type UpdateDomain0001Output {
+  domain0001: Domain0001!
 }
 
-input UpdateDomain2Input {
-  """domain3s"""
-  domain3s: [UpdateDomain3Input!]
+input UpdateDomain0002Input {
+  """domain0003s"""
+  domain0003s: [UpdateDomain0003Input!]
 
-  """domain2001"""
-  domain2001: Int
+  """domain0002001"""
+  domain0002001: Int
   id: ID!
 }
 
-type UpdateDomain2Output {
-  domain2: Domain2!
+type UpdateDomain0002Output {
+  domain0002: Domain0002!
 }
 
-input UpdateDomain2sInput {
-  """domain2s"""
-  domain2s: [UpdateDomain2Input!]!
+input UpdateDomain0002sInput {
+  """domain0002s"""
+  domain0002s: [UpdateDomain0002Input!]!
 }
 
-type UpdateDomain2sOutput {
-  domain2s: [Domain2!]!
+type UpdateDomain0002sOutput {
+  domain0002s: [Domain0002!]!
 }
 
-input UpdateDomain3Input {
-  """domain3001"""
-  domain3001: Int
+input UpdateDomain0003Input {
+  """domain0003001"""
+  domain0003001: Int
   id: ID!
 }
 
-input UpdateDomain4Input {
-  """domain5s"""
-  domain5s: [UpdateDomain5Input!]!
+input UpdateDomain0004Input {
+  """domain0005s"""
+  domain0005s: [UpdateDomain0005Input!]!
 
-  """domain4001"""
-  domain4001: Int
+  """domain0004001"""
+  domain0004001: Int
   id: ID!
 }
 
-type UpdateDomain4Output {
-  domain4: Domain4!
+type UpdateDomain0004Output {
+  domain0004: Domain0004!
 }
 
-input UpdateDomain5Input {
-  """domain5001"""
-  domain5001: Int
+input UpdateDomain0005Input {
+  """domain0005001"""
+  domain0005001: Int
   id: ID!
 }
 
-input UpdateDomain6Input {
+input UpdateDomain0006Input {
   """boolean"""
-  domain6001: Boolean
+  domain0006001: Boolean
 
   """int"""
-  domain6002: Int
+  domain0006002: Int
 
   """string"""
-  domain6003: String
+  domain0006003: String
 
   """date"""
-  domain6004: Date
+  domain0006004: Date
 
   """decimal"""
-  domain6005: Decimal
+  domain0006005: Decimal
 
   """enum"""
-  domain6006: Domain6StatusEnum
+  domain0006006: Domain0006StatusEnum
 
   """jsonb"""
-  domain6007: JSONObject
+  domain0006007: JSONObject
 
   """json"""
-  domain6008: JSONObject
+  domain0006008: JSONObject
 
   """Array<int>"""
-  domain6011: [Int!]
+  domain0006011: [Int!]
   id: ID!
 }
 
-type UpdateDomain6Output {
-  domain6: Domain6!
+type UpdateDomain0006Output {
+  domain0006: Domain0006!
 }
 
 input UpdateUserInput {
