@@ -2,9 +2,9 @@
   "singleQuote": true,
   "trailingComma": "all",
   "plugins": [
+    "prettier-plugin-embed",
     "prettier-plugin-import-sort",
-    "prettier-plugin-sql",
-    "prettier-plugin-embed"
+    "prettier-plugin-sql"
   ],
   "overrides": [
     {
