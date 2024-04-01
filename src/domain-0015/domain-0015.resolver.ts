@@ -22,6 +22,17 @@ export class Domain0015Resolver {
     return { domain0015 };
   }
 
+  @Mutation(() => CreateDomain0015Output)
+  async testQueueEventsRaceCondition(
+    @Args('input') input: CreateDomain0015Input,
+    @UserDecorator() user: User,
+  ): Promise<CreateDomain0015Output> {
+    const domain0015 = await this.domain0015Service.saveOne(input, {
+      user,
+    });
+    return { domain0015 };
+  }
+
   // @Query(() => Domain0015Page)
   // domain0015Page(@Args() args: Domain0015PageArgs): Promise<Domain0015Page> {
   //   return this.domain0015Service.findPage(args);

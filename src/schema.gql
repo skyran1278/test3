@@ -447,6 +447,7 @@ type Mutation {
   removeDomain0005(input: RemoveDomain0005Input!): RemoveDomain0005Output!
   removeUser(input: RemoveUserInput!): RemoveUserOutput!
   signIn(input: SignInInput!): SignInOutput!
+  testQueueEventsRaceCondition(input: CreateDomain0015Input!): CreateDomain0015Output!
   updateDomain0001(input: UpdateDomain0001Input!): UpdateDomain0001Output!
   updateDomain0003(input: UpdateDomain0003Input!): UpdateDomain0003Output!
   updateDomain0005(input: UpdateDomain0005Input!): UpdateDomain0005Output!

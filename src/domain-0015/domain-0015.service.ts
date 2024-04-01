@@ -1,7 +1,8 @@
 import { InjectQueue } from '@nestjs/bullmq';
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Queue } from 'bullmq';
+import { Queue, QueueEvents } from 'bullmq';
 import { BaseService } from 'src/common/base.service';
 import { QueueEnum } from 'src/common/queue.enum';
 import { ServiceOptions } from 'src/common/service-options.interface';
@@ -30,6 +31,7 @@ export class Domain0015Service extends BaseService<Domain0015> {
       CreateDomain0015JobOutput
     >,
     private readonly domain0015QueueEvents: Domain0015QueueEvents,
+    private readonly configService: ConfigService,
   ) {
     super(repo);
   }
@@ -49,6 +51,30 @@ export class Domain0015Service extends BaseService<Domain0015> {
     const { domain0015 } = await job.waitUntilFinished(
       this.domain0015QueueEvents.queueEvents,
     );
+
+    return domain0015;
+  }
+
+  async testQueueEventsRaceCondition(
+    input: CreateDomain0015Input | UpdateDomain0015Input,
+    options: ServiceOptions,
+  ): Promise<Domain0015> {
+    const job = await this.domain0015Queue.add(
+      Domain0015JobEnum.CREATE_DOMAIN0015_JOB,
+      {
+        input,
+        user: options.user,
+      },
+    );
+
+    const queueEvents = new QueueEvents(QueueEnum.DOMAIN0015, {
+      connection: {
+        host: this.configService.get('REDIS_HOST'),
+        port: this.configService.get('REDIS_PORT'),
+      },
+    });
+    // await queueEvents.waitUntilReady();
+    const { domain0015 } = await job.waitUntilFinished(queueEvents);
 
     return domain0015;
   }
