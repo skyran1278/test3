@@ -1,24 +1,62 @@
 import { ObjectType } from '@nestjs/graphql';
+import Decimal from 'decimal.js';
 import { Maybe } from 'graphql/jsutils/Maybe';
 import { ColumnField } from 'src/common/column-field.decorator';
-import { ManyToOneField } from 'src/common/many-to-one-field.decorator';
 import { MetaEntity } from 'src/common/meta.entity';
-import { Domain0002 } from 'src/domain-0002/domain-0002.entity';
-import { Domain0002Id } from 'src/domain-0002/query/domain-0002-id.type';
 import { Entity } from 'typeorm';
 
-@Entity()
-@ObjectType({ implements: [MetaEntity, Domain0002Id] })
-export class Domain0003 extends MetaEntity {
-  @ColumnField({ type: 'int', nullable: true, comment: 'domain0003001' })
-  domain0003001?: Maybe<number>;
+import { Domain0003StatusEnum } from './domain-0003-status.enum';
 
-  @ColumnField({ type: 'uuid' })
-  domain0002Id!: string;
-  @ManyToOneField(() => Domain0002, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-    orphanedRowAction: 'delete',
+@Entity()
+@ObjectType({ implements: [MetaEntity] })
+export class Domain0003 extends MetaEntity {
+  @ColumnField({ type: 'boolean', nullable: true, comment: 'boolean' })
+  domain0003001?: Maybe<boolean>;
+
+  @ColumnField({
+    type: 'int',
+    nullable: true,
+    comment: 'int',
   })
-  domain0002?: Domain0002;
+  domain0003002?: Maybe<number>;
+
+  @ColumnField({
+    type: 'varchar',
+    length: 10,
+    nullable: true,
+    comment: 'string',
+  })
+  domain0003003?: Maybe<string>;
+
+  @ColumnField({ type: 'date', nullable: true, comment: 'date' })
+  domain0003004?: Maybe<Date>;
+
+  @ColumnField({
+    type: 'decimal',
+    nullable: true,
+    comment: 'decimal',
+  })
+  domain0003005?: Maybe<Decimal>;
+
+  @ColumnField({
+    type: 'enum',
+    enum: Domain0003StatusEnum,
+    nullable: true,
+    comment: 'enum',
+  })
+  domain0003006?: Maybe<Domain0003StatusEnum>;
+
+  @ColumnField({ type: 'jsonb', comment: 'jsonb', nullable: true })
+  domain0003007?: Maybe<Record<string, unknown>>;
+
+  @ColumnField({ type: 'json', comment: 'json', nullable: true })
+  domain0003008?: Maybe<Record<string, unknown>>;
+
+  @ColumnField({
+    type: 'int',
+    array: true,
+    nullable: true,
+    comment: 'Array<int>',
+  })
+  domain0003011?: Maybe<number[]>;
 }

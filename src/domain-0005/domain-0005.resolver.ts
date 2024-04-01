@@ -35,7 +35,9 @@ export class Domain0005Resolver {
   }
 
   @Query(() => Domain0005)
-  domain0005(@Args('id', { type: () => ID }) id: string): Promise<Maybe<Domain0005>> {
+  domain0005(
+    @Args('id', { type: () => ID }) id: string,
+  ): Promise<Maybe<Domain0005>> {
     return this.domain0005Service.findOne({ where: { id } });
   }
 

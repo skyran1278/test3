@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/base.service';
 import { ServiceOptions } from 'src/common/service-options.interface';
+import { Domain0006Service } from 'src/domain-0006/domain-0006.service';
 import { EntityManager, Repository } from 'typeorm';
 
 import { Domain0005 } from './domain-0005.entity';
@@ -12,19 +13,32 @@ import { Domain0005PageArgs } from './query/domain-0005-page.args';
 @Injectable()
 export class Domain0005Service extends BaseService<Domain0005> {
   constructor(
-    private readonly manager: EntityManager,
     @InjectRepository(Domain0005)
     readonly repo: Repository<Domain0005>,
+    private readonly manager: EntityManager,
+    private readonly domain0006Service: Domain0006Service,
   ) {
     super(repo);
   }
 
   async createOne(
-    input: CreateDomain0005Input | Domain0005,
+    input: CreateDomain0005Input,
     options: ServiceOptions,
   ): Promise<Domain0005> {
     const transaction = async (manager: EntityManager) => {
-      return this.save(input, { manager, user: options.user });
+      const domain0005 = await this.save(input, {
+        manager,
+        user: options.user,
+      });
+
+      domain0005.domain0006s = await this.domain0006Service.save(
+        input.domain0006s.map((domain0006) => ({ ...domain0006, domain0005 })),
+        {
+          manager,
+          user: options.user,
+        },
+      );
+      return domain0005;
     };
 
     return options.manager
@@ -38,20 +52,23 @@ export class Domain0005Service extends BaseService<Domain0005> {
 
   async updateOne(input: UpdateDomain0005Input, options: ServiceOptions) {
     const transaction = async (manager: EntityManager) => {
-      const existDomain0005 = await this.findOneOrFail(
+      const domain0005 = await this.save(input, {
+        manager,
+        user: options.user,
+      });
+
+      domain0005.domain0006s = await this.domain0006Service.save(
+        input.domain0006s.map((domain0006) => ({
+          ...domain0006,
+          domain0005Id: domain0005.id,
+        })),
         {
-          where: { id: input.id },
+          manager,
+          user: options.user,
         },
-        { manager },
       );
 
-      return this.save(
-        {
-          ...existDomain0005,
-          ...input,
-        },
-        { manager, user: options.user },
-      );
+      return domain0005;
     };
 
     return options.manager

@@ -16,13 +16,12 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { Domain0001Module } from './domain-0001/domain-0001.module';
-import { Domain0002Module } from './domain-0002/domain-0002.module';
 import { Domain0003Module } from './domain-0003/domain-0003.module';
-import { Domain0004Module } from './domain-0004/domain-0004.module';
 import { Domain0005Module } from './domain-0005/domain-0005.module';
 import { Domain0006Module } from './domain-0006/domain-0006.module';
-import { Domain0011Module } from './domain-0011/domain-0011.module';
-import { Domain0012Module } from './domain-0012/domain-0012.module';
+import { Domain0009Module } from './domain-0009/domain-0009.module';
+import { Domain0010Module } from './domain-0010/domain-0010.module';
+import { Domain0015Module } from './domain-0015/domain-0015.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -79,13 +78,12 @@ import { UserModule } from './user/user.module';
     UserModule,
     AuthModule,
     Domain0001Module,
-    Domain0002Module,
-    Domain0003Module,
-    Domain0004Module,
+    Domain0009Module,
+    Domain0010Module,
     Domain0005Module,
     Domain0006Module,
-    Domain0011Module,
-    Domain0012Module,
+    Domain0003Module,
+    Domain0015Module,
   ],
   controllers: [AppController],
   providers: [AppService],

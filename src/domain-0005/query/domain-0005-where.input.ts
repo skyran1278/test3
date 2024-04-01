@@ -6,7 +6,10 @@ import { FindOptionsWhere } from 'typeorm';
 import { Domain0005 } from '../domain-0005.entity';
 
 @InputType()
-export class Domain0005WhereInput extends OmitType(ToWhereInputType(Domain0005), []) {
+export class Domain0005WhereInput extends OmitType(
+  ToWhereInputType(Domain0005),
+  [],
+) {
   toFindOptionsWhere(): Nullable<FindOptionsWhere<Domain0005>> | undefined {
     const { ...where } = this;
     return { ...where };

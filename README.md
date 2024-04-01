@@ -53,10 +53,9 @@ $ pnpm run migration:revert
 ## Folder Structure
 
 - domain-0001: schematic
-- domain-0002: one-to-many (cascade)
-- domain-0003: many-to-one (cascade)
-- domain-0004: one-to-many (without cascade)
-- domain-0005: many-to-one (without cascade)
-- domain-0006: multiple column type
-- domain-0011: bullmq with redis
-- domain-0012: bullmq with redis
+- domain-0010: multiple column type
+- domain-0006: one-to-many (without cascade)
+- domain-0003: many-to-one (without cascade)
+- domain-0009: one-to-many (cascade)
+- domain-0010: many-to-one (cascade)
+- domain-0015: bullmq with redis
