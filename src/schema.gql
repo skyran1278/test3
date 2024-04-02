@@ -662,11 +662,11 @@ type UpdateDomain0003Output {
 
 input UpdateDomain0005Input {
   """domain0006s"""
-  domain0006s: [UpdateDomain0006Input!]!
+  domain0006s: [UpdateDomain0006Input!]
 
   """domain0005001"""
   domain0005001: Int
-  id: ID!
+  id: ID
 }
 
 type UpdateDomain0005Output {
@@ -675,11 +675,17 @@ type UpdateDomain0005Output {
 
 input UpdateDomain0006Input {
   """domain0007s"""
-  domain0007s: [CreateDomain0007Input!]
+  domain0007s: [UpdateDomain0007Input!]
 
   """domain0006001"""
   domain0006001: Int
-  id: ID!
+  id: ID
+}
+
+input UpdateDomain0007Input {
+  """domain0007001"""
+  domain0007001: Int
+  id: ID
 }
 
 input UpdateDomain0009Input {
