@@ -1,5 +1,6 @@
 import { Logger } from '@nestjs/common';
 import { Maybe } from 'graphql/jsutils/Maybe';
+import { groupBy } from 'lodash';
 import {
   DeepPartial,
   FindManyOptions,
@@ -14,7 +15,6 @@ import {
   Repository,
 } from 'typeorm';
 
-import { groupBy } from 'lodash';
 import { MetaEntity } from './meta.entity';
 import { NodePage } from './node-page.type';
 import { Nullable } from './nullable.interface';
@@ -99,11 +99,15 @@ export abstract class BaseService<Entity extends MetaEntity> {
       const repo = options.manager.getRepository<MetaEntity>(constructor);
 
       // Load the main set of entities based on their IDs
-      const existEntities = await repo.find({
-        where: { id: In(entities.map((e) => e.id)) },
-      });
+      let existEntityMap = new Map<string, MetaEntity>();
+      const entityIds = entities.map((e) => e.id).filter((id) => id != null);
+      if (entityIds.length > 0) {
+        const existEntities = await repo.find({
+          where: { id: In(entityIds) },
+        });
 
-      const existEntityMap = new Map(existEntities.map((e) => [e.id, e]));
+        existEntityMap = new Map(existEntities.map((e) => [e.id, e]));
+      }
 
       for (const entity of entities) {
         const existEntity = existEntityMap.get(entity.id);
@@ -137,7 +141,8 @@ export abstract class BaseService<Entity extends MetaEntity> {
     const repo = this.getRepo(options);
 
     this.logger.verbose({
-      [`save ${repo.metadata.targetName}`]: input,
+      save: repo.metadata.targetName,
+      input,
     });
 
     const inputArray = Array.isArray(input) ? input : [input];
