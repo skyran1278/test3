@@ -19,6 +19,7 @@ import { Domain0001Module } from './domain-0001/domain-0001.module';
 import { Domain0003Module } from './domain-0003/domain-0003.module';
 import { Domain0005Module } from './domain-0005/domain-0005.module';
 import { Domain0006Module } from './domain-0006/domain-0006.module';
+import { Domain0007Module } from './domain-0007/domain-0007.module';
 import { Domain0009Module } from './domain-0009/domain-0009.module';
 import { Domain0010Module } from './domain-0010/domain-0010.module';
 import { Domain0015Module } from './domain-0015/domain-0015.module';
@@ -84,6 +85,7 @@ import { UserModule } from './user/user.module';
     Domain0006Module,
     Domain0003Module,
     Domain0015Module,
+    Domain0007Module,
   ],
   controllers: [AppController],
   providers: [AppService],

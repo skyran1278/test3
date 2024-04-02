@@ -79,8 +79,28 @@ export class Domain0005Service extends BaseService<Domain0005> {
   async removeOne(id: string, options: ServiceOptions) {
     const transaction = async (manager: EntityManager) => {
       const domain0005 = await this.findOneByOrFail({ id });
+      domain0005.domain0006s = [];
 
-      return this.softRemove(domain0005, { manager, user: options?.user });
+      await this.save(domain0005, { manager, user: options.user });
+      await this.remove(domain0005, { manager });
+      return domain0005;
+    };
+
+    return options.manager
+      ? transaction(options.manager)
+      : this.manager.transaction('READ COMMITTED', transaction);
+  }
+
+  async softRemoveOne(id: string, options: ServiceOptions) {
+    const transaction = async (manager: EntityManager) => {
+      const existDomain0005 = await this.findOneOrFail({ where: { id } });
+
+      const domain0005 = await this.softRemove(existDomain0005, {
+        manager,
+        user: options?.user,
+      });
+
+      return domain0005;
     };
 
     return options.manager
