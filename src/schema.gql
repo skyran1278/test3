@@ -57,16 +57,8 @@ type CreateDomain0005Output {
 }
 
 input CreateDomain0006Input {
-  """domain0007s"""
-  domain0007s: [CreateDomain0007Input!]!
-
   """domain0006001"""
   domain0006001: Int
-}
-
-input CreateDomain0007Input {
-  """domain0007001"""
-  domain0007001: Int
 }
 
 input CreateDomain0009Input {
@@ -674,17 +666,8 @@ type UpdateDomain0005Output {
 }
 
 input UpdateDomain0006Input {
-  """domain0007s"""
-  domain0007s: [UpdateDomain0007Input!]
-
   """domain0006001"""
   domain0006001: Int
-  id: ID
-}
-
-input UpdateDomain0007Input {
-  """domain0007001"""
-  domain0007001: Int
   id: ID
 }
 

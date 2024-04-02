@@ -208,26 +208,6 @@ export class Domain0001Domain00151712017226595 implements MigrationInterface {
         public.domain0007 (id, domain0007001, "domain0006Id")
       VALUES
         (
-          'b8d3a9d6-4e2b-4b8d-8d6e-4f3f4d3cc9a7',
-          111,
-          'aa7a24b7-f573-468d-afd6-a6ba416b2fc1'
-        ),
-        (
-          'f3f4f0d7-7b7b-4c0e-b5f5-3a6a9a8c1c6d',
-          112,
-          'aa7a24b7-f573-468d-afd6-a6ba416b2fc1'
-        ),
-        (
-          'c8e8a4b3-6e6f-4c5c-9a1a-1f1f6d4b9d0d',
-          121,
-          'ec8bcf40-f348-44f2-a32f-555657d8ea95'
-        ),
-        (
-          '7d1c7f7f-5c5e-4c7c-8e6e-4f7b5f4f7e7f',
-          122,
-          'ec8bcf40-f348-44f2-a32f-555657d8ea95'
-        ),
-        (
           '5f1aa3b7-1e26-41bf-8606-2498c4e3ec62',
           211,
           'bbe8ab43-6efd-435c-9a14-f1006d4b910d'

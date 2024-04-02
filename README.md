@@ -57,6 +57,8 @@ $ pnpm run migration:revert
 - domain-0005: many-to-one (without cascade)
 - domain-0006: one-to-many (without cascade)
 - domain-0007: one-to-many (without cascade)
+  - give up 3 layer save, because of delete domain-0006 will cause domain-0007 error
+  - if 3 layer save, use `cascade: true`
 - domain-0009: one-to-many (cascade)
 - domain-0010: many-to-one (cascade)
 - domain-0015: bullmq with redis
