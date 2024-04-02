@@ -23,8 +23,8 @@ export class Domain0005Service extends BaseService<Domain0005> {
     super(repo);
   }
 
-  async createOne(
-    input: CreateDomain0005Input,
+  async saveOne(
+    input: CreateDomain0005Input | UpdateDomain0005Input,
     options: ServiceOptions,
   ): Promise<Domain0005> {
     const transaction = async (manager: EntityManager) => {
@@ -69,32 +69,6 @@ export class Domain0005Service extends BaseService<Domain0005> {
 
   findPage(args: Domain0005PageArgs, options?: ServiceOptions) {
     return this.findNodePage(args, options);
-  }
-
-  async updateOne(input: UpdateDomain0005Input, options: ServiceOptions) {
-    const transaction = async (manager: EntityManager) => {
-      const domain0005 = await this.save(input, {
-        manager,
-        user: options.user,
-      });
-
-      domain0005.domain0006s = await this.domain0006Service.save(
-        input.domain0006s.map((domain0006) => ({
-          ...domain0006,
-          domain0005Id: domain0005.id,
-        })),
-        {
-          manager,
-          user: options.user,
-        },
-      );
-
-      return domain0005;
-    };
-
-    return options.manager
-      ? transaction(options.manager)
-      : this.manager.transaction('READ COMMITTED', transaction);
   }
 
   async removeOne(id: string, options: ServiceOptions) {
