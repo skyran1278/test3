@@ -57,8 +57,16 @@ type CreateDomain0005Output {
 }
 
 input CreateDomain0006Input {
+  """domain0007s"""
+  domain0007s: [CreateDomain0007Input!]!
+
   """domain0006001"""
   domain0006001: Int
+}
+
+input CreateDomain0007Input {
+  """domain0007001"""
+  domain0007001: Int
 }
 
 input CreateDomain0009Input {
@@ -351,8 +359,33 @@ type Domain0006 implements MetaEntity {
   """domain0005Id"""
   domain0005Id: ID!
 
+  """OneToMany"""
+  domain0007s: [Domain0007!]
+
   """domain0006001"""
   domain0006001: Int
+  id: ID!
+  updatedAt: DateTime!
+  updatedUser: User
+  updatedUserId: ID
+}
+
+type Domain0007 implements MetaEntity {
+  createdAt: DateTime!
+  createdUser: User
+  createdUserId: ID
+  deletedAt: DateTime
+  deletedUser: User
+  deletedUserId: ID
+
+  """ManyToOne"""
+  domain0006: Domain0006!
+
+  """domain0006Id"""
+  domain0006Id: ID!
+
+  """domain0007001"""
+  domain0007001: Int
   id: ID!
   updatedAt: DateTime!
   updatedUser: User
@@ -641,6 +674,9 @@ type UpdateDomain0005Output {
 }
 
 input UpdateDomain0006Input {
+  """domain0007s"""
+  domain0007s: [CreateDomain0007Input!]
+
   """domain0006001"""
   domain0006001: Int
   id: ID!
