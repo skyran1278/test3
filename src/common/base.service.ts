@@ -1,15 +1,11 @@
 import { Logger } from '@nestjs/common';
 import { Maybe } from 'graphql/jsutils/Maybe';
-import { groupBy } from 'lodash';
 import {
   DeepPartial,
-  FindManyOptions,
-  FindOneOptions,
   FindOperator,
   FindOptionsOrder,
   FindOptionsRelations,
   FindOptionsWhere,
-  In,
   IsNull,
   ObjectLiteral,
   Repository,
@@ -18,7 +14,6 @@ import {
 import { MetaEntity } from './meta.entity';
 import { NodePage } from './node-page.type';
 import { Nullable } from './nullable.interface';
-import { ServiceOptions } from './service-options.interface';
 
 interface NodePageInput<Entity extends ObjectLiteral> {
   take?: Maybe<number>;
@@ -29,13 +24,13 @@ interface NodePageInput<Entity extends ObjectLiteral> {
     | Maybe<Nullable<FindOptionsWhere<Entity>>>;
 }
 
-export abstract class BaseService<Entity extends MetaEntity> {
+export abstract class BaseService<
+  Entity extends MetaEntity,
+> extends Repository<Entity> {
   readonly logger = new Logger(this.constructor.name);
 
-  constructor(private readonly repository: Repository<Entity>) {}
-
-  hasId(entity: Entity): boolean {
-    return this.repository.hasId(entity);
+  constructor(private readonly repository: Repository<Entity>) {
+    super(repository.target, repository.manager);
   }
 
   /**
@@ -45,7 +40,7 @@ export abstract class BaseService<Entity extends MetaEntity> {
    * @returns
    */
   create(entityLikeArray: DeepPartial<Entity>[]): Entity[];
-  create(entityLike: DeepPartial<Entity>): Entity;
+  create(entityLike?: DeepPartial<Entity>): Entity;
   create(
     input?: DeepPartial<Entity> | DeepPartial<Entity>[],
   ): Entity | Entity[] {
@@ -79,46 +74,45 @@ export abstract class BaseService<Entity extends MetaEntity> {
     });
   }
 
-  /**
-   * Assigns createdUserId and updatedUserId to the given entity.
-   * Recursively updates nested MetaEntity instances.
-   *
-   * @param metaEntities The MetaEntity instance to update.
-   * @param user The user object containing the user ID.
-   */
-  private async setUserId(
-    metaEntities: MetaEntity[],
-    options: Required<ServiceOptions>,
-  ) {
-    const entityMap = groupBy(
-      this.flatNestedEntities(metaEntities),
-      'constructor.name',
-    );
+  // /**
+  //  * Assigns createdUserId and updatedUserId to the given entity.
+  //  * Recursively updates nested MetaEntity instances.
+  //  *
+  //  * @param metaEntities The MetaEntity instance to update.
+  //  * @param user The user object containing the user ID.
+  //  */
+  // private async setUserId(
+  //   metaEntities: MetaEntity[],
+  // ) {
+  //   const entityMap = groupBy(
+  //     this.flatNestedEntities(metaEntities),
+  //     'constructor.name',
+  //   );
 
-    for (const [constructor, entities] of Object.entries(entityMap)) {
-      const repo = options.manager.getRepository<MetaEntity>(constructor);
+  //   for (const [constructor, entities] of Object.entries(entityMap)) {
+  //     const repo = this.manager.getRepository<MetaEntity>(constructor);
 
-      // Load the main set of entities based on their IDs
-      let existEntityMap = new Map<string, MetaEntity>();
-      const entityIds = entities.map((e) => e.id).filter((id) => id != null);
-      if (entityIds.length > 0) {
-        const existEntities = await repo.find({
-          where: { id: In(entityIds) },
-        });
+  //     // Load the main set of entities based on their IDs
+  //     let existEntityMap = new Map<string, MetaEntity>();
+  //     const entityIds = entities.map((e) => e.id).filter((id) => id != null);
+  //     if (entityIds.length > 0) {
+  //       const existEntities = await repo.find({
+  //         where: { id: In(entityIds) },
+  //       });
 
-        existEntityMap = new Map(existEntities.map((e) => [e.id, e]));
-      }
+  //       existEntityMap = new Map(existEntities.map((e) => [e.id, e]));
+  //     }
 
-      for (const entity of entities) {
-        const existEntity = existEntityMap.get(entity.id);
-        if (existEntity) {
-          entity.createdUserId = existEntity.createdUserId;
-        }
-        entity.createdUserId ||= options.user.id;
-        entity.updatedUserId = options.user.id;
-      }
-    }
-  }
+  //     for (const entity of entities) {
+  //       const existEntity = existEntityMap.get(entity.id);
+  //       if (existEntity) {
+  //         entity.createdUserId = existEntity.createdUserId;
+  //       }
+  //       entity.createdUserId ||= options.user.id;
+  //       entity.updatedUserId = options.user.id;
+  //     }
+  //   }
+  // }
 
   /**
    * Persists the provided entity or entities into the database.
@@ -126,153 +120,28 @@ export abstract class BaseService<Entity extends MetaEntity> {
    * @param options Configuration options for the save operation.
    * @returns The saved entity or entities.
    */
-  async save(
-    entity: DeepPartial<Entity>,
-    options: Required<ServiceOptions>,
-  ): Promise<Entity>;
-  async save(
-    entities: DeepPartial<Entity>[],
-    options: Required<ServiceOptions>,
-  ): Promise<Entity[]>;
+  async save(entity: DeepPartial<Entity>): Promise<Entity>;
+  async save(entities: DeepPartial<Entity>[]): Promise<Entity[]>;
   async save(
     input: DeepPartial<Entity> | DeepPartial<Entity>[],
-    options: Required<ServiceOptions>,
   ): Promise<Entity | Entity[]> {
-    const repo = this.getRepo(options);
-
     this.logger.verbose({
-      save: repo.metadata.targetName,
+      save: this.metadata.targetName,
       input,
     });
 
-    const inputArray = Array.isArray(input) ? input : [input];
-    if (inputArray.length === 0) {
-      return [];
-    }
-    const entities = this.create(inputArray);
-
-    await this.setUserId(entities, options);
-    await repo.save(entities);
-
     if (Array.isArray(input)) {
-      return entities;
+      const entities = this.create(input);
+      return this.repository.save(entities);
     }
-    return entities[0];
+
+    const entity = this.create(input);
+    return this.repository.save(entity);
   }
-
-  findOne(
-    options: FindOneOptions<Entity>,
-    serviceOptions?: Pick<ServiceOptions, 'manager'>,
-  ): Promise<Entity | null> {
-    const repo = this.getRepo(serviceOptions);
-    return repo.findOne(options);
-  }
-
-  findOneBy(
-    where: FindOptionsWhere<Entity>[] | FindOptionsWhere<Entity>,
-    serviceOptions?: Pick<ServiceOptions, 'manager'>,
-  ): Promise<Entity | null> {
-    const repo = this.getRepo(serviceOptions);
-    return repo.findOneBy(where);
-  }
-
-  findOneOrFail(
-    options: FindOneOptions<Entity>,
-    serviceOptions?: Pick<ServiceOptions, 'manager'>,
-  ): Promise<Entity> {
-    const repo = this.getRepo(serviceOptions);
-    return repo.findOneOrFail(options);
-  }
-
-  findOneByOrFail(
-    where: FindOptionsWhere<Entity>[] | FindOptionsWhere<Entity>,
-    serviceOptions?: Pick<ServiceOptions, 'manager'>,
-  ): Promise<Entity> {
-    const repo = this.getRepo(serviceOptions);
-    return repo.findOneByOrFail(where);
-  }
-
-  async find(
-    options: FindManyOptions<Entity>,
-    serviceOptions?: Pick<ServiceOptions, 'manager'>,
-  ): Promise<Entity[]> {
-    const repo = this.getRepo(serviceOptions);
-    return repo.find(options);
-  }
-
-  async findBy(
-    where: FindOptionsWhere<Entity>[] | FindOptionsWhere<Entity>,
-    serviceOptions?: Pick<ServiceOptions, 'manager'>,
-  ): Promise<Entity[]> {
-    const repo = this.getRepo(serviceOptions);
-    return repo.findBy(where);
-  }
-
-  softRemove(entities: Entity[], options: ServiceOptions): Promise<Entity[]>;
-  softRemove(entity: Entity, options: ServiceOptions): Promise<Entity>;
-  softRemove(
-    input: Entity | Entity[],
-    options: ServiceOptions,
-  ): Promise<Entity | Entity[]> {
-    this.logger.verbose({
-      [`softRemove ${this.repository.metadata.targetName}`]: input,
-    });
-
-    const repo = this.getRepo(options);
-    if (Array.isArray(input)) {
-      return repo.softRemove(input);
-    }
-    return repo.softRemove(input);
-  }
-
-  remove(
-    entities: Entity[],
-    options: Pick<ServiceOptions, 'manager'>,
-  ): Promise<Entity[]>;
-  remove(
-    entity: Entity,
-    options: Pick<ServiceOptions, 'manager'>,
-  ): Promise<Entity>;
-  remove(
-    input: Entity | Entity[],
-    options: Pick<ServiceOptions, 'manager'>,
-  ): Promise<Entity | Entity[]> {
-    this.logger.verbose({
-      [`remove ${this.repository.metadata.targetName}`]: input,
-    });
-
-    const repo = this.getRepo(options);
-    if (Array.isArray(input)) {
-      return repo.remove(input);
-    }
-    return repo.remove(input);
-  }
-
-  // async updateOne(
-  //   manager: EntityManager,
-  //   entity: EntitySchema<Entity>,
-  //   id: string,
-  //   input: DeepPartial<Entity>,
-  //   user: UserType,
-  // ): Promise<Entity> {
-  //   const entity = await repo.preload({
-  //     ...input,
-  //     id,
-  //   });
-  //   if (!entity) {
-  //     throw new DaoIdNotFoundError(Agent, id);
-  //   }
-  //   entity.updatedBy = user.id;
-
-  //   return repo.save(entity);
-  // }
 
   async findNodePage(
     options?: NodePageInput<Entity>,
-    serviceOptions?: Partial<ServiceOptions>,
   ): Promise<NodePage<Entity>> {
-    const repo = this.getRepo(serviceOptions);
-
     // transform null properties to undefined
     const take = options?.take ?? undefined;
     const skip = options?.skip ?? undefined;
@@ -284,7 +153,7 @@ export abstract class BaseService<Entity extends MetaEntity> {
     );
 
     this.logger.verbose({
-      [`page ${repo.metadata.targetName}`]: {
+      [`page ${this.metadata.targetName}`]: {
         take,
         skip,
         order,
@@ -294,7 +163,7 @@ export abstract class BaseService<Entity extends MetaEntity> {
       },
     });
 
-    const [nodes, total] = await repo.findAndCount({
+    const [nodes, total] = await this.findAndCount({
       skip,
       /** @see https://github.com/typeorm/typeorm/issues/4883 */
       take: take === 0 ? 0.1 : take,
@@ -304,13 +173,6 @@ export abstract class BaseService<Entity extends MetaEntity> {
     });
 
     return { take, skip, nodes, total };
-  }
-
-  private getRepo(options?: Partial<ServiceOptions>) {
-    const repo = options?.manager
-      ? options.manager.getRepository(this.repository.target)
-      : this.repository;
-    return repo;
   }
 
   private isPlainObject(obj: unknown): obj is Record<string, unknown> {

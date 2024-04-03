@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/base.service';
-import { ServiceOptions } from 'src/common/service-options.interface';
-import { EntityManager, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
+import { Transactional } from 'typeorm-transactional';
 
 import { Domain0001 } from './domain-0001.entity';
 import { CreateDomain0001Input } from './mutation/create-domain-0001.input';
@@ -14,39 +14,28 @@ export class Domain0001Service extends BaseService<Domain0001> {
   constructor(
     @InjectRepository(Domain0001)
     readonly repo: Repository<Domain0001>,
-    private readonly manager: EntityManager,
   ) {
     super(repo);
   }
 
+  @Transactional()
   async saveOne(
     input: CreateDomain0001Input | UpdateDomain0001Input,
-    options: ServiceOptions,
   ): Promise<Domain0001> {
-    const transaction = async (manager: EntityManager) => {
-      const domain0001 = await this.save(input, { manager, user: options.user });
+    const domain0001 = await this.save(input);
 
-      return domain0001;
-    };
-
-    return options.manager
-      ? transaction(options.manager)
-      : this.manager.transaction('READ COMMITTED', transaction);
+    return domain0001;
   }
 
-  findPage(args: Domain0001PageArgs, options?: ServiceOptions) {
-    return this.findNodePage(args, options);
+  @Transactional()
+  findPage(args: Domain0001PageArgs) {
+    return this.findNodePage(args);
   }
 
-  async removeOne(id: string, options: ServiceOptions) {
-    const transaction = async (manager: EntityManager) => {
-      const domain0001 = await this.findOneByOrFail({ id });
+  @Transactional()
+  async removeOne(id: string) {
+    const domain0001 = await this.findOneByOrFail({ id });
 
-      return this.softRemove(domain0001, { manager, user: options?.user });
-    };
-
-    return options.manager
-      ? transaction(options.manager)
-      : this.manager.transaction('READ COMMITTED', transaction);
+    return this.softRemove(domain0001);
   }
 }

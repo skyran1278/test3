@@ -62,7 +62,7 @@ export class RepoProxy<Entity extends MetaEntity> {
     return repo.save(dao);
   }
 
-  // async updateOne(
+  // async saveOne(
   //   manager: EntityManager,
   //   entity: EntitySchema<Entity>,
   //   id: string,

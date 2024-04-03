@@ -1,7 +1,5 @@
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
-import { UserDecorator } from 'src/common/user.decorator';
-import { User } from 'src/user/user.entity';
 
 import { Domain0006 } from './domain-0006.entity';
 import { Domain0006Service } from './domain-0006.service';
@@ -21,11 +19,8 @@ export class Domain0006Resolver {
   @Mutation(() => CreateDomain0006Output)
   async createDomain0006(
     @Args('input') input: CreateDomain0006Input,
-    @UserDecorator() user: User,
   ): Promise<CreateDomain0006Output> {
-    const domain0006 = await this.domain0006Service.createOne(input, {
-      user,
-    });
+    const domain0006 = await this.domain0006Service.saveOne(input);
     return { domain0006 };
   }
 
@@ -44,22 +39,16 @@ export class Domain0006Resolver {
   @Mutation(() => UpdateDomain0006Output)
   async updateDomain0006(
     @Args('input') input: UpdateDomain0006Input,
-    @UserDecorator() user: User,
   ): Promise<UpdateDomain0006Output> {
-    const domain0006 = await this.domain0006Service.updateOne(input, {
-      user,
-    });
+    const domain0006 = await this.domain0006Service.saveOne(input);
     return { domain0006 };
   }
 
   @Mutation(() => RemoveDomain0006Output)
   async removeDomain0006(
     @Args('input') input: RemoveDomain0006Input,
-    @UserDecorator() user: User,
   ): Promise<RemoveDomain0006Output> {
-    const domain0006 = await this.domain0006Service.removeOne(input.id, {
-      user,
-    });
+    const domain0006 = await this.domain0006Service.removeOne(input.id);
     return { domain0006 };
   }
 }
