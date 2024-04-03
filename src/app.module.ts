@@ -10,6 +10,8 @@ import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
+import { addTransactionalDataSource } from 'typeorm-transactional';
 
 import { AlsMiddleware } from './als/als.middleware';
 import { AppController } from './app.controller';
@@ -45,6 +47,15 @@ import { UserModule } from './user/user.module';
         subscribers: [join(__dirname, '**', '*.subscriber.{ts,js}')],
         migrations: ['dist/migration/migrations/*.js'],
       }),
+      dataSourceFactory(options) {
+        if (!options) {
+          throw new Error('Invalid options passed');
+        }
+
+        return Promise.resolve(
+          addTransactionalDataSource(new DataSource(options)),
+        );
+      },
     }),
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
