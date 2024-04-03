@@ -1,12 +1,15 @@
+import assert from 'assert';
+
 import { InjectQueue } from '@nestjs/bullmq';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Queue, QueueEvents } from 'bullmq';
+import { AlsService } from 'src/als/als.service';
 import { BaseService } from 'src/common/base.service';
 import { QueueEnum } from 'src/common/queue.enum';
-import { ServiceOptions } from 'src/common/service-options.interface';
-import { EntityManager, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
+import { Transactional } from 'typeorm-transactional';
 
 import {
   CreateDomain0015JobInput,
@@ -24,7 +27,6 @@ export class Domain0015Service extends BaseService<Domain0015> {
   constructor(
     @InjectRepository(Domain0015)
     readonly repo: Repository<Domain0015>,
-    private readonly manager: EntityManager,
     @InjectQueue(QueueEnum.DOMAIN0015)
     private domain0015Queue: Queue<
       CreateDomain0015JobInput,
@@ -32,19 +34,24 @@ export class Domain0015Service extends BaseService<Domain0015> {
     >,
     private readonly domain0015QueueEvents: Domain0015QueueEvents,
     private readonly configService: ConfigService,
+    private readonly alsService: AlsService,
   ) {
     super(repo);
   }
 
+  // @Transactional()
   async saveOne(
     input: CreateDomain0015Input | UpdateDomain0015Input,
-    options: ServiceOptions,
   ): Promise<Domain0015> {
+    const store = this.alsService.getStore();
+    assert(store, 'Store not found');
+    const { user } = store;
+
     const job = await this.domain0015Queue.add(
       Domain0015JobEnum.CREATE_DOMAIN0015_JOB,
       {
         input,
-        user: options.user,
+        user,
       },
     );
 
@@ -55,15 +62,19 @@ export class Domain0015Service extends BaseService<Domain0015> {
     return domain0015;
   }
 
+  @Transactional()
   async testQueueEventsRaceCondition(
     input: CreateDomain0015Input | UpdateDomain0015Input,
-    options: ServiceOptions,
   ): Promise<Domain0015> {
+    const store = this.alsService.getStore();
+    assert(store, 'Store not found');
+    const { user } = store;
+
     const job = await this.domain0015Queue.add(
       Domain0015JobEnum.CREATE_DOMAIN0015_JOB,
       {
         input,
-        user: options.user,
+        user,
       },
     );
 
@@ -79,19 +90,15 @@ export class Domain0015Service extends BaseService<Domain0015> {
     return domain0015;
   }
 
-  findPage(args: Domain0015PageArgs, options?: ServiceOptions) {
-    return this.findNodePage(args, options);
+  @Transactional()
+  findPage(args: Domain0015PageArgs) {
+    return this.findNodePage(args);
   }
 
-  async removeOne(id: string, options: ServiceOptions) {
-    const transaction = async (manager: EntityManager) => {
-      const domain0015 = await this.findOneByOrFail({ id });
+  @Transactional()
+  async removeOne(id: string) {
+    const domain0015 = await this.findOneByOrFail({ id });
 
-      return this.softRemove(domain0015, { manager, user: options?.user });
-    };
-
-    return options.manager
-      ? transaction(options.manager)
-      : this.manager.transaction('READ COMMITTED', transaction);
+    return this.softRemove(domain0015);
   }
 }

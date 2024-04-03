@@ -1,7 +1,10 @@
+import assert from 'assert';
+
 import { OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
 import { Job } from 'bullmq';
+import { RunAls } from 'src/als/als.decorator';
+import { AlsService } from 'src/als/als.service';
 import { QueueEnum } from 'src/common/queue.enum';
-import { EntityManager } from 'typeorm';
 
 import {
   CreateDomain0015JobInput,
@@ -13,8 +16,8 @@ import { Domain0015Service } from './domain-0015.service';
 @Processor(QueueEnum.DOMAIN0015)
 export class Domain0015Processor extends WorkerHost {
   constructor(
-    private readonly manager: EntityManager,
     private readonly domain0015Service: Domain0015Service,
+    private readonly alsService: AlsService,
   ) {
     super();
   }
@@ -27,20 +30,20 @@ export class Domain0015Processor extends WorkerHost {
     }
   }
 
+  @RunAls()
   async createDomain0015(
     job: Job<CreateDomain0015JobInput>,
   ): Promise<CreateDomain0015JobOutput> {
-    const transaction = async (manager: EntityManager) => {
-      const { input, user } = job.data;
-      const domain0015 = await this.domain0015Service.save(input, {
-        manager,
-        user,
-      });
+    const { input, user } = job.data;
+    console.log(user);
+    const store = this.alsService.getStore();
+    assert(store, 'Store not found');
 
-      return { domain0015 };
-    };
+    store.user = user;
 
-    return this.manager.transaction('READ COMMITTED', transaction);
+    const domain0015 = await this.domain0015Service.save(input);
+
+    return { domain0015 };
   }
 
   @OnWorkerEvent('completed')

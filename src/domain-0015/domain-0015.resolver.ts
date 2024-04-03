@@ -21,7 +21,8 @@ export class Domain0015Resolver {
   async testQueueEventsRaceCondition(
     @Args('input') input: CreateDomain0015Input,
   ): Promise<CreateDomain0015Output> {
-    const domain0015 = await this.domain0015Service.saveOne(input);
+    const domain0015 =
+      await this.domain0015Service.testQueueEventsRaceCondition(input);
     return { domain0015 };
   }
 

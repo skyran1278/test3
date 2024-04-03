@@ -1,6 +1,7 @@
 import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AlsModule } from 'src/als/als.module';
 import { QueueEnum } from 'src/common/queue.enum';
 
 import { Domain0015 } from './domain-0015.entity';
@@ -15,6 +16,7 @@ import { Domain0015Service } from './domain-0015.service';
     BullModule.registerQueue({
       name: QueueEnum.DOMAIN0015,
     }),
+    AlsModule,
   ],
   providers: [
     Domain0015Service,
