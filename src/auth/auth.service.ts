@@ -2,10 +2,10 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/common/base.service';
-import { ServiceOptions } from 'src/common/service-options.interface';
 import { User } from 'src/user/user.entity';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
+import { Transactional } from 'typeorm-transactional';
 
 import { SignInInput } from './mutation/sign-in.input';
 import { SignInOutput } from './mutation/sign-in.output';
@@ -21,16 +21,11 @@ export class AuthService extends BaseService<User> {
     super(repo);
   }
 
-  async signIn(
-    input: SignInInput,
-    options?: ServiceOptions,
-  ): Promise<SignInOutput> {
-    const user = await this.userService.findOne(
-      {
-        where: { user001: input.user001 },
-      },
-      options,
-    );
+  @Transactional()
+  async signIn(input: SignInInput): Promise<SignInOutput> {
+    const user = await this.userService.findOne({
+      where: { user001: input.user001 },
+    });
 
     if (user?.user002 !== input.user002) {
       throw new UnauthorizedException();

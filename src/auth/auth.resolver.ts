@@ -15,13 +15,8 @@ export class AuthResolver {
 
   @NoAuthentication()
   @Mutation(() => SignInOutput)
-  async signIn(
-    @Args('input') input: SignInInput,
-    @UserDecorator() user: User,
-  ): Promise<SignInOutput> {
-    return this.authService.signIn(input, {
-      user,
-    });
+  async signIn(@Args('input') input: SignInInput): Promise<SignInOutput> {
+    return this.authService.signIn(input);
   }
 
   @NoAuthorization()
