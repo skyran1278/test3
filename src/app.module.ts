@@ -6,11 +6,12 @@ import {
 } from '@apollo/server/plugin/landingPage/default';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { BullModule } from '@nestjs/bullmq';
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { AlsMiddleware } from './als/als.middleware';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
@@ -90,4 +91,12 @@ import { UserModule } from './user/user.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    // bind the middleware,
+    consumer
+      .apply(AlsMiddleware)
+      // and register it for all routes (in case of Fastify use '(.*)')
+      .forRoutes('*');
+  }
+}
