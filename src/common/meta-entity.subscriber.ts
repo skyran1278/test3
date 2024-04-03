@@ -1,13 +1,15 @@
+import { Logger } from '@nestjs/common';
+import { validate } from 'class-validator';
+import { GraphQLError } from 'graphql';
+import { als } from 'src/als/als.module';
 import {
   EntitySubscriberInterface,
   EventSubscriber,
   InsertEvent,
+  SoftRemoveEvent,
   UpdateEvent,
 } from 'typeorm';
 
-import { Logger } from '@nestjs/common';
-import { validate } from 'class-validator';
-import { GraphQLError } from 'graphql';
 import { MetaEntity } from './meta.entity';
 
 @EventSubscriber()
@@ -19,16 +21,41 @@ export class MetaEntitySubscriber
   listenTo = () => MetaEntity;
 
   async beforeInsert(event: InsertEvent<MetaEntity>) {
-    await this.validate(event);
+    const { entity } = event;
+    if (!this.isMetaEntity(entity)) return;
+
+    const store = als.getStore();
+    if (store) {
+      entity.createdUserId = store.user?.id;
+      entity.updatedUserId = store.user?.id;
+    }
+
+    await this.validate(entity);
   }
 
   async beforeUpdate(event: UpdateEvent<MetaEntity>) {
-    await this.validate(event);
+    const { entity } = event;
+    if (!this.isMetaEntity(entity)) return;
+
+    const store = als.getStore();
+    if (store) {
+      entity.updatedUserId = store.user?.id;
+    }
+
+    await this.validate(entity);
   }
 
-  private async validate(
-    event: InsertEvent<MetaEntity> | UpdateEvent<MetaEntity>,
-  ) {
+  beforeSoftRemove(event: SoftRemoveEvent<MetaEntity>) {
+    const { entity } = event;
+    if (!this.isMetaEntity(entity)) return;
+
+    const store = als.getStore();
+    if (store) {
+      entity.deletedUserId = store.user?.id;
+    }
+  }
+
+  private isMetaEntity(entity: unknown): entity is MetaEntity {
     /**
      * @description
      * - beforeInsert
@@ -38,10 +65,8 @@ export class MetaEntitySubscriber
      *   - event.entity may be ObjectLiteral | undefined
      *   - event.databaseEntity is Entity
      */
-    const entity = event.entity;
 
     if (!(entity instanceof MetaEntity)) {
-      console.log('event', event);
       this.logger.verbose({
         message: 'Validation failed: Entity is not an instance of MetaEntity.',
         details: {
@@ -52,9 +77,13 @@ export class MetaEntitySubscriber
           ],
         },
       });
-      return;
+      return false;
     }
 
+    return true;
+  }
+
+  private async validate(entity: MetaEntity) {
     if (entity.noValidate) return;
 
     const errors = await validate(entity);
