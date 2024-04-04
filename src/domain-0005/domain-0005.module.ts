@@ -16,8 +16,8 @@ import { Domain0005Service } from './domain-0005.service';
   providers: [
     Domain0005Resolver,
     Domain0005Service,
-    // Domain0005IdLoader,
-    // Domain0005IdResolver,
+    // Domain0005ByIdLoader,
+    // Domain0005ByIdResolver,
   ],
 })
 export class Domain0005Module {}

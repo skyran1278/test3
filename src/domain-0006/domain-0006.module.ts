@@ -9,8 +9,8 @@ import { Domain0006Service } from './domain-0006.service';
   providers: [
     // Domain0006Resolver,
     Domain0006Service,
-    // Domain0006IdLoader,
-    // Domain0006IdResolver,
+    // Domain0006ByIdLoader,
+    // Domain0006ByIdResolver,
   ],
   exports: [Domain0006Service],
 })

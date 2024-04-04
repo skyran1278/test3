@@ -4,7 +4,7 @@ import { Maybe } from 'graphql/jsutils/Maybe';
 import { Domain0003 } from '../domain-0003.entity';
 
 @InterfaceType()
-export abstract class Domain0003Id {
+export abstract class Domain0003ById {
   @Field(() => ID, { nullable: true })
   domain0003Id?: Maybe<string>;
 

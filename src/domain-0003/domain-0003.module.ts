@@ -10,8 +10,8 @@ import { Domain0003Service } from './domain-0003.service';
   providers: [
     Domain0003Resolver,
     Domain0003Service,
-    // Domain0003IdLoader,
-    // Domain0003IdResolver,
+    // Domain0003ByIdLoader,
+    // Domain0003ByIdResolver,
   ],
 })
 export class Domain0003Module {}

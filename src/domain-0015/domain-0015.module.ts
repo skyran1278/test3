@@ -23,8 +23,8 @@ import { Domain0015Service } from './domain-0015.service';
     Domain0015Resolver,
     Domain0015Processor,
     Domain0015QueueEvents,
-    // Domain0015IdLoader,
-    // Domain0015IdResolver,
+    // Domain0015ByIdLoader,
+    // Domain0015ByIdResolver,
   ],
   exports: [Domain0015QueueEvents],
 })

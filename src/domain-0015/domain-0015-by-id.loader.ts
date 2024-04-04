@@ -4,15 +4,18 @@ import DataLoader from 'dataloader';
 import { Maybe } from 'graphql/jsutils/Maybe';
 import { In, Repository } from 'typeorm';
 
-import { Domain0010 } from './domain-0010.entity';
+import { Domain0015 } from './domain-0015.entity';
 
 @Injectable({ scope: Scope.REQUEST })
-export class Domain0010IdLoader extends DataLoader<string, Maybe<Domain0010>> {
+export class Domain0015ByIdLoader extends DataLoader<
+  string,
+  Maybe<Domain0015>
+> {
   constructor(
-    @InjectRepository(Domain0010)
-    private readonly repo: Repository<Domain0010>,
+    @InjectRepository(Domain0015)
+    private readonly repo: Repository<Domain0015>,
   ) {
-    super(async (keys: readonly string[]): Promise<Maybe<Domain0010>[]> => {
+    super(async (keys: readonly string[]): Promise<Maybe<Domain0015>[]> => {
       const daoArray = await this.repo.find({
         where: {
           id: In(keys),

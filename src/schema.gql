@@ -403,12 +403,12 @@ type Domain0009 implements MetaEntity {
   updatedUserId: ID
 }
 
-interface Domain0009Id {
+interface Domain0009ById {
   domain0009: Domain0009
   domain0009Id: ID
 }
 
-type Domain0010 implements Domain0009Id & MetaEntity {
+type Domain0010 implements Domain0009ById & MetaEntity {
   createdAt: DateTime!
   createdUser: User
   createdUserId: ID
