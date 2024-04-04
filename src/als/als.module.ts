@@ -1,13 +1,8 @@
-import { AsyncLocalStorage } from 'async_hooks';
-
 import { Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 
-import { AlsStore } from './als-store.interface';
 import { AlsInterceptor } from './als.interceptor';
-import { AlsService } from './als.service';
-
-export const als = new AsyncLocalStorage<AlsStore>();
+import { AlsService, als } from './als.service';
 
 /**
  * @see https://docs.nestjs.com/recipes/async-local-storage
