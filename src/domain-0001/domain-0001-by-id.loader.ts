@@ -7,7 +7,10 @@ import { In, Repository } from 'typeorm';
 import { Domain0001 } from './domain-0001.entity';
 
 @Injectable({ scope: Scope.REQUEST })
-export class Domain0001IdLoader extends DataLoader<string, Maybe<Domain0001>> {
+export class Domain0001ByIdLoader extends DataLoader<
+  string,
+  Maybe<Domain0001>
+> {
   constructor(
     @InjectRepository(Domain0001)
     private readonly repo: Repository<Domain0001>,
