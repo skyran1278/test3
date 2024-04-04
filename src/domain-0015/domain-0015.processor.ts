@@ -3,6 +3,7 @@ import { Job } from 'bullmq';
 import { RunAls } from 'src/als/als.decorator';
 import { AlsService } from 'src/als/als.service';
 import { QueueEnum } from 'src/common/queue.enum';
+import { Transactional } from 'typeorm-transactional';
 
 import {
   CreateDomain0015JobInput,
@@ -29,6 +30,7 @@ export class Domain0015Processor extends WorkerHost {
   }
 
   @RunAls()
+  @Transactional()
   async createDomain0015(
     job: Job<CreateDomain0015JobInput>,
   ): Promise<CreateDomain0015JobOutput> {
