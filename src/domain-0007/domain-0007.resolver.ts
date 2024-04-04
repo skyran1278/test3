@@ -1,5 +1,6 @@
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
+import { Transactional } from 'typeorm-transactional';
 
 import { Domain0007 } from './domain-0007.entity';
 import { Domain0007Service } from './domain-0007.service';
@@ -16,6 +17,7 @@ import { Domain0007Page } from './query/domain-0007-page.type';
 export class Domain0007Resolver {
   constructor(private readonly domain0007Service: Domain0007Service) {}
 
+  @Transactional()
   @Mutation(() => CreateDomain0007Output)
   async createDomain0007(
     @Args('input') input: CreateDomain0007Input,
@@ -24,11 +26,13 @@ export class Domain0007Resolver {
     return { domain0007 };
   }
 
+  @Transactional()
   @Query(() => Domain0007Page)
   domain0007Page(@Args() args: Domain0007PageArgs): Promise<Domain0007Page> {
     return this.domain0007Service.findPage(args);
   }
 
+  @Transactional()
   @Query(() => Domain0007)
   domain0007(
     @Args('id', { type: () => ID }) id: string,
@@ -36,6 +40,7 @@ export class Domain0007Resolver {
     return this.domain0007Service.findOne({ where: { id } });
   }
 
+  @Transactional()
   @Mutation(() => UpdateDomain0007Output)
   async updateDomain0007(
     @Args('input') input: UpdateDomain0007Input,
@@ -44,6 +49,7 @@ export class Domain0007Resolver {
     return { domain0007 };
   }
 
+  @Transactional()
   @Mutation(() => RemoveDomain0007Output)
   async removeDomain0007(
     @Args('input') input: RemoveDomain0007Input,

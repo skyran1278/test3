@@ -1,4 +1,5 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Transactional } from 'typeorm-transactional';
 
 import { Domain0015 } from './domain-0015.entity';
 import { Domain0015Service } from './domain-0015.service';
@@ -9,6 +10,7 @@ import { CreateDomain0015Output } from './mutation/create-domain-0015.output';
 export class Domain0015Resolver {
   constructor(private readonly domain0015Service: Domain0015Service) {}
 
+  @Transactional()
   @Mutation(() => CreateDomain0015Output)
   async createDomain0015(
     @Args('input') input: CreateDomain0015Input,
@@ -17,6 +19,7 @@ export class Domain0015Resolver {
     return { domain0015 };
   }
 
+  @Transactional()
   @Mutation(() => CreateDomain0015Output)
   async testQueueEventsRaceCondition(
     @Args('input') input: CreateDomain0015Input,

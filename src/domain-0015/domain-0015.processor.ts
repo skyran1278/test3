@@ -20,6 +20,9 @@ export class Domain0015Processor extends WorkerHost {
   ) {
     super();
   }
+
+  @RunAls()
+  @Transactional()
   async process(job: Job<unknown, unknown, Domain0015JobEnum>) {
     switch (job.name) {
       case Domain0015JobEnum.CREATE_DOMAIN0015_JOB:
@@ -29,8 +32,6 @@ export class Domain0015Processor extends WorkerHost {
     }
   }
 
-  @RunAls()
-  @Transactional()
   async createDomain0015(
     job: Job<CreateDomain0015JobInput>,
   ): Promise<CreateDomain0015JobOutput> {

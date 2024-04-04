@@ -7,6 +7,7 @@ import {
 } from '@nestjs/graphql';
 import { Domain0010 } from 'src/domain-0010/domain-0010.entity';
 import { Domain0010Service } from 'src/domain-0010/domain-0010.service';
+import { Transactional } from 'typeorm-transactional';
 
 import { Domain0009 } from './domain-0009.entity';
 import { Domain0009Service } from './domain-0009.service';
@@ -24,6 +25,7 @@ export class Domain0009Resolver {
     private readonly domain0010Service: Domain0010Service,
   ) {}
 
+  @Transactional()
   @Mutation(() => CreateDomain0009Output)
   async createDomain0009(
     @Args('input') input: CreateDomain0009Input,
@@ -42,6 +44,7 @@ export class Domain0009Resolver {
   //   return this.domain0009Service.findOne({ where: { id } });
   // }
 
+  @Transactional()
   @Mutation(() => UpdateDomain0009Output)
   async updateDomain0009(
     @Args('input') input: UpdateDomain0009Input,
@@ -50,6 +53,7 @@ export class Domain0009Resolver {
     return { domain0009 };
   }
 
+  @Transactional()
   @Mutation(() => UpdateDomain0009sOutput)
   async updateDomain0009s(
     @Args('input') input: UpdateDomain0009sInput,

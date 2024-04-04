@@ -1,5 +1,6 @@
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
+import { Transactional } from 'typeorm-transactional';
 
 import { CreateUserInput } from './mutation/create-user.input';
 import { CreateUserOutput } from './mutation/create-user.output';
@@ -16,6 +17,7 @@ import { UserService } from './user.service';
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
+  @Transactional()
   @Mutation(() => CreateUserOutput)
   async createUser(
     @Args('createUserInput') input: CreateUserInput,
@@ -24,16 +26,19 @@ export class UserResolver {
     return { user };
   }
 
+  @Transactional()
   @Query(() => UserPage)
   userPage(@Args() args: UserPageArgs): Promise<UserPage> {
     return this.userService.findPage(args);
   }
 
+  @Transactional()
   @Query(() => User)
   user(@Args('id', { type: () => ID }) id: string): Promise<Maybe<User>> {
     return this.userService.findOne({ where: { id } });
   }
 
+  @Transactional()
   @Mutation(() => UpdateUserOutput)
   async updateUser(
     @Args('input') input: UpdateUserInput,
@@ -42,6 +47,7 @@ export class UserResolver {
     return { user };
   }
 
+  @Transactional()
   @Mutation(() => RemoveUserOutput)
   async removeUser(
     @Args('input') input: RemoveUserInput,

@@ -8,6 +8,6 @@ import { als } from './als.service';
 export class AlsMiddleware implements NestMiddleware {
   use(_req: Request, _res: Response, next: NextFunction) {
     const store = {} as AlsStore;
-    als.run(store, () => next());
+    als.run(store, next);
   }
 }
