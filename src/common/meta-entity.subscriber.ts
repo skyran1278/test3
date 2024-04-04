@@ -1,7 +1,7 @@
 import { Logger } from '@nestjs/common';
 import { validate } from 'class-validator';
 import { GraphQLError } from 'graphql';
-import { als } from 'src/als/als.module';
+import { als } from 'src/als/als.service';
 import {
   EntitySubscriberInterface,
   EventSubscriber,
@@ -24,11 +24,9 @@ export class MetaEntitySubscriber
     const { entity } = event;
     if (!this.isMetaEntity(entity)) return;
 
-    const store = als.getStore();
-    if (store) {
-      entity.createdUserId = store.user?.id;
-      entity.updatedUserId = store.user?.id;
-    }
+    const user = als.get('user');
+    entity.createdUserId = user.id;
+    entity.updatedUserId = user.id;
 
     await this.validate(entity);
   }
@@ -37,10 +35,8 @@ export class MetaEntitySubscriber
     const { entity } = event;
     if (!this.isMetaEntity(entity)) return;
 
-    const store = als.getStore();
-    if (store) {
-      entity.updatedUserId = store.user?.id;
-    }
+    const user = als.get('user');
+    entity.updatedUserId = user.id;
 
     await this.validate(entity);
   }
@@ -49,10 +45,8 @@ export class MetaEntitySubscriber
     const { entity } = event;
     if (!this.isMetaEntity(entity)) return;
 
-    const store = als.getStore();
-    if (store) {
-      entity.deletedUserId = store.user?.id;
-    }
+    const user = als.get('user');
+    entity.deletedUserId = user.id;
   }
 
   private isMetaEntity(entity: unknown): entity is MetaEntity {

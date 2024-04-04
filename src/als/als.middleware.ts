@@ -2,7 +2,7 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 
 import { AlsStore } from './als-store.interface';
-import { als } from './als.module';
+import { als } from './als.service';
 
 @Injectable()
 export class AlsMiddleware implements NestMiddleware {

@@ -1,5 +1,3 @@
-import assert from 'assert';
-
 import { InjectQueue } from '@nestjs/bullmq';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -43,9 +41,7 @@ export class Domain0015Service extends BaseService<Domain0015> {
   async saveOne(
     input: CreateDomain0015Input | UpdateDomain0015Input,
   ): Promise<Domain0015> {
-    const store = this.alsService.getStore();
-    assert(store, 'Store not found');
-    const { user } = store;
+    const user = this.alsService.get('user');
 
     const job = await this.domain0015Queue.add(
       Domain0015JobEnum.CREATE_DOMAIN0015_JOB,
@@ -66,9 +62,7 @@ export class Domain0015Service extends BaseService<Domain0015> {
   async testQueueEventsRaceCondition(
     input: CreateDomain0015Input | UpdateDomain0015Input,
   ): Promise<Domain0015> {
-    const store = this.alsService.getStore();
-    assert(store, 'Store not found');
-    const { user } = store;
+    const user = this.alsService.get('user');
 
     const job = await this.domain0015Queue.add(
       Domain0015JobEnum.CREATE_DOMAIN0015_JOB,

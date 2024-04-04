@@ -1,5 +1,3 @@
-import assert from 'assert';
-
 import { OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
 import { Job } from 'bullmq';
 import { RunAls } from 'src/als/als.decorator';
@@ -35,11 +33,7 @@ export class Domain0015Processor extends WorkerHost {
     job: Job<CreateDomain0015JobInput>,
   ): Promise<CreateDomain0015JobOutput> {
     const { input, user } = job.data;
-    console.log(user);
-    const store = this.alsService.getStore();
-    assert(store, 'Store not found');
-
-    store.user = user;
+    this.alsService.set('user', user);
 
     const domain0015 = await this.domain0015Service.save(input);
 

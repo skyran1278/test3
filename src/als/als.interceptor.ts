@@ -17,20 +17,13 @@ export class AlsInterceptor implements NestInterceptor {
   constructor(private readonly alsService: AlsService) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
-    const store = this.alsService.getStore();
-    if (!store) {
-      return next.handle();
-    }
-
     const ctx = GqlExecutionContext.create(context);
     const gqlContext: GraphQLContext = ctx.getContext();
 
     const user = gqlContext.user;
 
-    if (user) {
-      store['id'] = randomUUID();
-      store['user'] = user;
-    }
+    this.alsService.set('id', randomUUID());
+    this.alsService.set('user', user);
 
     return next.handle();
   }

@@ -1,5 +1,5 @@
 import { AlsStore } from './als-store.interface';
-import { als } from './als.module';
+import { als } from './als.service';
 
 export function RunAls() {
   return (_target: unknown, key: string, descriptor: PropertyDescriptor) => {
@@ -19,6 +19,7 @@ export function RunAls() {
     return descriptor;
   };
 }
+
 // /**
 //  * Copies all metadata from one object to another.
 //  * Useful for overwriting function definition in
