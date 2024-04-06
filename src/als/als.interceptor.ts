@@ -22,8 +22,10 @@ export class AlsInterceptor implements NestInterceptor {
 
     const user = gqlContext.user;
 
-    this.alsService.set('id', randomUUID());
-    this.alsService.set('user', user);
+    if (user) {
+      this.alsService.set('id', randomUUID());
+      this.alsService.set('user', user);
+    }
 
     return next.handle();
   }
