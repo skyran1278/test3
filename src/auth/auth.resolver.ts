@@ -1,8 +1,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
-import { NoAuthentication } from 'src/common/no-authentication.decorator';
-import { NoAuthorization } from 'src/common/no-authorization.decorator';
-import { UserDecorator } from 'src/common/user.decorator';
+import { NoAuthentication } from 'src/auth/no-authentication.decorator';
+import { NoAuthorization } from 'src/auth/no-authorization.decorator';
+import { UserDecorator } from 'src/auth/user.decorator';
 import { User } from 'src/user/user.entity';
 import { Transactional } from 'typeorm-transactional';
 

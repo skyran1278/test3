@@ -9,13 +9,13 @@ import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
+import { GraphQLContext } from 'src/common/graphql-context.interface';
 import { User } from 'src/user/user.entity';
 
-import { GraphQLContext } from './graphql-context.interface';
 import { NoAuthentication } from './no-authentication.decorator';
 
 @Injectable()
-export class SecurityGuard implements CanActivate {
+export class AuthGuard implements CanActivate {
   constructor(
     private readonly jwtService: JwtService,
     private readonly reflector: Reflector,
