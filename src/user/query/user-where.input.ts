@@ -7,7 +7,7 @@ import { User } from '../user.entity';
 
 @InputType()
 export class UserWhereInput extends OmitType(ToWhereInputType(User), []) {
-  toFindOptionsWhere(): Nullable<FindOptionsWhere<User>> | undefined {
+  toFindOptionsWhere(): Nullable<FindOptionsWhere<User>> {
     const { ...where } = this;
     return { ...where };
   }

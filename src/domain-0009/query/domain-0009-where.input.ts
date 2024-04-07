@@ -10,7 +10,7 @@ export class Domain0009WhereInput extends OmitType(
   ToWhereInputType(Domain0009),
   [],
 ) {
-  toFindOptionsWhere(): Nullable<FindOptionsWhere<Domain0009>> | undefined {
+  toFindOptionsWhere(): Nullable<FindOptionsWhere<Domain0009>> {
     const { ...where } = this;
     return { ...where };
   }
