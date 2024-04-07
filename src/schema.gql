@@ -472,6 +472,7 @@ type Mutation {
   removeDomain0005(input: RemoveDomain0005Input!): RemoveDomain0005Output!
   removeUser(input: RemoveUserInput!): RemoveUserOutput!
   signIn(input: SignInInput!): SignInOutput!
+  softRemoveDomain0005(input: SoftRemoveDomain0005Input!): SoftRemoveDomain0005Output!
   testQueueEventsRaceCondition(input: CreateDomain0015Input!): CreateDomain0015Output!
   updateDomain0001(input: UpdateDomain0001Input!): UpdateDomain0001Output!
   updateDomain0003(input: UpdateDomain0003Input!): UpdateDomain0003Output!
@@ -606,6 +607,14 @@ input SignInInput {
 
 type SignInOutput {
   access_token: String!
+}
+
+input SoftRemoveDomain0005Input {
+  id: ID!
+}
+
+type SoftRemoveDomain0005Output {
+  domain0005: Domain0005!
 }
 
 input UpdateDomain0001Input {

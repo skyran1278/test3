@@ -18,6 +18,8 @@ import { CreateDomain0005Input } from './mutation/create-domain-0005.input';
 import { CreateDomain0005Output } from './mutation/create-domain-0005.output';
 import { RemoveDomain0005Input } from './mutation/remove-domain-0005.input';
 import { RemoveDomain0005Output } from './mutation/remove-domain-0005.output';
+import { SoftRemoveDomain0005Input } from './mutation/soft-remove-domain-0005.input';
+import { SoftRemoveDomain0005Output } from './mutation/soft-remove-domain-0005.output';
 import { UpdateDomain0005Input } from './mutation/update-domain-0005.input';
 import { UpdateDomain0005Output } from './mutation/update-domain-0005.output';
 import { Domain0005PageArgs } from './query/domain-0005-page.args';
@@ -68,6 +70,15 @@ export class Domain0005Resolver {
     @Args('input') input: RemoveDomain0005Input,
   ): Promise<RemoveDomain0005Output> {
     const domain0005 = await this.domain0005Service.removeOne(input.id);
+    return { domain0005 };
+  }
+
+  @Transactional()
+  @Mutation(() => SoftRemoveDomain0005Output)
+  async softRemoveDomain0005(
+    @Args('input') input: SoftRemoveDomain0005Input,
+  ): Promise<SoftRemoveDomain0005Output> {
+    const domain0005 = await this.domain0005Service.softRemoveOne(input.id);
     return { domain0005 };
   }
 
