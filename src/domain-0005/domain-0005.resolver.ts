@@ -1,5 +1,15 @@
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  ID,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
+import { Domain0006 } from 'src/domain-0006/domain-0006.entity';
+import { Domain0006Service } from 'src/domain-0006/domain-0006.service';
 import { Transactional } from 'typeorm-transactional';
 
 import { Domain0005 } from './domain-0005.entity';
@@ -15,7 +25,10 @@ import { Domain0005Page } from './query/domain-0005-page.type';
 
 @Resolver(() => Domain0005)
 export class Domain0005Resolver {
-  constructor(private readonly domain0005Service: Domain0005Service) {}
+  constructor(
+    private readonly domain0005Service: Domain0005Service,
+    private readonly domain0006Service: Domain0006Service,
+  ) {}
 
   @Transactional()
   @Mutation(() => CreateDomain0005Output)
@@ -56,5 +69,16 @@ export class Domain0005Resolver {
   ): Promise<RemoveDomain0005Output> {
     const domain0005 = await this.domain0005Service.removeOne(input.id);
     return { domain0005 };
+  }
+
+  @ResolveField(() => [Domain0006])
+  async domain0006s(
+    @Parent() { id, domain0006s }: Domain0005,
+  ): Promise<Domain0006[]> {
+    if (domain0006s) return domain0006s;
+
+    return this.domain0006Service.findBy({
+      domain0005Id: id,
+    });
   }
 }
