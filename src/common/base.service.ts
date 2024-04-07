@@ -15,13 +15,17 @@ import { MetaEntity } from './meta.entity';
 import { NodePage } from './node-page.type';
 import { Nullable } from './nullable.interface';
 
+type WhereInput<Entity extends ObjectLiteral> = Nullable<
+  FindOptionsWhere<Entity>
+> & {
+  toFindOptionsWhere: () => Nullable<FindOptionsWhere<Entity>>;
+};
+
 interface NodePageInput<Entity extends ObjectLiteral> {
   take?: Maybe<number>;
   skip?: Maybe<number>;
   order?: Nullable<FindOptionsOrder<Entity>>;
-  where?:
-    | Maybe<Nullable<FindOptionsWhere<Entity>>[]>
-    | Maybe<Nullable<FindOptionsWhere<Entity>>>;
+  where?: Maybe<WhereInput<Entity>[]> | Maybe<WhereInput<Entity>>;
 }
 
 export abstract class BaseService<
@@ -146,11 +150,18 @@ export abstract class BaseService<
     const take = options?.take ?? undefined;
     const skip = options?.skip ?? undefined;
     const order = options?.order ? this.omitNullFields(options.order) : {};
-    const where = options?.where ? this.transformNullFields(options.where) : [];
 
-    const relations = this.getRelationsByWhereAndOrder(
-      Array.isArray(where) ? [...where, order] : [where, order],
+    const inputWhereArray = Array.isArray(options?.where)
+      ? options.where
+      : options?.where
+        ? [options.where]
+        : [];
+    const toFindOptionsWhereArray = inputWhereArray.map((inputWhere) =>
+      inputWhere.toFindOptionsWhere(),
     );
+    const where = this.transformNullFields(toFindOptionsWhereArray);
+
+    const relations = this.getRelationsByWhereAndOrder([...where, order]);
 
     this.logger.verbose({
       [`page ${this.metadata.targetName}`]: {
@@ -158,6 +169,7 @@ export abstract class BaseService<
         skip,
         order,
         whereInput: options?.where,
+        toFindOptionsWhereArray,
         where,
         relations,
       },
@@ -209,6 +221,12 @@ export abstract class BaseService<
     return result;
   }
 
+  private transformNullFields<T extends Record<string, unknown>>(
+    nullableWhere: Nullable<T>[],
+  ): T[];
+  private transformNullFields<T extends Record<string, unknown>>(
+    nullableWhere: Nullable<T>,
+  ): T;
   private transformNullFields<T extends Record<string, unknown>>(
     nullableWhere: Nullable<T>[] | Nullable<T>,
   ): T[] | T {
