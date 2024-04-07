@@ -41,12 +41,18 @@ export class MetaEntitySubscriber
     await this.validate(entity);
   }
 
-  beforeSoftRemove(event: SoftRemoveEvent<MetaEntity>) {
+  async beforeSoftRemove(event: SoftRemoveEvent<MetaEntity>) {
     const { entity } = event;
     if (!this.isMetaEntity(entity)) return;
 
     const user = als.get('user');
     entity.deletedUserId = user.id;
+
+    const repo = event.manager.getRepository(entity.constructor);
+    await repo.update(
+      { id: entity.id },
+      repo.create({ deletedUserId: entity.deletedUserId }),
+    );
   }
 
   private isMetaEntity(entity: unknown): entity is MetaEntity {
@@ -60,7 +66,7 @@ export class MetaEntitySubscriber
      *   - event.databaseEntity is Entity
      */
 
-    if (!(entity instanceof MetaEntity)) {
+    if (!entity) {
       this.logger.verbose({
         message: 'Validation failed: Entity is not an instance of MetaEntity.',
         details: {
@@ -72,6 +78,21 @@ export class MetaEntitySubscriber
         },
       });
       return false;
+    }
+
+    if (!(entity instanceof MetaEntity)) {
+      this.logger.verbose({
+        message: 'Validation failed: Entity is not an instance of MetaEntity.',
+        details: {
+          entity,
+          reasons: [
+            'Passing an object literal to the repository will cause the entity to be an object literal, not an instance of MetaEntity.',
+          ],
+        },
+      });
+      throw new GraphQLError(
+        'Validation failed: Entity is not an instance of MetaEntity.',
+      );
     }
 
     return true;
