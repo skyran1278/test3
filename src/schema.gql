@@ -289,6 +289,19 @@ type Domain0005 implements MetaEntity {
   deletedAt: DateTime
   deletedUser: User
   deletedUserId: ID
+  domain0006Page(
+    """排序欄位與方式"""
+    order: Domain0006OrderInput! = {updatedAt: DESC}
+
+    """Amount of nodes to skip from the beginning of this page"""
+    skip: NonNegativeInt
+
+    """Maximum amount of nodes in this page"""
+    take: NonNegativeInt
+
+    """查詢條件"""
+    where: [Domain0006WhereInput!]
+  ): Domain0006Page!
 
   """OneToMany"""
   domain0006s: [Domain0006!]
@@ -359,6 +372,48 @@ type Domain0006 implements MetaEntity {
   id: ID!
   updatedAt: DateTime!
   updatedUser: User
+  updatedUserId: ID
+}
+
+input Domain0006OrderInput {
+  createdAt: NodeOrderEnum
+  deletedAt: NodeOrderEnum
+
+  """domain0005Id"""
+  domain0005Id: NodeOrderEnum
+
+  """domain0006001"""
+  domain0006001: NodeOrderEnum
+  updatedAt: NodeOrderEnum = DESC
+}
+
+type Domain0006Page implements NodePage {
+  """Nodes in this page"""
+  nodes: [Domain0006!]!
+
+  """Amount of nodes to skip from the beginning of this page"""
+  skip: NonNegativeInt
+
+  """Maximum amount of nodes in this page"""
+  take: NonNegativeInt
+
+  """Total amount of nodes"""
+  total: NonNegativeInt
+}
+
+input Domain0006WhereInput {
+  createdAt: DateTime
+  createdUserId: ID
+  deletedAt: DateTime
+  deletedUserId: ID
+
+  """domain0005Id"""
+  domain0005Id: ID
+
+  """domain0006001"""
+  domain0006001: Int
+  id: ID
+  updatedAt: DateTime
   updatedUserId: ID
 }
 

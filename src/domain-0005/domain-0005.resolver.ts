@@ -10,6 +10,9 @@ import {
 import { Maybe } from 'graphql/jsutils/Maybe';
 import { Domain0006 } from 'src/domain-0006/domain-0006.entity';
 import { Domain0006Service } from 'src/domain-0006/domain-0006.service';
+import { Domain0006PageArgs } from 'src/domain-0006/query/domain-0006-page.args';
+import { Domain0006Page } from 'src/domain-0006/query/domain-0006-page.type';
+import { Domain0006WhereInput } from 'src/domain-0006/query/domain-0006-where.input';
 import { Transactional } from 'typeorm-transactional';
 
 import { Domain0005 } from './domain-0005.entity';
@@ -80,6 +83,23 @@ export class Domain0005Resolver {
   ): Promise<SoftRemoveDomain0005Output> {
     const domain0005 = await this.domain0005Service.softRemoveOne(input.id);
     return { domain0005 };
+  }
+
+  @ResolveField(() => Domain0006Page)
+  async domain0006Page(
+    @Parent() { id }: Domain0005,
+    @Args() args: Domain0006PageArgs,
+  ): Promise<Domain0006Page> {
+    const inputWhereArray = args.where ?? [new Domain0006WhereInput()];
+    const where = inputWhereArray.map((inputWhere) => {
+      inputWhere.domain0005Id = id;
+      return inputWhere;
+    });
+
+    return this.domain0006Service.findNodePage({
+      ...args,
+      where,
+    });
   }
 
   @ResolveField(() => [Domain0006])
