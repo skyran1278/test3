@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { cloneDeep } from 'lodash';
 import { BaseService } from 'src/common/base.service';
 import { Domain0006Service } from 'src/domain-0006/domain-0006.service';
 import { Repository } from 'typeorm';
@@ -59,12 +60,23 @@ export class Domain0005Service extends BaseService<Domain0005> {
 
   @Transactional()
   async removeOne(id: string) {
-    const domain0005 = await this.findOneByOrFail({ id });
-    domain0005.domain0006s = [];
+    const domain0005 = await this.findOneOrFail({
+      where: { id },
+      relations: {
+        domain0006s: true,
+      },
+    });
 
-    await this.save(domain0005);
+    // because remove will let id to be undefined, so we need to clone it first
+    const removedDomain0005 = cloneDeep(domain0005);
+
+    if (domain0005.domain0006s) {
+      await this.domain0006Service.remove(domain0005.domain0006s);
+    }
+
     await this.remove(domain0005);
-    return domain0005;
+
+    return removedDomain0005;
   }
 
   @Transactional()
