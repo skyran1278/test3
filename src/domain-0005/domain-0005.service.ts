@@ -81,9 +81,17 @@ export class Domain0005Service extends BaseService<Domain0005> {
 
   @Transactional()
   async softRemoveOne(id: string) {
-    const existDomain0005 = await this.findOneOrFail({ where: { id } });
+    const domain0005 = await this.findOneOrFail({
+      where: { id },
+      relations: { domain0006s: true },
+    });
 
-    const domain0005 = await this.softRemove(existDomain0005);
+    // unlike remove, softRemove should remove head first to prevent redundant update bodies
+    await this.softRemove(domain0005);
+
+    if (domain0005.domain0006s) {
+      await this.domain0006Service.softRemove(domain0005.domain0006s);
+    }
 
     return domain0005;
   }
