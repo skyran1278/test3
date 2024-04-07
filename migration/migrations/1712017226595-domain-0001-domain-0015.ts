@@ -175,8 +175,11 @@ export class Domain0001Domain00151712017226595 implements MigrationInterface {
       INSERT INTO
         public.domain0005 (id, domain0005001)
       VALUES
-        ('2a5a45dc-812b-48e4-bb56-8f3ffd3cc997', 100),
-        ('1f44609d-797b-4c0e-ba55-336a98c1cb6d', 200);
+        ('2a5a45dc-812b-48e4-bb56-8f3ffd3cc997', 100), -- include domain0006
+        ('1f44609d-797b-4c0e-ba55-336a98c1cb6d', 200), -- include domain0006, domain0007
+        ('b61421e4-52fd-445a-81b0-a5330dea38db', 300), -- for remove
+        ('5d3f9c6c-5c5d-4f5e-8c5f-5d5e6f7c8d9e', 400), -- for soft remove
+        ('c5c5d5e6-5f7c-4d5e-8b5a-5f7c8d9e0a1b', 500);
     `);
     await queryRunner.query(sql`
       INSERT INTO
@@ -201,6 +204,36 @@ export class Domain0001Domain00151712017226595 implements MigrationInterface {
           '71c7f77d-5cef-48c7-8ee6-47b805477e77',
           220,
           '1f44609d-797b-4c0e-ba55-336a98c1cb6d'
+        ),
+        (
+          'b4f6e6d7-7f8c-4d8e-8c9f-6d7e8f9c0d1e',
+          310,
+          'b61421e4-52fd-445a-81b0-a5330dea38db'
+        ),
+        (
+          '87404530-ba10-42b3-8989-562b4a11a814',
+          320,
+          'b61421e4-52fd-445a-81b0-a5330dea38db'
+        ),
+        (
+          'b7c8d9e0-a1b2-43c4-8d5e-9e0a1b2c3d4e',
+          410,
+          '5d3f9c6c-5c5d-4f5e-8c5f-5d5e6f7c8d9e'
+        ),
+        (
+          '2a3b4c5d-6e7f-41a2-8b3c-4d5e6f7a8b9c',
+          420,
+          '5d3f9c6c-5c5d-4f5e-8c5f-5d5e6f7c8d9e'
+        ),
+        (
+          '5e6f7c8d-9e0a-42b3-8c4d-5e6f7c8d9e0a',
+          510,
+          'c5c5d5e6-5f7c-4d5e-8b5a-5f7c8d9e0a1b'
+        ),
+        (
+          '1a2b3c4d-5e6f-43a4-8b5c-6d7e8f9a0b1a',
+          520,
+          'c5c5d5e6-5f7c-4d5e-8b5a-5f7c8d9e0a1b'
         );
     `);
     await queryRunner.query(sql`
