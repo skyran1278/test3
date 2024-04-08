@@ -3,7 +3,7 @@ import { Maybe } from 'graphql/jsutils/Maybe';
 
 import { Domain0010ByIdLoader } from './domain-0010-by-id.loader';
 import { Domain0010 } from './domain-0010.entity';
-import { Domain0010ById } from './query/domain-0010-by-id.type';
+import { Domain0010ById } from './dto/domain-0010-by-id.type';
 
 @Resolver(() => Domain0010ById)
 export class Domain0010ByIdResolver {

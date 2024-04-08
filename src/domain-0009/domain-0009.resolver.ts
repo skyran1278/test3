@@ -11,12 +11,12 @@ import { Transactional } from 'typeorm-transactional';
 
 import { Domain0009 } from './domain-0009.entity';
 import { Domain0009Service } from './domain-0009.service';
-import { CreateDomain0009Input } from './mutation/create-domain-0009.input';
-import { CreateDomain0009Output } from './mutation/create-domain-0009.output';
-import { UpdateDomain0009Input } from './mutation/update-domain-0009.input';
-import { UpdateDomain0009Output } from './mutation/update-domain-0009.output';
-import { UpdateDomain0009sInput } from './mutation/update-domain-0009s.input';
-import { UpdateDomain0009sOutput } from './mutation/update-domain-0009s.output';
+import { CreateDomain0009Input } from './dto/create-domain-0009.input';
+import { CreateDomain0009Output } from './dto/create-domain-0009.output';
+import { UpdateDomain0009Input } from './dto/update-domain-0009.input';
+import { UpdateDomain0009Output } from './dto/update-domain-0009.output';
+import { UpdateDomain0009sInput } from './dto/update-domain-0009s.input';
+import { UpdateDomain0009sOutput } from './dto/update-domain-0009s.output';
 
 @Resolver(() => Domain0009)
 export class Domain0009Resolver {

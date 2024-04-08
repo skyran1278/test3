@@ -10,23 +10,23 @@ import {
 import { Maybe } from 'graphql/jsutils/Maybe';
 import { Domain0006 } from 'src/domain-0006/domain-0006.entity';
 import { Domain0006Service } from 'src/domain-0006/domain-0006.service';
-import { Domain0006PageArgs } from 'src/domain-0006/query/domain-0006-page.args';
-import { Domain0006Page } from 'src/domain-0006/query/domain-0006-page.type';
-import { Domain0006WhereInput } from 'src/domain-0006/query/domain-0006-where.input';
+import { Domain0006PageArgs } from 'src/domain-0006/dto/domain-0006-page.args';
+import { Domain0006Page } from 'src/domain-0006/dto/domain-0006-page.type';
+import { Domain0006WhereInput } from 'src/domain-0006/dto/domain-0006-where.input';
 import { Transactional } from 'typeorm-transactional';
 
 import { Domain0005 } from './domain-0005.entity';
 import { Domain0005Service } from './domain-0005.service';
-import { CreateDomain0005Input } from './mutation/create-domain-0005.input';
-import { CreateDomain0005Output } from './mutation/create-domain-0005.output';
-import { RemoveDomain0005Input } from './mutation/remove-domain-0005.input';
-import { RemoveDomain0005Output } from './mutation/remove-domain-0005.output';
-import { SoftRemoveDomain0005Input } from './mutation/soft-remove-domain-0005.input';
-import { SoftRemoveDomain0005Output } from './mutation/soft-remove-domain-0005.output';
-import { UpdateDomain0005Input } from './mutation/update-domain-0005.input';
-import { UpdateDomain0005Output } from './mutation/update-domain-0005.output';
-import { Domain0005PageArgs } from './query/domain-0005-page.args';
-import { Domain0005Page } from './query/domain-0005-page.type';
+import { CreateDomain0005Input } from './dto/create-domain-0005.input';
+import { CreateDomain0005Output } from './dto/create-domain-0005.output';
+import { Domain0005PageArgs } from './dto/domain-0005-page.args';
+import { Domain0005Page } from './dto/domain-0005-page.type';
+import { RemoveDomain0005Input } from './dto/remove-domain-0005.input';
+import { RemoveDomain0005Output } from './dto/remove-domain-0005.output';
+import { SoftRemoveDomain0005Input } from './dto/soft-remove-domain-0005.input';
+import { SoftRemoveDomain0005Output } from './dto/soft-remove-domain-0005.output';
+import { UpdateDomain0005Input } from './dto/update-domain-0005.input';
+import { UpdateDomain0005Output } from './dto/update-domain-0005.output';
 
 @Resolver(() => Domain0005)
 export class Domain0005Resolver {

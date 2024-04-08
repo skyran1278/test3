@@ -4,14 +4,14 @@ import { Transactional } from 'typeorm-transactional';
 
 import { Domain0001 } from './domain-0001.entity';
 import { Domain0001Service } from './domain-0001.service';
-import { CreateDomain0001Input } from './mutation/create-domain-0001.input';
-import { CreateDomain0001Output } from './mutation/create-domain-0001.output';
-import { RemoveDomain0001Input } from './mutation/remove-domain-0001.input';
-import { RemoveDomain0001Output } from './mutation/remove-domain-0001.output';
-import { UpdateDomain0001Input } from './mutation/update-domain-0001.input';
-import { UpdateDomain0001Output } from './mutation/update-domain-0001.output';
-import { Domain0001PageArgs } from './query/domain-0001-page.args';
-import { Domain0001Page } from './query/domain-0001-page.type';
+import { CreateDomain0001Input } from './dto/create-domain-0001.input';
+import { CreateDomain0001Output } from './dto/create-domain-0001.output';
+import { Domain0001PageArgs } from './dto/domain-0001-page.args';
+import { Domain0001Page } from './dto/domain-0001-page.type';
+import { RemoveDomain0001Input } from './dto/remove-domain-0001.input';
+import { RemoveDomain0001Output } from './dto/remove-domain-0001.output';
+import { UpdateDomain0001Input } from './dto/update-domain-0001.input';
+import { UpdateDomain0001Output } from './dto/update-domain-0001.output';
 
 @Resolver(() => Domain0001)
 export class Domain0001Resolver {

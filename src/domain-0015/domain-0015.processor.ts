@@ -5,12 +5,12 @@ import { AlsService } from 'src/als/als.service';
 import { QueueEnum } from 'src/common/queue.enum';
 import { Transactional } from 'typeorm-transactional';
 
+import { Domain0015Service } from './domain-0015.service';
 import {
   CreateDomain0015JobInput,
   CreateDomain0015JobOutput,
-} from './create-domain-0015-job.interface';
-import { Domain0015JobEnum } from './domain-0015-job.enum';
-import { Domain0015Service } from './domain-0015.service';
+} from './dto/create-domain-0015.job';
+import { Domain0015JobEnum } from './dto/domain-0015-job.enum';
 
 @Processor(QueueEnum.DOMAIN0015)
 export class Domain0015Processor extends WorkerHost {

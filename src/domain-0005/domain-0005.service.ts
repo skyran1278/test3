@@ -7,9 +7,9 @@ import { Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
 
 import { Domain0005 } from './domain-0005.entity';
-import { CreateDomain0005Input } from './mutation/create-domain-0005.input';
-import { UpdateDomain0005Input } from './mutation/update-domain-0005.input';
-import { Domain0005PageArgs } from './query/domain-0005-page.args';
+import { CreateDomain0005Input } from './dto/create-domain-0005.input';
+import { Domain0005PageArgs } from './dto/domain-0005-page.args';
+import { UpdateDomain0005Input } from './dto/update-domain-0005.input';
 
 @Injectable()
 export class Domain0005Service extends BaseService<Domain0005> {

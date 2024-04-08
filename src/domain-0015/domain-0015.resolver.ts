@@ -3,8 +3,8 @@ import { Transactional } from 'typeorm-transactional';
 
 import { Domain0015 } from './domain-0015.entity';
 import { Domain0015Service } from './domain-0015.service';
-import { CreateDomain0015Input } from './mutation/create-domain-0015.input';
-import { CreateDomain0015Output } from './mutation/create-domain-0015.output';
+import { CreateDomain0015Input } from './dto/create-domain-0015.input';
+import { CreateDomain0015Output } from './dto/create-domain-0015.output';
 
 @Resolver(() => Domain0015)
 export class Domain0015Resolver {

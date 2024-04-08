@@ -4,7 +4,7 @@ import { ColumnField } from 'src/common/column-field.decorator';
 import { ManyToOneField } from 'src/common/many-to-one-field.decorator';
 import { MetaEntity } from 'src/common/meta.entity';
 import { Domain0009 } from 'src/domain-0009/domain-0009.entity';
-import { Domain0009ById } from 'src/domain-0009/query/domain-0009-by-id.type';
+import { Domain0009ById } from 'src/domain-0009/dto/domain-0009-by-id.type';
 import { Entity } from 'typeorm';
 
 @Entity()

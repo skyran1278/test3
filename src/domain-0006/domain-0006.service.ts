@@ -5,8 +5,8 @@ import { Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
 
 import { Domain0006 } from './domain-0006.entity';
-import { CreateDomain0006Input } from './mutation/create-domain-0006.input';
-import { Domain0006PageArgs } from './query/domain-0006-page.args';
+import { CreateDomain0006Input } from './dto/create-domain-0006.input';
+import { Domain0006PageArgs } from './dto/domain-0006-page.args';
 
 @Injectable()
 export class Domain0006Service extends BaseService<Domain0006> {

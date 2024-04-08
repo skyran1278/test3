@@ -14,14 +14,14 @@ import { Transactional } from 'typeorm-transactional';
 
 import { Domain0006 } from './domain-0006.entity';
 import { Domain0006Service } from './domain-0006.service';
-import { CreateDomain0006Input } from './mutation/create-domain-0006.input';
-import { CreateDomain0006Output } from './mutation/create-domain-0006.output';
-import { RemoveDomain0006Input } from './mutation/remove-domain-0006.input';
-import { RemoveDomain0006Output } from './mutation/remove-domain-0006.output';
-import { UpdateDomain0006Input } from './mutation/update-domain-0006.input';
-import { UpdateDomain0006Output } from './mutation/update-domain-0006.output';
-import { Domain0006PageArgs } from './query/domain-0006-page.args';
-import { Domain0006Page } from './query/domain-0006-page.type';
+import { CreateDomain0006Input } from './dto/create-domain-0006.input';
+import { CreateDomain0006Output } from './dto/create-domain-0006.output';
+import { Domain0006PageArgs } from './dto/domain-0006-page.args';
+import { Domain0006Page } from './dto/domain-0006-page.type';
+import { RemoveDomain0006Input } from './dto/remove-domain-0006.input';
+import { RemoveDomain0006Output } from './dto/remove-domain-0006.output';
+import { UpdateDomain0006Input } from './dto/update-domain-0006.input';
+import { UpdateDomain0006Output } from './dto/update-domain-0006.output';
 
 @Resolver(() => Domain0006)
 export class Domain0006Resolver {

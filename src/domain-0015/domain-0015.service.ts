@@ -9,16 +9,16 @@ import { QueueEnum } from 'src/common/queue.enum';
 import { Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
 
+import { Domain0015 } from './domain-0015.entity';
+import { Domain0015QueueEvents } from './domain-0015.queue-events';
+import { CreateDomain0015Input } from './dto/create-domain-0015.input';
 import {
   CreateDomain0015JobInput,
   CreateDomain0015JobOutput,
-} from './create-domain-0015-job.interface';
-import { Domain0015JobEnum } from './domain-0015-job.enum';
-import { Domain0015 } from './domain-0015.entity';
-import { Domain0015QueueEvents } from './domain-0015.queue-events';
-import { CreateDomain0015Input } from './mutation/create-domain-0015.input';
-import { UpdateDomain0015Input } from './mutation/update-domain-0015.input';
-import { Domain0015PageArgs } from './query/domain-0015-page.args';
+} from './dto/create-domain-0015.job';
+import { Domain0015JobEnum } from './dto/domain-0015-job.enum';
+import { Domain0015PageArgs } from './dto/domain-0015-page.args';
+import { UpdateDomain0015Input } from './dto/update-domain-0015.input';
 
 @Injectable()
 export class Domain0015Service extends BaseService<Domain0015> {
