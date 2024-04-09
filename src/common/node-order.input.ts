@@ -10,7 +10,6 @@ export class NodeOrderInput {
 
   @Field(() => NodeOrderEnum, {
     nullable: true,
-    defaultValue: NodeOrderEnum.DESC,
   })
-  updatedAt: Maybe<NodeOrderEnum> = NodeOrderEnum.DESC;
+  updatedAt?: Maybe<NodeOrderEnum>;
 }

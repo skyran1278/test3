@@ -134,7 +134,7 @@ input Domain0001OrderInput {
 
   """domain0001001"""
   domain0001001: NodeOrderEnum
-  updatedAt: NodeOrderEnum = DESC
+  updatedAt: NodeOrderEnum
 }
 
 type Domain0001Page implements NodePage {
@@ -234,7 +234,7 @@ input Domain0003OrderInput {
 
   """Array<int>"""
   domain0003011: NodeOrderEnum
-  updatedAt: NodeOrderEnum = DESC
+  updatedAt: NodeOrderEnum
 }
 
 type Domain0003Page implements NodePage {
@@ -291,7 +291,7 @@ type Domain0005 implements MetaEntity {
   deletedUserId: ID
   domain0006Page(
     """排序欄位與方式"""
-    order: Domain0006OrderInput! = {updatedAt: DESC}
+    order: Domain0006OrderInput! = {}
 
     """Amount of nodes to skip from the beginning of this page"""
     skip: NonNegativeInt
@@ -320,7 +320,7 @@ input Domain0005OrderInput {
 
   """domain0005001"""
   domain0005001: NodeOrderEnum
-  updatedAt: NodeOrderEnum = DESC
+  updatedAt: NodeOrderEnum
 }
 
 type Domain0005Page implements NodePage {
@@ -342,6 +342,7 @@ input Domain0005WhereInput {
   createdUserId: ID
   deletedAt: DateTime
   deletedUserId: ID
+  domain0006s: Domain0006WhereInput
 
   """domain0005001"""
   domain0005001: Int
@@ -384,7 +385,7 @@ input Domain0006OrderInput {
 
   """domain0006001"""
   domain0006001: NodeOrderEnum
-  updatedAt: NodeOrderEnum = DESC
+  updatedAt: NodeOrderEnum
 }
 
 type Domain0006Page implements NodePage {
@@ -412,6 +413,8 @@ input Domain0006WhereInput {
 
   """domain0006001"""
   domain0006001: Int
+  domain0006001From: Int
+  domain0006001To: Int
   id: ID
   updatedAt: DateTime
   updatedUserId: ID
@@ -564,7 +567,7 @@ type Query {
   domain0001(id: ID!): Domain0001!
   domain0001Page(
     """排序欄位與方式"""
-    order: Domain0001OrderInput! = {updatedAt: DESC}
+    order: Domain0001OrderInput! = {}
 
     """Amount of nodes to skip from the beginning of this page"""
     skip: NonNegativeInt
@@ -578,7 +581,7 @@ type Query {
   domain0003(id: ID!): Domain0003!
   domain0003Page(
     """排序欄位與方式"""
-    order: Domain0003OrderInput! = {updatedAt: DESC}
+    order: Domain0003OrderInput! = {}
 
     """Amount of nodes to skip from the beginning of this page"""
     skip: NonNegativeInt
@@ -592,7 +595,7 @@ type Query {
   domain0005(id: ID!): Domain0005!
   domain0005Page(
     """排序欄位與方式"""
-    order: Domain0005OrderInput! = {updatedAt: DESC}
+    order: Domain0005OrderInput! = {}
 
     """Amount of nodes to skip from the beginning of this page"""
     skip: NonNegativeInt
@@ -607,7 +610,7 @@ type Query {
   user(id: ID!): User!
   userPage(
     """排序欄位與方式"""
-    order: UserOrderInput! = {updatedAt: DESC}
+    order: UserOrderInput! = {}
 
     """Amount of nodes to skip from the beginning of this page"""
     skip: NonNegativeInt
@@ -799,7 +802,7 @@ type User implements MetaEntity {
 input UserOrderInput {
   createdAt: NodeOrderEnum
   deletedAt: NodeOrderEnum
-  updatedAt: NodeOrderEnum = DESC
+  updatedAt: NodeOrderEnum
 
   """user001"""
   user001: NodeOrderEnum
