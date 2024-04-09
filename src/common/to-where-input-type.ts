@@ -28,10 +28,22 @@ export type OmitDecimalProperty<T> = {
     : P]: T[P];
 };
 
+abstract class WhereInput {
+  toFindOptionsWhere(): unknown {
+    const where = { ...this } as Record<string, unknown>;
+    Object.entries(where).forEach(([key, value]) => {
+      if (value instanceof WhereInput) {
+        where[key] = value.toFindOptionsWhere();
+      }
+    });
+    return where;
+  }
+}
+
 export const ToWhereInputType = <T>(
   classRef: Type<T>,
   decorator: ClassDecoratorFactory | undefined = InputType,
-): Type<OmitDecimalProperty<PickBasicTypeProperty<T>>> => {
+): Type<OmitDecimalProperty<PickBasicTypeProperty<T>> & WhereInput> => {
   const basicTypeClassRef = PickBasicType(
     PartialType(classRef, decorator),
     decorator,
@@ -40,8 +52,9 @@ export const ToWhereInputType = <T>(
   const { fields } = getFieldsAndDecoratorForType(basicTypeClassRef);
 
   @decorator({ isAbstract: true })
-  abstract class OmitObjectTypeClass {
+  abstract class OmitObjectTypeClass extends WhereInput {
     constructor() {
+      super();
       inheritPropertyInitializers(this, basicTypeClassRef);
     }
   }
@@ -90,6 +103,6 @@ export const ToWhereInputType = <T>(
   });
 
   return OmitObjectTypeClass as Type<
-    OmitDecimalProperty<PickBasicTypeProperty<T>>
+    OmitDecimalProperty<PickBasicTypeProperty<T>> & WhereInput
   >;
 };
