@@ -1,8 +1,15 @@
-import { AlsStore } from './als-store.interface';
-import { als } from './als.service';
+import { AlsService, als } from './als.service';
 
-export function RunAls() {
-  return (_target: unknown, key: string, descriptor: PropertyDescriptor) => {
+interface RunAlsOptions<T extends unknown[]> {
+  setup?: (als: AlsService, ...args: T) => void | Promise<void>;
+}
+
+export function RunAls<T extends unknown[]>(options?: RunAlsOptions<T>) {
+  return (
+    _target: unknown,
+    key: string | symbol,
+    descriptor: PropertyDescriptor,
+  ) => {
     const originalMethod: unknown = descriptor.value;
     if (typeof originalMethod !== 'function') {
       throw new Error(
@@ -10,9 +17,11 @@ export function RunAls() {
       );
     }
 
-    descriptor.value = function (...args: unknown[]) {
-      const store = {} as AlsStore;
-      return als.run<unknown>(store, () => {
+    descriptor.value = function (...args: T) {
+      return als.run<unknown>({}, async () => {
+        if (options?.setup) {
+          await options.setup.apply(this, [als, ...args]);
+        }
         return originalMethod.apply(this, args);
       });
     };
