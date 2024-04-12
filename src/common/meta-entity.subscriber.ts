@@ -25,8 +25,10 @@ export class MetaEntitySubscriber
     if (!this.isMetaEntity(entity)) return;
 
     const user = als.get('user');
-    entity.createdUserId = user.id;
-    entity.updatedUserId = user.id;
+    if (user) {
+      entity.createdUserId = user.id;
+      entity.updatedUserId = user.id;
+    }
 
     await this.validate(entity);
   }
@@ -36,7 +38,9 @@ export class MetaEntitySubscriber
     if (!this.isMetaEntity(entity)) return;
 
     const user = als.get('user');
-    entity.updatedUserId = user.id;
+    if (user) {
+      entity.updatedUserId = user.id;
+    }
 
     await this.validate(entity);
   }
@@ -46,13 +50,15 @@ export class MetaEntitySubscriber
     if (!this.isMetaEntity(entity)) return;
 
     const user = als.get('user');
-    entity.deletedUserId = user.id;
+    if (user) {
+      entity.deletedUserId = user.id;
 
-    const repo = event.manager.getRepository(entity.constructor);
-    await repo.update(
-      { id: entity.id },
-      repo.create({ deletedUserId: entity.deletedUserId }),
-    );
+      const repo = event.manager.getRepository(event.metadata.target);
+      await repo.update(
+        { id: entity.id },
+        repo.create({ deletedUserId: entity.deletedUserId }),
+      );
+    }
   }
 
   private isMetaEntity(entity: unknown): entity is MetaEntity {
@@ -68,7 +74,7 @@ export class MetaEntitySubscriber
 
     if (!entity) {
       this.logger.verbose({
-        message: 'Validation failed: Entity is not an instance of MetaEntity.',
+        message: 'Entity is not an instance of MetaEntity.',
         details: {
           entity,
           reasons: [
@@ -82,7 +88,7 @@ export class MetaEntitySubscriber
 
     if (!(entity instanceof MetaEntity)) {
       this.logger.verbose({
-        message: 'Validation failed: Entity is not an instance of MetaEntity.',
+        message: 'Entity is not an instance of MetaEntity.',
         details: {
           entity,
           reasons: [
@@ -90,9 +96,7 @@ export class MetaEntitySubscriber
           ],
         },
       });
-      throw new GraphQLError(
-        'Validation failed: Entity is not an instance of MetaEntity.',
-      );
+      throw new GraphQLError('Entity is not an instance of MetaEntity.');
     }
 
     return true;
