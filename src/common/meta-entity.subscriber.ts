@@ -72,14 +72,14 @@ export class MetaEntitySubscriber
      *   - event.databaseEntity is Entity
      */
 
-    if (!entity) {
+    if (!entity || (entity as { mpath: unknown })?.mpath instanceof Function) {
       this.logger.verbose({
         message: 'Entity is not an instance of MetaEntity.',
         details: {
           entity,
           reasons: [
-            'When a OneToManyField contains a many-sided object, it updates the many-sided relation and the updatedAt field.',
-            'TypeORM fails to retrieve the many-sided object, preventing validation.',
+            'When a OneToManyField contains a many-sided object, it updates the many-sided relation and the updatedAt field. TypeORM fails to retrieve the many-sided object, preventing validation.',
+            'Tree entities will update the mpath field, causing the entity to be an object literal.',
           ],
         },
       });
@@ -87,7 +87,7 @@ export class MetaEntitySubscriber
     }
 
     if (!(entity instanceof MetaEntity)) {
-      this.logger.verbose({
+      this.logger.error({
         message: 'Entity is not an instance of MetaEntity.',
         details: {
           entity,
