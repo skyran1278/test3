@@ -13,18 +13,18 @@ import {
 
 import { MetaEntity } from './meta.entity';
 import { NodePage } from './node-page.type';
-import { Nullable } from './nullable.interface';
+import { DeepNullable } from './nullable.interface';
 
-type WhereInput<Entity extends ObjectLiteral> = Nullable<
+type WhereInput<Entity extends ObjectLiteral> = DeepNullable<
   FindOptionsWhere<Entity>
 > & {
-  toFindOptionsWhere: () => Nullable<FindOptionsWhere<Entity>>;
+  toFindOptionsWhere: () => DeepNullable<FindOptionsWhere<Entity>>;
 };
 
 interface NodePageInput<Entity extends ObjectLiteral> {
   take?: Maybe<number>;
   skip?: Maybe<number>;
-  order?: Nullable<FindOptionsOrder<Entity>>;
+  order?: DeepNullable<FindOptionsOrder<Entity>>;
   where?: Maybe<WhereInput<Entity>[]> | Maybe<WhereInput<Entity>>;
 }
 
@@ -200,7 +200,7 @@ export abstract class BaseService<
   }
 
   private omitNullFields<T extends Record<string, unknown>>(
-    nullableRecord: Nullable<T>,
+    nullableRecord: DeepNullable<T>,
   ): Partial<T> {
     const result: Partial<T> = {};
 
@@ -222,13 +222,13 @@ export abstract class BaseService<
   }
 
   private transformNullFields<T extends Record<string, unknown>>(
-    nullableWhere: Nullable<T>[],
+    nullableWhere: DeepNullable<T>[],
   ): T[];
   private transformNullFields<T extends Record<string, unknown>>(
-    nullableWhere: Nullable<T>,
+    nullableWhere: DeepNullable<T>,
   ): T;
   private transformNullFields<T extends Record<string, unknown>>(
-    nullableWhere: Nullable<T>[] | Nullable<T>,
+    nullableWhere: DeepNullable<T>[] | DeepNullable<T>,
   ): T[] | T {
     if (Array.isArray(nullableWhere)) {
       return nullableWhere.map((item) => this.nullToIsNull(item));
@@ -238,7 +238,7 @@ export abstract class BaseService<
   }
 
   private nullToIsNull<T extends Record<string, unknown>>(
-    nullableRecord: Nullable<T>,
+    nullableRecord: DeepNullable<T>,
   ): T {
     const result: T = {} as T;
 

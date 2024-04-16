@@ -413,8 +413,6 @@ input Domain0006WhereInput {
 
   """domain0006001"""
   domain0006001: Int
-  domain0006001From: Int
-  domain0006001To: Int
   id: ID
   updatedAt: DateTime
   updatedUserId: ID
