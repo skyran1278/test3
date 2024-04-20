@@ -9,7 +9,7 @@ import { getFieldDecorator } from './column-field.decorator';
 import { DecimalTransformer } from './decimal.transformer';
 
 type VirtualColumnAndFieldOptions = Omit<VirtualColumnOptions, 'nullable'> &
-  Pick<FieldOptions, 'deprecationReason' | 'nullable'>;
+  Pick<FieldOptions, 'deprecationReason' | 'nullable'> & { comment?: string };
 
 export function VirtualColumnField(options: VirtualColumnAndFieldOptions) {
   return applyDecorators(
