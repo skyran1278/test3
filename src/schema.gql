@@ -18,7 +18,7 @@ input CreateDomain0003Input {
   """int"""
   domain0003002: Int
 
-  """string"""
+  """varchar"""
   domain0003003: String
 
   """date"""
@@ -35,6 +35,9 @@ input CreateDomain0003Input {
 
   """json"""
   domain0003008: JSONObject
+
+  """VirtualColumn"""
+  domain0003009: Int!
 
   """Array<int>"""
   domain0003011: [Int!]
@@ -178,7 +181,7 @@ type Domain0003 implements MetaEntity {
   """int"""
   domain0003002: Int
 
-  """string"""
+  """varchar"""
   domain0003003: String
 
   """date"""
@@ -195,6 +198,9 @@ type Domain0003 implements MetaEntity {
 
   """json"""
   domain0003008: JSONObject
+
+  """VirtualColumn"""
+  domain0003009: Int!
 
   """Array<int>"""
   domain0003011: [Int!]
@@ -214,7 +220,7 @@ input Domain0003OrderInput {
   """int"""
   domain0003002: NodeOrderEnum
 
-  """string"""
+  """varchar"""
   domain0003003: NodeOrderEnum
 
   """date"""
@@ -231,6 +237,9 @@ input Domain0003OrderInput {
 
   """json"""
   domain0003008: NodeOrderEnum
+
+  """VirtualColumn"""
+  domain0003009: NodeOrderEnum
 
   """Array<int>"""
   domain0003011: NodeOrderEnum
@@ -269,7 +278,7 @@ input Domain0003WhereInput {
   """int"""
   domain0003002: Int
 
-  """string"""
+  """varchar"""
   domain0003003: String
 
   """date"""
@@ -277,6 +286,9 @@ input Domain0003WhereInput {
 
   """enum"""
   domain0003006: Domain0003StatusEnum
+
+  """VirtualColumn"""
+  domain0003009: Int
   id: ID
   updatedAt: DateTime
   updatedUserId: ID
@@ -690,7 +702,7 @@ input UpdateDomain0003Input {
   """int"""
   domain0003002: Int
 
-  """string"""
+  """varchar"""
   domain0003003: String
 
   """date"""
@@ -707,6 +719,9 @@ input UpdateDomain0003Input {
 
   """json"""
   domain0003008: JSONObject
+
+  """VirtualColumn"""
+  domain0003009: Int
 
   """Array<int>"""
   domain0003011: [Int!]

@@ -3,6 +3,7 @@ import Decimal from 'decimal.js';
 import { Maybe } from 'graphql/jsutils/Maybe';
 import { ColumnField } from 'src/common/column-field.decorator';
 import { MetaEntity } from 'src/common/meta.entity';
+import { VirtualColumnField } from 'src/common/virtual-column-field.decorator';
 import { Entity } from 'typeorm';
 
 import { Domain0003StatusEnum } from './domain-0003-status.enum';
@@ -24,7 +25,7 @@ export class Domain0003 extends MetaEntity {
     type: 'varchar',
     length: 10,
     nullable: true,
-    comment: 'string',
+    comment: 'varchar',
   })
   domain0003003?: Maybe<string>;
 
@@ -51,6 +52,19 @@ export class Domain0003 extends MetaEntity {
 
   @ColumnField({ type: 'json', comment: 'json', nullable: true })
   domain0003008?: Maybe<Record<string, unknown>>;
+
+  @VirtualColumnField({
+    type: 'int',
+    comment: 'VirtualColumn',
+    query: (alias) => `
+      SELECT
+        "domain0003002"
+      FROM
+        "domain0003"
+      WHERE
+        "id" = ${alias}.id`,
+  })
+  domain0003009?: Maybe<number>;
 
   @ColumnField({
     type: 'int',
