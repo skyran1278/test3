@@ -31,7 +31,9 @@ export class WinstonLogger extends ConsoleLogger {
               format.splat(),
               format.simple(),
             ),
-      defaultMeta: { service: configService.get<string>('SERVICE_NAME') },
+      defaultMeta: {
+        service: configService.get<string>('LOGGING_SERVICE_NAME'),
+      },
       transports: [new transports.Console()],
     });
   }
