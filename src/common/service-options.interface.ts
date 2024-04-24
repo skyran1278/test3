@@ -1,5 +1,6 @@
-import { User } from 'src/user/user.entity';
 import { EntityManager } from 'typeorm';
+
+import { User } from '../user/user.entity';
 
 export interface ServiceOptions {
   user: User;

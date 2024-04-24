@@ -1,6 +1,6 @@
 import { InputType } from '@nestjs/graphql';
-import { TypeField } from 'src/common/type-field.decorator';
 
+import { TypeField } from '../../common/type-field.decorator';
 import { UpdateDomain0009Input } from './update-domain-0009.input';
 
 @InputType()

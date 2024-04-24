@@ -1,9 +1,9 @@
 import { Global, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-import { RepoProxy } from 'src/common/repo.proxy';
-import { UserModule } from 'src/user/user.module';
 
+import { RepoProxy } from '../common/repo.proxy';
+import { UserModule } from '../user/user.module';
 import { MetaEntityResolver } from './meta.resolver';
 import { WinstonLogger } from './winston-logger.service';
 

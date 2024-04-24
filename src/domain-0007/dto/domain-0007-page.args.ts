@@ -1,8 +1,8 @@
 import { ArgsType } from '@nestjs/graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
-import { NodePageArgs } from 'src/common/node.page.args';
-import { TypeField } from 'src/common/type-field.decorator';
 
+import { NodePageArgs } from '../../common/node.page.args';
+import { TypeField } from '../../common/type-field.decorator';
 import { Domain0007OrderInput } from './domain-0007-order.input';
 import { Domain0007WhereInput } from './domain-0007-where.input';
 

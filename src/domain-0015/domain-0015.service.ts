@@ -3,12 +3,12 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Queue, QueueEvents } from 'bullmq';
-import { AlsService } from 'src/als/als.service';
-import { BaseService } from 'src/common/base.service';
-import { QueueEnum } from 'src/common/queue.enum';
 import { Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
 
+import { AlsService } from '../als/als.service';
+import { BaseService } from '../common/base.service';
+import { QueueEnum } from '../common/queue.enum';
 import { Domain0015 } from './domain-0015.entity';
 import { Domain0015QueueEvents } from './domain-0015.queue-events';
 import { CreateDomain0015Input } from './dto/create-domain-0015.input';

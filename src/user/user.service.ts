@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BaseService } from 'src/common/base.service';
 import { Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
 
+import { BaseService } from '../common/base.service';
 import { CreateUserInput } from './mutation/create-user.input';
 import { UpdateUserInput } from './mutation/update-user.input';
 import { UserPageArgs } from './query/user-page.args';

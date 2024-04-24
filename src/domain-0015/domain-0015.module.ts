@@ -1,9 +1,9 @@
 import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AlsModule } from 'src/als/als.module';
-import { QueueEnum } from 'src/common/queue.enum';
 
+import { AlsModule } from '../als/als.module';
+import { QueueEnum } from '../common/queue.enum';
 import { Domain0015 } from './domain-0015.entity';
 import { Domain0015Processor } from './domain-0015.processor';
 import { Domain0015QueueEvents } from './domain-0015.queue-events';

@@ -8,10 +8,10 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
-import { Domain0007 } from 'src/domain-0007/domain-0007.entity';
-import { Domain0007Service } from 'src/domain-0007/domain-0007.service';
 import { Transactional } from 'typeorm-transactional';
 
+import { Domain0007 } from '../domain-0007/domain-0007.entity';
+import { Domain0007Service } from '../domain-0007/domain-0007.service';
 import { Domain0006 } from './domain-0006.entity';
 import { Domain0006Service } from './domain-0006.service';
 import { CreateDomain0006Input } from './dto/create-domain-0006.input';

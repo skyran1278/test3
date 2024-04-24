@@ -1,8 +1,8 @@
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
-import { UserIdLoader } from 'src/user/user-id.loader';
-import { User } from 'src/user/user.entity';
 
+import { UserIdLoader } from '../user/user-id.loader';
+import { User } from '../user/user.entity';
 import { MetaEntity } from './meta.entity';
 
 @Resolver(() => MetaEntity)

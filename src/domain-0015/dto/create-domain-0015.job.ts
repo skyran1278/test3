@@ -1,6 +1,6 @@
 import { Maybe } from 'graphql/jsutils/Maybe';
-import { User } from 'src/user/user.entity';
 
+import { User } from '../../user/user.entity';
 import { Domain0015 } from '../domain-0015.entity';
 
 export interface CreateDomain0015JobInput {

@@ -1,12 +1,12 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BaseService } from 'src/common/base.service';
-import { User } from 'src/user/user.entity';
-import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
 
+import { BaseService } from '../common/base.service';
+import { User } from '../user/user.entity';
+import { UserService } from '../user/user.service';
 import { SignInInput } from './mutation/sign-in.input';
 import { SignInOutput } from './mutation/sign-in.output';
 

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Domain0010Module } from 'src/domain-0010/domain-0010.module';
 
+import { Domain0010Module } from '../domain-0010/domain-0010.module';
 import { Domain0009ByIdLoader } from './domain-0009-by-id.loader';
 import { Domain0009ByIdResolver } from './domain-0009-by-id.resolver';
 import { Domain0009 } from './domain-0009.entity';

@@ -1,8 +1,8 @@
 import { InputType, OmitType } from '@nestjs/graphql';
-import { DeepNullable } from 'src/common/nullable.interface';
-import { ToWhereInputType } from 'src/common/to-where-input-type';
 import { FindOptionsWhere } from 'typeorm';
 
+import { DeepNullable } from '../../common/nullable.interface';
+import { ToWhereInputType } from '../../common/to-where-input-type';
 import { Domain0010 } from '../domain-0010.entity';
 
 @InputType()

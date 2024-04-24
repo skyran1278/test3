@@ -5,10 +5,10 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { Domain0010 } from 'src/domain-0010/domain-0010.entity';
-import { Domain0010Service } from 'src/domain-0010/domain-0010.service';
 import { Transactional } from 'typeorm-transactional';
 
+import { Domain0010 } from '../domain-0010/domain-0010.entity';
+import { Domain0010Service } from '../domain-0010/domain-0010.service';
 import { Domain0009 } from './domain-0009.entity';
 import { Domain0009Service } from './domain-0009.service';
 import { CreateDomain0009Input } from './dto/create-domain-0009.input';

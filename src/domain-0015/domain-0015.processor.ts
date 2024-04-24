@@ -1,10 +1,10 @@
 import { OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
 import { Job } from 'bullmq';
-import { RunAls } from 'src/als/als.decorator';
-import { AlsService } from 'src/als/als.service';
-import { QueueEnum } from 'src/common/queue.enum';
 import { Transactional } from 'typeorm-transactional';
 
+import { RunAls } from '../als/als.decorator';
+import { AlsService } from '../als/als.service';
+import { QueueEnum } from '../common/queue.enum';
 import { Domain0015Service } from './domain-0015.service';
 import {
   CreateDomain0015JobInput,

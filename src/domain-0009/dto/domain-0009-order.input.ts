@@ -1,6 +1,6 @@
 import { InputType, OmitType } from '@nestjs/graphql';
-import { ToOrderInputType } from 'src/common/to-order-input-type';
 
+import { ToOrderInputType } from '../../common/to-order-input-type';
 import { Domain0009 } from '../domain-0009.entity';
 
 @InputType()

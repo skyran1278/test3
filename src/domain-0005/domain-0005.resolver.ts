@@ -8,13 +8,13 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
-import { Domain0006 } from 'src/domain-0006/domain-0006.entity';
-import { Domain0006Service } from 'src/domain-0006/domain-0006.service';
-import { Domain0006PageArgs } from 'src/domain-0006/dto/domain-0006-page.args';
-import { Domain0006Page } from 'src/domain-0006/dto/domain-0006-page.type';
-import { Domain0006WhereInput } from 'src/domain-0006/dto/domain-0006-where.input';
 import { Transactional } from 'typeorm-transactional';
 
+import { Domain0006 } from '../domain-0006/domain-0006.entity';
+import { Domain0006Service } from '../domain-0006/domain-0006.service';
+import { Domain0006PageArgs } from '../domain-0006/dto/domain-0006-page.args';
+import { Domain0006Page } from '../domain-0006/dto/domain-0006-page.type';
+import { Domain0006WhereInput } from '../domain-0006/dto/domain-0006-where.input';
 import { Domain0005 } from './domain-0005.entity';
 import { Domain0005Service } from './domain-0005.service';
 import { CreateDomain0005Input } from './dto/create-domain-0005.input';

@@ -8,8 +8,8 @@ import {
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { Observable } from 'rxjs';
-import { AlsService } from 'src/als/als.service';
 
+import { AlsService } from '../als/als.service';
 import { GraphQLContext } from '../common/graphql-context.interface';
 
 @Injectable()

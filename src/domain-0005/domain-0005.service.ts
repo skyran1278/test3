@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { cloneDeep } from 'lodash';
-import { BaseService } from 'src/common/base.service';
-import { Domain0006Service } from 'src/domain-0006/domain-0006.service';
 import { Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
 
+import { BaseService } from '../common/base.service';
+import { Domain0006Service } from '../domain-0006/domain-0006.service';
 import { Domain0005 } from './domain-0005.entity';
 import { CreateDomain0005Input } from './dto/create-domain-0005.input';
 import { Domain0005PageArgs } from './dto/domain-0005-page.args';

@@ -1,6 +1,5 @@
 import { Field, ID, InterfaceType } from '@nestjs/graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
-import { User } from 'src/user/user.entity';
 import {
   CreateDateColumn,
   DeleteDateColumn,
@@ -9,6 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+import { User } from '../user/user.entity';
 import { ColumnField } from './column-field.decorator';
 
 @InterfaceType()

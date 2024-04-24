@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Domain0006Module } from 'src/domain-0006/domain-0006.module';
-import { Domain0007Module } from 'src/domain-0007/domain-0007.module';
 
+import { Domain0006Module } from '../domain-0006/domain-0006.module';
+import { Domain0007Module } from '../domain-0007/domain-0007.module';
 import { Domain0005 } from './domain-0005.entity';
 import { Domain0005Resolver } from './domain-0005.resolver';
 import { Domain0005Service } from './domain-0005.service';

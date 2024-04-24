@@ -1,11 +1,11 @@
 import { InputType, OmitType } from '@nestjs/graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
-import { DeepNullable } from 'src/common/nullable.interface';
-import { ToWhereInputType } from 'src/common/to-where-input-type';
-import { TypeField } from 'src/common/type-field.decorator';
-import { Domain0006WhereInput } from 'src/domain-0006/dto/domain-0006-where.input';
 import { FindOptionsWhere } from 'typeorm';
 
+import { DeepNullable } from '../../common/nullable.interface';
+import { ToWhereInputType } from '../../common/to-where-input-type';
+import { TypeField } from '../../common/type-field.decorator';
+import { Domain0006WhereInput } from '../../domain-0006/dto/domain-0006-where.input';
 import { Domain0005 } from '../domain-0005.entity';
 
 @InputType()

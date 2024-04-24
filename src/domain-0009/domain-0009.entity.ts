@@ -1,10 +1,11 @@
 import { ObjectType } from '@nestjs/graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
-import { ColumnField } from 'src/common/column-field.decorator';
-import { MetaEntity } from 'src/common/meta.entity';
-import { OneToManyField } from 'src/common/one-to-many-field.decorator';
-import { Domain0010 } from 'src/domain-0010/domain-0010.entity';
 import { Entity } from 'typeorm';
+
+import { ColumnField } from '../common/column-field.decorator';
+import { MetaEntity } from '../common/meta.entity';
+import { OneToManyField } from '../common/one-to-many-field.decorator';
+import { Domain0010 } from '../domain-0010/domain-0010.entity';
 
 @Entity()
 @ObjectType({ implements: [MetaEntity] })

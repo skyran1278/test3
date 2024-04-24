@@ -9,9 +9,9 @@ import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { GraphQLContext } from 'src/common/graphql-context.interface';
-import { User } from 'src/user/user.entity';
 
+import { GraphQLContext } from '../common/graphql-context.interface';
+import { User } from '../user/user.entity';
 import { NoAuthentication } from './no-authentication.decorator';
 
 @Injectable()

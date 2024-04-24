@@ -1,11 +1,11 @@
 import { ObjectType } from '@nestjs/graphql';
 import Decimal from 'decimal.js';
 import { Maybe } from 'graphql/jsutils/Maybe';
-import { ColumnField } from 'src/common/column-field.decorator';
-import { MetaEntity } from 'src/common/meta.entity';
-import { VirtualColumnField } from 'src/common/virtual-column-field.decorator';
 import { Entity } from 'typeorm';
 
+import { ColumnField } from '../common/column-field.decorator';
+import { MetaEntity } from '../common/meta.entity';
+import { VirtualColumnField } from '../common/virtual-column-field.decorator';
 import { Domain0003StatusEnum } from './domain-0003-status.enum';
 
 @Entity()
@@ -62,7 +62,7 @@ export class Domain0003 extends MetaEntity {
       FROM
         "domain0003"
       WHERE
-        "id" = ${alias}.id`,
+        "id" = "${alias}"."id"`,
   })
   domain0003009?: Maybe<number>;
 

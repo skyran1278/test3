@@ -1,7 +1,6 @@
 import { Logger } from '@nestjs/common';
 import { validate } from 'class-validator';
 import { GraphQLError } from 'graphql';
-import { als } from 'src/als/als.service';
 import {
   EntitySubscriberInterface,
   EventSubscriber,
@@ -10,6 +9,7 @@ import {
   UpdateEvent,
 } from 'typeorm';
 
+import { als } from '../als/als.service';
 import { MetaEntity } from './meta.entity';
 
 @EventSubscriber()

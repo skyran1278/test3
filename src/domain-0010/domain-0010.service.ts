@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BaseService } from 'src/common/base.service';
 import { Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
 
+import { BaseService } from '../common/base.service';
 import { Domain0010 } from './domain-0010.entity';
 import { CreateDomain0010Input } from './dto/create-domain-0010.input';
 import { Domain0010PageArgs } from './dto/domain-0010-page.args';
