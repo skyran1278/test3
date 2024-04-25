@@ -1,3 +1,4 @@
 {
-  "cSpell.words": ["bullmq", "mpath", "varchar"]
+  "cSpell.words": ["bullmq", "mpath", "varchar"],
+  "typescript.preferences.importModuleSpecifier": "relative"
 }
