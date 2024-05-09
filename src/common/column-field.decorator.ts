@@ -10,7 +10,7 @@ import {
   ReturnTypeFuncValue,
 } from '@nestjs/graphql';
 import { Transform, Type } from 'class-transformer';
-import { IsOptional } from 'class-validator';
+import { IsOptional, isNumberString } from 'class-validator';
 import Decimal from 'decimal.js';
 import { DateResolver, JSONObjectResolver } from 'graphql-scalars';
 import { Column, ColumnOptions } from 'typeorm';
@@ -113,9 +113,13 @@ function getClassValidatorDecorators(options: ColumnAndFieldOptions) {
   if (options.type === 'decimal') {
     decorators.push(
       Type(() => String),
-      Transform(({ value }) => (value ? new Decimal(value as string) : null), {
-        toClassOnly: true,
-      }),
+      Transform(
+        ({ value }: { value: string }) =>
+          isNumberString(value) ? new Decimal(value) : value,
+        {
+          toClassOnly: true,
+        },
+      ),
     );
   }
 
