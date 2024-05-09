@@ -4,6 +4,10 @@
 # install package
 $ pnpm install
 
+# start docker
+docker-compose down --remove-orphans
+docker-compose up -d
+
 # run migration
 $ pnpm run migration:run
 
