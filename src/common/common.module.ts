@@ -1,16 +1,18 @@
 import { Global, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 
+import { AlsModule } from '../als/als.module';
 import { RepoProxy } from '../common/repo.proxy';
 import { UserModule } from '../user/user.module';
+import { LoggingInterceptor } from './logging.interceptor';
 import { MetaEntityResolver } from './meta.resolver';
 import { WinstonLogger } from './winston-logger.service';
 
 @Global()
 @Module({
   imports: [
-    UserModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -18,8 +20,26 @@ import { WinstonLogger } from './winston-logger.service';
         secret: configService.get('JWT_SECRET'),
       }),
     }),
+    AlsModule,
+    UserModule,
   ],
-  providers: [RepoProxy, MetaEntityResolver, WinstonLogger],
+  providers: [
+    {
+      /**
+       * @see https://docs.nestjs.com/interceptors
+       * When using this approach to perform dependency injection for the interceptor,
+       * note that regardless of the module where this construction is employed,
+       * the interceptor is, in fact, global.
+       * Where should this be done?
+       * Choose the module where the interceptor is defined.
+       */
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
+    },
+    MetaEntityResolver,
+    RepoProxy,
+    WinstonLogger,
+  ],
   exports: [RepoProxy, WinstonLogger],
 })
 export class CommonModule {}

@@ -14,6 +14,7 @@ import { DataSource } from 'typeorm';
 import { addTransactionalDataSource } from 'typeorm-transactional';
 
 import { AlsMiddleware } from './als/als.middleware';
+import { AlsModule } from './als/als.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
@@ -87,6 +88,8 @@ import { UserModule } from './user/user.module';
         },
       }),
     }),
+    // AlsModule should be imported before any other module that uses als
+    AlsModule,
     CommonModule,
     UserModule,
     AuthModule,
