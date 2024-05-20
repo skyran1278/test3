@@ -3,7 +3,6 @@ import { Job } from 'bullmq';
 import { Transactional } from 'typeorm-transactional';
 
 import { RunAls } from '../als/als.decorator';
-import { AlsService } from '../als/als.service';
 import { QueueEnum } from '../common/queue.enum';
 import { Domain0015Service } from './domain-0015.service';
 import {
@@ -14,10 +13,7 @@ import { Domain0015JobEnum } from './dto/domain-0015-job.enum';
 
 @Processor(QueueEnum.DOMAIN0015)
 export class Domain0015Processor extends WorkerHost {
-  constructor(
-    private readonly domain0015Service: Domain0015Service,
-    private readonly alsService: AlsService,
-  ) {
+  constructor(private readonly domain0015Service: Domain0015Service) {
     super();
   }
 
@@ -35,8 +31,7 @@ export class Domain0015Processor extends WorkerHost {
   async createDomain0015(
     job: Job<CreateDomain0015JobInput>,
   ): Promise<CreateDomain0015JobOutput> {
-    const { input, user } = job.data;
-    this.alsService.set('user', user);
+    const { input } = job.data;
 
     const domain0015 = await this.domain0015Service.save(input);
 
