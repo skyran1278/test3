@@ -16,8 +16,8 @@ export class LoggingInterceptor implements NestInterceptor {
   constructor(private readonly alsService: AlsService) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
-    const requestId = this.alsService.get('id');
-    const logger = new Logger(`StreamId: ${requestId}`);
+    const requestId = this.alsService.get('requestId');
+    const logger = new Logger(`RequestId: ${requestId}`);
 
     const ctx = GqlExecutionContext.create(context);
     const gqlContext: GraphQLContext = ctx.getContext();
