@@ -1,3 +1,5 @@
+import { randomUUID } from 'crypto';
+
 import { applyDecorators } from '@nestjs/common';
 import { Job } from 'bullmq';
 
@@ -8,7 +10,7 @@ export function QueueAls() {
   return applyDecorators(
     RunAls({
       setup: (alsService, job: Job<JobInput>) => {
-        alsService.set('requestId', job.id);
+        alsService.set('requestId', job.id ?? randomUUID());
         alsService.set('user', job.data.user);
       },
     }),

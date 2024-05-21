@@ -19,12 +19,9 @@ export class AlsService {
     return store;
   }
 
-  public get<T extends keyof AlsStore>(key: T): NonNullable<AlsStore[T]> {
+  public get<T extends keyof AlsStore>(key: T): AlsStore[T] {
     const store = this.getStore();
     const value = store[key];
-    if (value == null) {
-      throw new Error(`No key found for ${key}`);
-    }
     return value;
   }
 

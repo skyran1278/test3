@@ -1,3 +1,4 @@
+import { AlsStore } from './als-store.interface';
 import { AlsService, als } from './als.service';
 
 interface RunAlsOptions<T extends unknown[]> {
@@ -18,7 +19,7 @@ export function RunAls<T extends unknown[]>(options?: RunAlsOptions<T>) {
     }
 
     descriptor.value = function (...args: T) {
-      return als.run<unknown>({}, async () => {
+      return als.run<unknown>({} as AlsStore, async () => {
         if (options?.setup) {
           await options.setup.apply(this, [als, ...args]);
         }
