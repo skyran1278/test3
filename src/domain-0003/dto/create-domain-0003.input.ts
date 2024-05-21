@@ -6,5 +6,5 @@ import { Domain0003 } from '../domain-0003.entity';
 @InputType()
 export class CreateDomain0003Input extends OmitType(
   ToCreateInputType(Domain0003),
-  [],
+  ['domain0003009'],
 ) {}

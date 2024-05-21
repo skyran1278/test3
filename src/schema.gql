@@ -36,9 +36,6 @@ input CreateDomain0003Input {
   """json"""
   domain0003008: JSONObject
 
-  """VirtualColumn"""
-  domain0003009: Int!
-
   """Array<int>"""
   domain0003011: [Int!]
 }
@@ -719,9 +716,6 @@ input UpdateDomain0003Input {
 
   """json"""
   domain0003008: JSONObject
-
-  """VirtualColumn"""
-  domain0003009: Int
 
   """Array<int>"""
   domain0003011: [Int!]
