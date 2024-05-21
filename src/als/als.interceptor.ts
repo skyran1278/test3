@@ -25,6 +25,10 @@ export class AlsInterceptor implements NestInterceptor {
     if (user) {
       this.alsService.set('user', user);
     }
+    const input = JSON.stringify(gqlContext.req?.body);
+    if (input) {
+      this.alsService.set('input', input);
+    }
 
     return next.handle();
   }

@@ -5,11 +5,16 @@ import {
   EntitySubscriberInterface,
   EventSubscriber,
   InsertEvent,
+  RecoverEvent,
+  RemoveEvent,
   SoftRemoveEvent,
+  TransactionCommitEvent,
   UpdateEvent,
 } from 'typeorm';
 
 import { als } from '../als/als.service';
+import { AuditActionEnum } from '../audit-log/audit-action.enum';
+import { AuditLog } from '../audit-log/audit-log.entity';
 import { MetaEntity } from './meta.entity';
 
 @EventSubscriber()
@@ -59,6 +64,85 @@ export class MetaEntitySubscriber
         repo.create({ deletedUserId: entity.deletedUserId }),
       );
     }
+  }
+
+  beforeTransactionCommit(event: TransactionCommitEvent) {
+    const auditLogs = als.get('auditLogs') ?? [];
+    if (auditLogs.length === 0) return;
+
+    const auditLogRepo = event.manager.getRepository(AuditLog);
+    return auditLogRepo.save(auditLogs);
+  }
+
+  afterInsert(event: InsertEvent<MetaEntity>) {
+    const { entity } = event;
+    this.addAuditLog(event, AuditActionEnum.INSERT, entity.id, entity);
+  }
+
+  afterUpdate(event: UpdateEvent<MetaEntity>) {
+    const previousEntity = event.databaseEntity;
+    const newEntity = event.entity;
+
+    this.addAuditLog(event, AuditActionEnum.UPDATE, previousEntity.id, {
+      previousEntity,
+      newEntity,
+      updatedColumns: event.updatedColumns,
+    });
+  }
+
+  afterSoftRemove(event: SoftRemoveEvent<MetaEntity>) {
+    const { entity } = event;
+    if (!entity) {
+      throw new Error('Entity is not found in the afterSoftRemove event.');
+    }
+    this.addAuditLog(event, AuditActionEnum.SOFT_REMOVE, entity.id, entity);
+  }
+
+  afterRemove(event: RemoveEvent<MetaEntity>) {
+    const { entity } = event;
+    if (!entity) {
+      throw new Error('Entity is not found in the afterRemove event.');
+    }
+    this.addAuditLog(event, AuditActionEnum.REMOVE, entity.id, entity);
+  }
+
+  afterRecover(event: RecoverEvent<MetaEntity>) {
+    const { entity } = event;
+    if (!entity) {
+      throw new Error('Entity is not found in the afterRecover event.');
+    }
+    this.addAuditLog(event, AuditActionEnum.RECOVER, entity.id, entity);
+  }
+
+  private addAuditLog(
+    event:
+      | InsertEvent<MetaEntity>
+      | UpdateEvent<MetaEntity>
+      | SoftRemoveEvent<MetaEntity>
+      | RemoveEvent<MetaEntity>
+      | RecoverEvent<MetaEntity>,
+    auditAction: AuditActionEnum,
+    entityId: string,
+    entityDetail: object,
+  ) {
+    const requestId = als.get('requestId');
+    const user = als.get('user');
+    const input = als.get('input');
+    const auditLogs = als.get('auditLogs') ?? [];
+
+    const auditLogRepo = event.manager.getRepository(AuditLog);
+
+    const auditLog = auditLogRepo.create({
+      requestId,
+      userId: user.id,
+      input,
+      tableName: event.metadata.tableName,
+      action: auditAction,
+      entityId: entityId,
+      entityDetail: entityDetail,
+    });
+
+    als.set('auditLogs', [...auditLogs, auditLog]);
   }
 
   private isMetaEntity(entity: unknown): entity is MetaEntity {

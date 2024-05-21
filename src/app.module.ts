@@ -17,6 +17,7 @@ import { AlsMiddleware } from './als/als.middleware';
 import { AlsModule } from './als/als.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuditLogModule } from './audit-log/audit-log.module';
 import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { Domain0001Module } from './domain-0001/domain-0001.module';
@@ -91,6 +92,7 @@ import { UserModule } from './user/user.module';
     // AlsModule should be imported before any other module that uses als
     AlsModule,
     CommonModule,
+    AuditLogModule,
     UserModule,
     AuthModule,
     Domain0001Module,
