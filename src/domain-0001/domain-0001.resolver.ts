@@ -3,6 +3,7 @@ import { Maybe } from 'graphql/jsutils/Maybe';
 import { Transactional } from 'typeorm-transactional';
 
 import { Domain0001 } from './domain-0001.entity';
+import { Domain0001Repository } from './domain-0001.repository';
 import { Domain0001Service } from './domain-0001.service';
 import { CreateDomain0001Input } from './mutation/create-domain-0001.input';
 import { CreateDomain0001Output } from './mutation/create-domain-0001.output';
@@ -15,7 +16,10 @@ import { Domain0001Page } from './query/domain-0001-page.type';
 
 @Resolver(() => Domain0001)
 export class Domain0001Resolver {
-  constructor(private readonly domain0001Service: Domain0001Service) {}
+  constructor(
+    private readonly domain0001Repository: Domain0001Repository,
+    private readonly domain0001Service: Domain0001Service,
+  ) {}
 
   @Transactional()
   @Mutation(() => CreateDomain0001Output)
@@ -37,7 +41,7 @@ export class Domain0001Resolver {
   domain0001(
     @Args('id', { type: () => ID }) id: string,
   ): Promise<Maybe<Domain0001>> {
-    return this.domain0001Service.findOne({ where: { id } });
+    return this.domain0001Repository.findOne({ where: { id } });
   }
 
   @Transactional()
