@@ -1,9 +1,15 @@
 import { AsyncLocalStorage } from 'async_hooks';
 
+import { InternalServerErrorException } from '@nestjs/common';
+
 import { AlsStore } from './als-store.interface';
 
 export class AlsService {
   private static als = new AsyncLocalStorage<AlsStore>();
+
+  isActive() {
+    return !!AlsService.als.getStore();
+  }
 
   public run<T>(store: AlsStore, fn: () => T): T {
     return AlsService.als.run(store, fn);
@@ -12,7 +18,7 @@ export class AlsService {
   private getStore(): AlsStore {
     const store = AlsService.als.getStore();
     if (!store) {
-      throw new Error(
+      throw new InternalServerErrorException(
         'No store found. Please make sure to run the function within the context of the AsyncLocalStorage.',
       );
     }
