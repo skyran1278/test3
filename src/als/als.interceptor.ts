@@ -22,14 +22,17 @@ export class AlsInterceptor implements NestInterceptor {
 
       const ctx = GqlExecutionContext.create(context);
       const gqlContext: GraphQLContext = ctx.getContext();
+
       const user = gqlContext.user;
       if (user) {
         this.alsService.set('user', user);
       }
-      const input = JSON.stringify(gqlContext.req?.body);
-      if (input) {
-        this.alsService.set('input', input);
-      }
+
+      const input = JSON.stringify({
+        originalUrl: gqlContext.req.originalUrl,
+        body: gqlContext.req.body as unknown,
+      });
+      this.alsService.set('input', input);
     }
 
     return next.handle();
