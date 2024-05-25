@@ -112,7 +112,6 @@ export class AppModule {
     // bind the middleware,
     consumer
       .apply(AlsMiddleware)
-      .exclude('')
       // and register it for all routes (in case of Fastify use '(.*)')
       .forRoutes('*');
   }
