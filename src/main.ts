@@ -8,6 +8,7 @@ import {
 } from 'typeorm-transactional';
 
 import { AppModule } from './app.module';
+import { CustomValidationError } from './error/custom-validation.error';
 
 async function bootstrap() {
   initializeTransactionalContext({ storageDriver: StorageDriver.AUTO });
@@ -24,8 +25,14 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
-      disableErrorMessages:
-        configService.get<string>('NODE_ENV') === 'production',
+      exceptionFactory: (errors) => {
+        const disableErrorMessages =
+          configService.get<string>('NODE_ENV') === 'production';
+        if (disableErrorMessages) {
+          return new CustomValidationError();
+        }
+        return new CustomValidationError(errors);
+      },
     }),
   );
 

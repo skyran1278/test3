@@ -5,7 +5,7 @@ import { CustomError } from './custom.error';
 import { ErrorReasonEnum } from './error-reason.enum';
 
 export class CustomValidationError extends CustomError {
-  constructor(errors: readonly ValidationError[]) {
+  constructor(errors?: readonly ValidationError[]) {
     const detail = errors
       ?.filter((item) => !!item.constraints)
       .flatMap(
