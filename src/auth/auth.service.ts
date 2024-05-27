@@ -1,10 +1,11 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
 
 import { BaseService } from '../common/base.service';
+import { CustomAuthenticationError } from '../error/custom-authentication.error';
 import { User } from '../user/user.entity';
 import { UserService } from '../user/user.service';
 import { SignInInput } from './mutation/sign-in.input';
@@ -28,7 +29,7 @@ export class AuthService extends BaseService<User> {
     });
 
     if (user?.user002 !== input.user002) {
-      throw new UnauthorizedException();
+      throw new CustomAuthenticationError('Invalid password.');
     }
 
     const { user002, ...payload } = user;
