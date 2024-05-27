@@ -27,13 +27,19 @@ export class CustomError extends HttpException {
    * @param details Additional information about the error.
    * @param cause This helps in maintaining a chain of errors, providing more context about the error's origin.
    */
-  constructor(
-    message: string,
-    httpErrorCode: HttpStatus,
-    reason?: ErrorReasonEnum,
-    detail?: unknown,
-    cause?: Error,
-  ) {
+  constructor({
+    message,
+    httpErrorCode,
+    reason,
+    detail,
+    cause,
+  }: {
+    message: string;
+    httpErrorCode: HttpStatus;
+    reason?: ErrorReasonEnum;
+    detail?: unknown;
+    cause?: Error;
+  }) {
     const response: CustomHttpExceptionBody = {
       message,
       statusCode: httpErrorCode,
