@@ -1,6 +1,4 @@
-import assert from 'assert';
-
-import { applyDecorators } from '@nestjs/common';
+import { NotImplementedException, applyDecorators } from '@nestjs/common';
 import {
   Field,
   FieldOptions,
@@ -15,6 +13,7 @@ import Decimal from 'decimal.js';
 import { DateResolver, JSONObjectResolver } from 'graphql-scalars';
 import { Column, ColumnOptions } from 'typeorm';
 
+import { InvalidArgumentError } from '../error/invalid-argument.error';
 import DecimalScalar from './decimal.scalar';
 import { DecimalTransformer } from './decimal.transformer';
 
@@ -70,7 +69,10 @@ function getReturnTypeFunc(
     }
     case 'enum': {
       const EnumClass = options.enum;
-      assert(EnumClass, 'enumClass is required');
+      if (!EnumClass)
+        throw new InvalidArgumentError(
+          'Argument `options.enum` is required when options.type is enum.',
+        );
       returnTypeFunc = () => EnumClass;
       break;
     }
@@ -95,7 +97,9 @@ function getReturnTypeFunc(
     }
 
     default:
-      throw new Error(`type ${options?.type?.toString()} not support`);
+      throw new NotImplementedException(
+        `Type \`${options?.type?.toString()}\` is not support.`,
+      );
   }
 
   if (options.array) {
