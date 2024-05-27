@@ -1,4 +1,8 @@
-import { NotImplementedException, applyDecorators } from '@nestjs/common';
+import {
+  InternalServerErrorException,
+  NotImplementedException,
+  applyDecorators,
+} from '@nestjs/common';
 import {
   Field,
   FieldOptions,
@@ -13,7 +17,6 @@ import Decimal from 'decimal.js';
 import { DateResolver, JSONObjectResolver } from 'graphql-scalars';
 import { Column, ColumnOptions } from 'typeorm';
 
-import { InvalidArgumentError } from '../error/invalid-argument.error';
 import DecimalScalar from './decimal.scalar';
 import { DecimalTransformer } from './decimal.transformer';
 
@@ -70,7 +73,7 @@ function getReturnTypeFunc(
     case 'enum': {
       const EnumClass = options.enum;
       if (!EnumClass)
-        throw new InvalidArgumentError(
+        throw new InternalServerErrorException(
           'Argument `options.enum` is required when options.type is enum.',
         );
       returnTypeFunc = () => EnumClass;
