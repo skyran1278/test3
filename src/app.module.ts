@@ -34,6 +34,7 @@ import { Domain0009Module } from './domain-0009/domain-0009.module';
 import { Domain0010Module } from './domain-0010/domain-0010.module';
 import { Domain0015Module } from './domain-0015/domain-0015.module';
 import { CustomHttpExceptionBody } from './error/custom.error';
+import { ErrorModule } from './error/error.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -117,6 +118,7 @@ import { UserModule } from './user/user.module';
     AuditLogModule,
     UserModule,
     AuthModule,
+    ErrorModule,
     Domain0001Module,
     Domain0009Module,
     Domain0010Module,
