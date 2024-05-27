@@ -6,10 +6,15 @@ import {
 } from '@apollo/server/plugin/landingPage/default';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { BullModule } from '@nestjs/bullmq';
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import {
+  InternalServerErrorException,
+  MiddlewareConsumer,
+  Module,
+} from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { GraphQLFormattedError } from 'graphql';
 import { DataSource } from 'typeorm';
 import { addTransactionalDataSource } from 'typeorm-transactional';
 
@@ -28,6 +33,8 @@ import { Domain0007Module } from './domain-0007/domain-0007.module';
 import { Domain0009Module } from './domain-0009/domain-0009.module';
 import { Domain0010Module } from './domain-0010/domain-0010.module';
 import { Domain0015Module } from './domain-0015/domain-0015.module';
+import { CustomHttpExceptionBody } from './error/custom.error';
+import { ErrorModule } from './error/error.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -51,7 +58,9 @@ import { UserModule } from './user/user.module';
       }),
       dataSourceFactory(options) {
         if (!options) {
-          throw new Error('Invalid options passed');
+          throw new InternalServerErrorException(
+            'Invalid options passed to dataSourceFactory.',
+          );
         }
 
         return Promise.resolve(
@@ -76,6 +85,20 @@ import { UserModule } from './user/user.module';
           sortSchema: true,
           playground: false,
           plugins,
+          formatError(
+            formattedError: GraphQLFormattedError,
+          ): GraphQLFormattedError {
+            const originalError = formattedError.extensions
+              ?.originalError as CustomHttpExceptionBody;
+            return {
+              ...formattedError,
+              extensions: {
+                ...formattedError.extensions,
+                reason: originalError?.reason,
+                detail: originalError?.detail,
+              },
+            };
+          },
         };
       },
     }),
@@ -95,6 +118,7 @@ import { UserModule } from './user/user.module';
     AuditLogModule,
     UserModule,
     AuthModule,
+    ErrorModule,
     Domain0001Module,
     Domain0009Module,
     Domain0010Module,

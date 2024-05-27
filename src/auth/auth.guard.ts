@@ -1,16 +1,11 @@
-import { AuthenticationError } from '@nestjs/apollo';
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 
 import { GraphQLContext } from '../common/graphql-context.interface';
+import { CustomAuthenticationError } from '../error/custom-authentication.error';
 import { User } from '../user/user.entity';
 import { NoAuthentication } from './no-authentication.decorator';
 
@@ -47,7 +42,7 @@ export class AuthGuard implements CanActivate {
 
     const token = this.extractTokenFromHeader(gqlContext.req);
     if (!token) {
-      throw new AuthenticationError('Unauthenticated');
+      throw new CustomAuthenticationError();
     }
     try {
       const user = this.jwtService.verify<User>(token);
@@ -57,7 +52,7 @@ export class AuthGuard implements CanActivate {
         updatedAt: new Date(user.updatedAt),
       };
     } catch {
-      throw new UnauthorizedException();
+      throw new CustomAuthenticationError();
     }
     return true;
   }

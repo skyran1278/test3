@@ -1,4 +1,5 @@
 import { OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
+import { NotImplementedException } from '@nestjs/common';
 import { Job } from 'bullmq';
 import { Transactional } from 'typeorm-transactional';
 
@@ -24,7 +25,7 @@ export class Domain0015Processor extends WorkerHost {
       case Domain0015JobEnum.CREATE_DOMAIN0015_JOB:
         return this.createDomain0015(job as Job<CreateDomain0015JobInput>);
       default:
-        throw new Error(`Unknown job name`);
+        throw new NotImplementedException(`Unknown job name.`);
     }
   }
 

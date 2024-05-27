@@ -1,6 +1,5 @@
-import { Logger } from '@nestjs/common';
+import { Logger, NotFoundException } from '@nestjs/common';
 import { validate } from 'class-validator';
-import { GraphQLError } from 'graphql';
 import {
   EntitySubscriberInterface,
   EventSubscriber,
@@ -15,6 +14,7 @@ import {
 import { als } from '../als/als.service';
 import { AuditActionEnum } from '../audit-log/audit-action.enum';
 import { AuditLog } from '../audit-log/audit-log.entity';
+import { CustomValidationError } from '../error/custom-validation.error';
 import { MetaEntity } from './meta.entity';
 
 @EventSubscriber()
@@ -93,7 +93,9 @@ export class MetaEntitySubscriber
   afterSoftRemove(event: SoftRemoveEvent<MetaEntity>) {
     const { entity } = event;
     if (!entity) {
-      throw new Error('Entity is not found in the afterSoftRemove event.');
+      throw new NotFoundException(
+        'Entity is not found in the afterSoftRemove event.',
+      );
     }
     this.addAuditLog(event, AuditActionEnum.SOFT_REMOVE, entity.id, entity);
   }
@@ -101,7 +103,9 @@ export class MetaEntitySubscriber
   afterRemove(event: RemoveEvent<MetaEntity>) {
     const { entity } = event;
     if (!entity) {
-      throw new Error('Entity is not found in the afterRemove event.');
+      throw new NotFoundException(
+        'Entity is not found in the afterRemove event.',
+      );
     }
     this.addAuditLog(event, AuditActionEnum.REMOVE, entity.id, entity);
   }
@@ -109,7 +113,9 @@ export class MetaEntitySubscriber
   afterRecover(event: RecoverEvent<MetaEntity>) {
     const { entity } = event;
     if (!entity) {
-      throw new Error('Entity is not found in the afterRecover event.');
+      throw new NotFoundException(
+        'Entity is not found in the afterRecover event.',
+      );
     }
     this.addAuditLog(event, AuditActionEnum.RECOVER, entity.id, entity);
   }
@@ -199,7 +205,9 @@ export class MetaEntitySubscriber
           ],
         },
       });
-      throw new GraphQLError('Entity is not an instance of MetaEntity.');
+      throw new TypeError(
+        `Entity ${JSON.stringify(entity)} is not an instance of MetaEntity.`,
+      );
     }
 
     return true;
@@ -212,12 +220,10 @@ export class MetaEntitySubscriber
 
     if (!errors.length) return;
 
-    this.logger.verbose({
+    this.logger.error({
       'class-validator validation failed': { entity, errors },
     });
 
-    throw new GraphQLError('class-validator validation failed', {
-      extensions: { errors },
-    });
+    throw new CustomValidationError(errors);
   }
 }

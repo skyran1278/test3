@@ -1,6 +1,8 @@
-import assert from 'assert';
-
-import { applyDecorators } from '@nestjs/common';
+import {
+  InternalServerErrorException,
+  NotImplementedException,
+  applyDecorators,
+} from '@nestjs/common';
 import {
   Field,
   FieldOptions,
@@ -70,7 +72,10 @@ function getReturnTypeFunc(
     }
     case 'enum': {
       const EnumClass = options.enum;
-      assert(EnumClass, 'enumClass is required');
+      if (!EnumClass)
+        throw new InternalServerErrorException(
+          'Argument `options.enum` is required when options.type is enum.',
+        );
       returnTypeFunc = () => EnumClass;
       break;
     }
@@ -95,7 +100,9 @@ function getReturnTypeFunc(
     }
 
     default:
-      throw new Error(`type ${options?.type?.toString()} not support`);
+      throw new NotImplementedException(
+        `Type \`${options?.type?.toString()}\` is not support.`,
+      );
   }
 
   if (options.array) {
