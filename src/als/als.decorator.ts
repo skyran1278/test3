@@ -1,3 +1,5 @@
+import { InternalServerErrorException } from '@nestjs/common';
+
 import { AlsStore } from './als-store.interface';
 import { AlsService, als } from './als.service';
 
@@ -13,7 +15,7 @@ export function RunAls<T extends unknown[]>(options?: RunAlsOptions<T>) {
   ) => {
     const originalMethod: unknown = descriptor.value;
     if (typeof originalMethod !== 'function') {
-      throw new Error(
+      throw new InternalServerErrorException(
         `The @RunAls decorator can be only used on functions, but ${key.toString()} is not a function.`,
       );
     }
