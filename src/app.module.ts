@@ -6,7 +6,11 @@ import {
 } from '@apollo/server/plugin/landingPage/default';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { BullModule } from '@nestjs/bullmq';
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import {
+  InternalServerErrorException,
+  MiddlewareConsumer,
+  Module,
+} from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -53,7 +57,9 @@ import { UserModule } from './user/user.module';
       }),
       dataSourceFactory(options) {
         if (!options) {
-          throw new Error('Invalid options passed');
+          throw new InternalServerErrorException(
+            'Invalid options passed to dataSourceFactory.',
+          );
         }
 
         return Promise.resolve(
