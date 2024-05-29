@@ -89,9 +89,6 @@
       "json",
       "ts"
     ],
-    "setupFiles": [
-      "./jest-setup-file.ts"
-    ],
     "rootDir": "src",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
