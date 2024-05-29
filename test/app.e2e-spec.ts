@@ -1,4 +1,5 @@
 import { INestApplication } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import request from 'supertest';
 import {
@@ -55,10 +56,13 @@ describe('AppController (e2e)', () => {
   });
 
   it('/graphql (POST)', () => {
+    const configService = app.get(ConfigService);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     return request(app.getHttpServer())
       .post('/graphql')
-      .set({ Authorization: process.env.AUTHORIZATION_TOKEN ?? '' })
+      .set({
+        Authorization: configService.get<string>('AUTHORIZATION_TOKEN') ?? '',
+      })
       .send({
         query:
           'mutation CreateDomain0001($input: CreateDomain0001Input!) {\n  createDomain0001(input: $input) {\n    domain0001 {\n      createdUser {\n        id\n      }\n      createdUserId\n      createdAt\n      domain0001001\n      id\n      updatedUser {\n        id\n      }\n      updatedUserId\n      updatedAt\n    }\n  }\n}',
