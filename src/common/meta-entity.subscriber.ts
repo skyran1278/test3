@@ -86,38 +86,47 @@ export class MetaEntitySubscriber
     this.addAuditLog(event, AuditActionEnum.UPDATE, previousEntity.id, {
       previousEntity,
       newEntity,
-      updatedColumns: event.updatedColumns,
+      updatedColumns: event.updatedColumns.map((column) => column.propertyName),
     });
   }
 
   afterSoftRemove(event: SoftRemoveEvent<MetaEntity>) {
-    const { entity } = event;
-    if (!entity) {
-      throw new NotFoundException(
-        'Entity is not found in the afterSoftRemove event.',
-      );
-    }
-    this.addAuditLog(event, AuditActionEnum.SOFT_REMOVE, entity.id, entity);
+    this.removeKindEventAuditLog(event, AuditActionEnum.SOFT_REMOVE);
   }
 
   afterRemove(event: RemoveEvent<MetaEntity>) {
-    const { entity } = event;
-    if (!entity) {
-      throw new NotFoundException(
-        'Entity is not found in the afterRemove event.',
-      );
-    }
-    this.addAuditLog(event, AuditActionEnum.REMOVE, entity.id, entity);
+    this.removeKindEventAuditLog(event, AuditActionEnum.REMOVE);
   }
 
   afterRecover(event: RecoverEvent<MetaEntity>) {
-    const { entity } = event;
-    if (!entity) {
-      throw new NotFoundException(
-        'Entity is not found in the afterRecover event.',
-      );
+    this.removeKindEventAuditLog(event, AuditActionEnum.RECOVER);
+  }
+
+  private removeKindEventAuditLog(
+    event:
+      | RemoveEvent<MetaEntity>
+      | SoftRemoveEvent<MetaEntity>
+      | RecoverEvent<MetaEntity>,
+    auditAction: AuditActionEnum,
+  ) {
+    const entity = event.entity;
+    const entityId = event.entityId as string | string[] | undefined;
+
+    if (!entityId) {
+      this.logger.error({
+        message: 'Entity is not found in the event.',
+        detail: { entityId, entity, auditAction },
+      });
+      throw new NotFoundException('Entity is not found in the event.');
     }
-    this.addAuditLog(event, AuditActionEnum.RECOVER, entity.id, entity);
+
+    if (entityId instanceof Array) {
+      return entityId.forEach((id) => {
+        this.addAuditLog(event, auditAction, id, entity ?? {});
+      });
+    }
+
+    this.addAuditLog(event, auditAction, entityId, entity ?? {});
   }
 
   private addAuditLog(
@@ -145,7 +154,7 @@ export class MetaEntitySubscriber
       tableName: event.metadata.tableName,
       action: auditAction,
       entityId: entityId,
-      entityDetail: entityDetail,
+      entityDetail,
     });
 
     als.set('auditLogs', [...auditLogs, auditLog]);
