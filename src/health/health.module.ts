@@ -6,6 +6,7 @@ import { HealthController } from './health.controller';
 @Module({
   imports: [
     TerminusModule.forRoot({
+      logger: process.env.NODE_ENV !== 'test',
       errorLogStyle: 'pretty',
     }),
   ],

@@ -30,6 +30,7 @@ import { Domain0003Module } from './domain-0003/domain-0003.module';
 import { Domain0005Module } from './domain-0005/domain-0005.module';
 import { Domain0006Module } from './domain-0006/domain-0006.module';
 import { Domain0007Module } from './domain-0007/domain-0007.module';
+import { Domain0008Module } from './domain-0008/domain-0008.module';
 import { Domain0009Module } from './domain-0009/domain-0009.module';
 import { Domain0010Module } from './domain-0010/domain-0010.module';
 import { Domain0015Module } from './domain-0015/domain-0015.module';
@@ -37,11 +38,13 @@ import { CustomHttpExceptionBody } from './error/custom.error';
 import { ErrorModule } from './error/error.module';
 import { HealthModule } from './health/health.module';
 import { UserModule } from './user/user.module';
-import { Domain0008Module } from './domain-0008/domain-0008.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: process.env.NODE_ENV === 'test' ? '.env.test' : '.env',
+    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
