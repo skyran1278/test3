@@ -16,5 +16,6 @@ import { Domain0009Service } from './domain-0009.service';
     Domain0009ByIdLoader,
     Domain0009ByIdResolver,
   ],
+  exports: [Domain0009Service],
 })
 export class Domain0009Module {}

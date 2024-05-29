@@ -9,7 +9,10 @@ export class Domain0001Domain00151712017226595 implements MigrationInterface {
       `CREATE TABLE "domain0015" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "createdUserId" uuid, "updatedUserId" uuid, "deletedUserId" uuid, "domain0015001" integer, CONSTRAINT "PK_dc02d7db6f4f91c1d9744bad417" PRIMARY KEY ("id")); COMMENT ON COLUMN "domain0015"."domain0015001" IS 'domain0015001'`,
     );
     await queryRunner.query(
-      `CREATE TABLE "domain0009" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "createdUserId" uuid, "updatedUserId" uuid, "deletedUserId" uuid, "domain0009001" integer, CONSTRAINT "PK_e483c32c7c30e744636c5d407ea" PRIMARY KEY ("id")); COMMENT ON COLUMN "domain0009"."domain0009001" IS 'domain0009001'`,
+      `CREATE TABLE "domain0008" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "createdUserId" uuid, "updatedUserId" uuid, "deletedUserId" uuid, "domain0008001" integer, CONSTRAINT "PK_e52a5bac3f8cd885e2496f980ec" PRIMARY KEY ("id")); COMMENT ON COLUMN "domain0008"."domain0008001" IS 'domain0008001'`,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "domain0009" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "createdUserId" uuid, "updatedUserId" uuid, "deletedUserId" uuid, "domain0009001" integer, "domain0008Id" uuid NOT NULL, CONSTRAINT "PK_e483c32c7c30e744636c5d407ea" PRIMARY KEY ("id")); COMMENT ON COLUMN "domain0009"."domain0009001" IS 'domain0009001'`,
     );
     await queryRunner.query(
       `CREATE TABLE "domain0010" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "createdUserId" uuid, "updatedUserId" uuid, "deletedUserId" uuid, "domain0010001" integer, "domain0009Id" uuid NOT NULL, CONSTRAINT "PK_633fe903a5b0e5e79d28130d825" PRIMARY KEY ("id")); COMMENT ON COLUMN "domain0010"."domain0010001" IS 'domain0010001'`,
@@ -45,6 +48,15 @@ export class Domain0001Domain00151712017226595 implements MigrationInterface {
       `ALTER TABLE "domain0015" ADD CONSTRAINT "FK_1eef8e4d45ad62eb832ccd8777d" FOREIGN KEY ("deletedUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
+      `ALTER TABLE "domain0008" ADD CONSTRAINT "FK_034339afe30374f2e009b5e485f" FOREIGN KEY ("createdUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "domain0008" ADD CONSTRAINT "FK_95c1a239d8d659dfb8784831469" FOREIGN KEY ("updatedUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "domain0008" ADD CONSTRAINT "FK_b7580533f7b88e76c077e58579c" FOREIGN KEY ("deletedUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
       `ALTER TABLE "domain0009" ADD CONSTRAINT "FK_416705702d6235c0779e3d66e03" FOREIGN KEY ("createdUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
@@ -52,6 +64,9 @@ export class Domain0001Domain00151712017226595 implements MigrationInterface {
     );
     await queryRunner.query(
       `ALTER TABLE "domain0009" ADD CONSTRAINT "FK_e2028d9ad31b3c5d1f1152f9de6" FOREIGN KEY ("deletedUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "domain0009" ADD CONSTRAINT "FK_d30935eb5f635295e399c3fb636" FOREIGN KEY ("domain0008Id") REFERENCES "domain0008"("id") ON DELETE CASCADE ON UPDATE CASCADE`,
     );
     await queryRunner.query(
       `ALTER TABLE "domain0010" ADD CONSTRAINT "FK_bbb514803e8a4a9671887293e7e" FOREIGN KEY ("createdUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
@@ -264,10 +279,36 @@ export class Domain0001Domain00151712017226595 implements MigrationInterface {
 
     await queryRunner.query(sql`
       INSERT INTO
-        public.domain0009 (id, domain0009001)
+        public.domain0008 (id, domain0008001)
       VALUES
-        ('0cbbc06c-95f5-4cc3-8646-5e4d27a69b33', 10),
-        ('c4347881-40d0-42c2-8996-44f2827acab7', 20);
+        ('447d9055-317b-40e7-972a-53b8adc0c5c3', 100),
+        ('3d9ba46f-8247-4982-930f-cda360c00de3', 200);
+    `);
+
+    await queryRunner.query(sql`
+      INSERT INTO
+        public.domain0009 (id, domain0009001, "domain0008Id")
+      VALUES
+        (
+          '0cbbc06c-95f5-4cc3-8646-5e4d27a69b33',
+          110,
+          '447d9055-317b-40e7-972a-53b8adc0c5c3'
+        ),
+        (
+          'c4347881-40d0-42c2-8996-44f2827acab7',
+          120,
+          '447d9055-317b-40e7-972a-53b8adc0c5c3'
+        ),
+        (
+          'f1f4e4d4-4d9b-4b8a-9f0c-cda3e0c0d3e3',
+          210,
+          '3d9ba46f-8247-4982-930f-cda360c00de3'
+        ),
+        (
+          '22509176-56cf-4f7c-a7b0-fe6bc4f08a9c',
+          220,
+          '3d9ba46f-8247-4982-930f-cda360c00de3'
+        );
     `);
     await queryRunner.query(sql`
       INSERT INTO
@@ -275,23 +316,43 @@ export class Domain0001Domain00151712017226595 implements MigrationInterface {
       VALUES
         (
           '281edeb4-449a-4774-be78-b49558f02634',
-          11,
+          111,
           '0cbbc06c-95f5-4cc3-8646-5e4d27a69b33'
         ),
         (
           '10c32da9-54d4-48ed-ad5e-fc2d06c0ba93',
-          12,
+          112,
           '0cbbc06c-95f5-4cc3-8646-5e4d27a69b33'
         ),
         (
           'b3f3b4d5-4e3b-4b0d-8a9b-4b4b6c1d7b9b',
-          21,
+          121,
           'c4347881-40d0-42c2-8996-44f2827acab7'
         ),
         (
           'd4b1b7f4-5f8c-4b0b-8b3b-4b4b6c1d7b9b',
-          22,
+          122,
           'c4347881-40d0-42c2-8996-44f2827acab7'
+        ),
+        (
+          'dab1bb04-d764-4716-84a3-30d015388802',
+          211,
+          'f1f4e4d4-4d9b-4b8a-9f0c-cda3e0c0d3e3'
+        ),
+        (
+          '0b41d4cc-db4b-4497-9a70-d546e80f5c85',
+          212,
+          'f1f4e4d4-4d9b-4b8a-9f0c-cda3e0c0d3e3'
+        ),
+        (
+          'c4b4b6c1-d7b9-4b4b-8c1d-7b9b4b6c1d7b',
+          221,
+          '22509176-56cf-4f7c-a7b0-fe6bc4f08a9c'
+        ),
+        (
+          'b7354cb6-b555-47e0-974e-df651f7f0776',
+          222,
+          '22509176-56cf-4f7c-a7b0-fe6bc4f08a9c'
         );
     `);
   }
@@ -370,6 +431,9 @@ export class Domain0001Domain00151712017226595 implements MigrationInterface {
       `ALTER TABLE "domain0010" DROP CONSTRAINT "FK_bbb514803e8a4a9671887293e7e"`,
     );
     await queryRunner.query(
+      `ALTER TABLE "domain0009" DROP CONSTRAINT "FK_d30935eb5f635295e399c3fb636"`,
+    );
+    await queryRunner.query(
       `ALTER TABLE "domain0009" DROP CONSTRAINT "FK_e2028d9ad31b3c5d1f1152f9de6"`,
     );
     await queryRunner.query(
@@ -377,6 +441,15 @@ export class Domain0001Domain00151712017226595 implements MigrationInterface {
     );
     await queryRunner.query(
       `ALTER TABLE "domain0009" DROP CONSTRAINT "FK_416705702d6235c0779e3d66e03"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "domain0008" DROP CONSTRAINT "FK_b7580533f7b88e76c077e58579c"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "domain0008" DROP CONSTRAINT "FK_95c1a239d8d659dfb8784831469"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "domain0008" DROP CONSTRAINT "FK_034339afe30374f2e009b5e485f"`,
     );
     await queryRunner.query(
       `ALTER TABLE "domain0015" DROP CONSTRAINT "FK_1eef8e4d45ad62eb832ccd8777d"`,
@@ -398,6 +471,7 @@ export class Domain0001Domain00151712017226595 implements MigrationInterface {
     await queryRunner.query(`DROP TABLE "domain0005"`);
     await queryRunner.query(`DROP TABLE "domain0010"`);
     await queryRunner.query(`DROP TABLE "domain0009"`);
+    await queryRunner.query(`DROP TABLE "domain0008"`);
     await queryRunner.query(`DROP TABLE "domain0015"`);
   }
 }

@@ -3,20 +3,30 @@ import { Maybe } from 'graphql/jsutils/Maybe';
 import { Entity } from 'typeorm';
 
 import { ColumnField } from '../common/column-field.decorator';
+import { ManyToOneField } from '../common/many-to-one-field.decorator';
 import { MetaEntity } from '../common/meta.entity';
 import { OneToManyField } from '../common/one-to-many-field.decorator';
+import { Domain0008 } from '../domain-0008/domain-0008.entity';
 import { Domain0010 } from '../domain-0010/domain-0010.entity';
 
 @Entity()
 @ObjectType({ implements: [MetaEntity] })
 export class Domain0009 extends MetaEntity {
-  @ColumnField({ type: 'int', nullable: true, comment: 'domain0009001' })
-  domain0009001?: Maybe<number>;
+  @ColumnField({ type: 'uuid' })
+  domain0008Id!: string;
+  @ManyToOneField(() => Domain0008, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    orphanedRowAction: 'delete',
+  })
+  domain0008?: Domain0008;
 
   @OneToManyField(() => Domain0010, (item) => item.domain0009, {
     cascade: true,
     comment: 'OneToMany',
-    nullable: true,
   })
   domain0010s?: Domain0010[];
+
+  @ColumnField({ type: 'int', nullable: true, comment: 'domain0009001' })
+  domain0009001?: Maybe<number>;
 }

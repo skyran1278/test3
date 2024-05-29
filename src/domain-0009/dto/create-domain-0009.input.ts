@@ -8,7 +8,7 @@ import { Domain0009 } from '../domain-0009.entity';
 @InputType()
 export class CreateDomain0009Input extends OmitType(
   ToCreateInputType(Domain0009),
-  [],
+  ['domain0008Id'],
 ) {
   @TypeField(() => [CreateDomain0010Input], { description: 'domain0010s' })
   domain0010s?: CreateDomain0010Input[];

@@ -37,6 +37,7 @@ import { CustomHttpExceptionBody } from './error/custom.error';
 import { ErrorModule } from './error/error.module';
 import { HealthModule } from './health/health.module';
 import { UserModule } from './user/user.module';
+import { Domain0008Module } from './domain-0008/domain-0008.module';
 
 @Module({
   imports: [
@@ -129,6 +130,7 @@ import { UserModule } from './user/user.module';
     Domain0003Module,
     Domain0015Module,
     Domain0007Module,
+    Domain0008Module,
   ],
   controllers: [AppController],
   providers: [AppService],

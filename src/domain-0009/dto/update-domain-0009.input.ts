@@ -7,7 +7,7 @@ import { CreateDomain0009Input } from './create-domain-0009.input';
 @InputType()
 export class UpdateDomain0009Input extends OmitType(
   PartialType(CreateDomain0009Input),
-  ['domain0010s'],
+  [],
 ) {
   @Field(() => ID)
   id!: string;
