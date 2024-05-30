@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -94,8 +93,30 @@ describe('AppController (e2e)', () => {
 
     expect(body).toMatchObject({
       data: {
-        signIn: {
-          access_token: expect.any(String),
+        signIn: {},
+      },
+    });
+  });
+
+  it('/graphql me', async () => {
+    const body = await graphqlRequest(
+      `query Me {
+        me {
+          id
+          user001
+          updatedAt
+          createdAt
+        }
+      }`,
+    );
+
+    expect(body).toMatchObject({
+      data: {
+        me: {
+          id: '94107a27-4c24-4912-be7b-6f4b0b462acb',
+          user001: 1,
+          updatedAt: '2024-04-19T16:45:02.909Z',
+          createdAt: '2024-04-19T16:45:02.909Z',
         },
       },
     });
@@ -136,14 +157,11 @@ describe('AppController (e2e)', () => {
               id: '94107a27-4c24-4912-be7b-6f4b0b462acb',
             },
             createdUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
-            createdAt: expect.any(String),
             domain0001001: 1,
-            id: expect.any(String),
             updatedUser: {
               id: '94107a27-4c24-4912-be7b-6f4b0b462acb',
             },
             updatedUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
-            updatedAt: expect.any(String),
           },
         },
       },
@@ -191,7 +209,6 @@ describe('AppController (e2e)', () => {
       data: {
         createDomain0003: {
           domain0003: {
-            id: expect.any(String),
             domain0003001: true,
             domain0003002: 1,
             domain0003003: 'varchar',
@@ -205,6 +222,265 @@ describe('AppController (e2e)', () => {
               domain0003008: 'domain0003008',
             },
             domain0003011: [1, 2, 3],
+          },
+        },
+      },
+    });
+  });
+
+  it('/graphql createDomain0005', async () => {
+    const body = await graphqlRequest(
+      `mutation CreateDomain0005($input: CreateDomain0005Input!) {
+        createDomain0005(input: $input) {
+          domain0005 {
+            id
+            domain0005001
+            createdUserId
+            updatedUserId
+            domain0006s {
+              id
+              domain0006001
+              domain0005Id
+              createdUserId
+              updatedUserId
+              domain0007s {
+                id
+                domain0007001
+                domain0006Id
+                createdUserId
+                updatedUserId
+              }
+            }
+          }
+        }
+      }`,
+      {
+        input: {
+          domain0005001: 1,
+          domain0006s: [
+            {
+              domain0006001: 1,
+            },
+            {
+              domain0006001: 2,
+            },
+          ],
+        },
+      },
+    );
+
+    expect(body).toMatchObject({
+      data: {
+        createDomain0005: {
+          domain0005: {
+            domain0005001: 1,
+            createdUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
+            updatedUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
+            domain0006s: [
+              {
+                domain0006001: 1,
+                createdUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
+                updatedUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
+                domain0007s: null,
+              },
+              {
+                domain0006001: 2,
+                createdUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
+                updatedUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
+                domain0007s: null,
+              },
+            ],
+          },
+        },
+      },
+    });
+  });
+
+  it('/graphql createDomain0008', async () => {
+    const body = await graphqlRequest(
+      `mutation CreateDomain0008($input: CreateDomain0008Input!) {
+      createDomain0008(input: $input) {
+        domain0008 {
+          domain0009s {
+            id
+            createdAt
+            createdUser {
+              createdAt
+              createdUserId
+              deletedAt
+              deletedUserId
+              id
+              updatedAt
+              updatedUserId
+              user001
+              user002
+            }
+            createdUserId
+            deletedAt
+            deletedUser {
+              createdAt
+              createdUserId
+              deletedAt
+              deletedUserId
+              id
+              updatedAt
+              updatedUserId
+              user001
+              user002
+            }
+            deletedUserId
+            domain0010s {
+              createdAt
+              createdUserId
+              deletedAt
+              deletedUserId
+              domain0009 {
+                createdAt
+                createdUserId
+                deletedAt
+                deletedUserId
+                domain0009001
+                id
+                updatedAt
+                updatedUserId
+              }
+              domain0009Id
+              domain0010001
+              id
+              updatedAt
+              updatedUserId
+            }
+            domain0009001
+            updatedAt
+            updatedUser {
+              createdAt
+              createdUserId
+              deletedAt
+              deletedUserId
+              id
+              updatedAt
+              updatedUserId
+              user001
+              user002
+            }
+            updatedUserId
+          }
+        }
+      }
+    }
+    `,
+      {
+        input: {
+          domain0008001: 2,
+          domain0009s: [
+            {
+              domain0009001: 2,
+              domain0010s: [
+                {
+                  domain0010001: 2,
+                },
+                {
+                  domain0010001: 2,
+                },
+              ],
+            },
+          ],
+        },
+      },
+    );
+
+    expect(body).toMatchObject({
+      data: {
+        createDomain0008: {
+          domain0008: {
+            domain0009s: [
+              {
+                createdUser: {
+                  createdUserId: null,
+                  deletedAt: null,
+                  deletedUserId: null,
+                  updatedUserId: null,
+                  user001: 1,
+                  user002: 1,
+                },
+                createdUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
+                deletedAt: null,
+                deletedUser: null,
+                deletedUserId: null,
+                domain0010s: [
+                  {
+                    createdUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
+                    deletedAt: null,
+                    deletedUserId: null,
+                    domain0009: {
+                      createdUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
+                      deletedAt: null,
+                      deletedUserId: null,
+                      domain0009001: 2,
+                      updatedUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
+                    },
+                    domain0010001: 2,
+                    updatedUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
+                  },
+                  {
+                    createdUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
+                    deletedAt: null,
+                    deletedUserId: null,
+                    domain0009: {
+                      createdUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
+                      deletedAt: null,
+                      deletedUserId: null,
+                      domain0009001: 2,
+                      updatedUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
+                    },
+                    domain0010001: 2,
+                    updatedUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
+                  },
+                ],
+                domain0009001: 2,
+                updatedUser: {
+                  createdUserId: null,
+                  deletedAt: null,
+                  deletedUserId: null,
+                  updatedUserId: null,
+                  user001: 1,
+                  user002: 1,
+                },
+                updatedUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
+              },
+            ],
+          },
+        },
+      },
+    });
+  });
+
+  it('/graphql createDomain0015', async () => {
+    const body = await graphqlRequest(
+      `mutation CreateDomain0015($input: CreateDomain0015Input!) {
+        createDomain0015(input: $input) {
+          domain0015 {
+            id
+            domain0015001
+            createdUserId
+            updatedUserId
+          }
+        }
+      }`,
+      {
+        input: {
+          domain0015001: 1,
+        },
+      },
+    );
+
+    expect(body).toMatchObject({
+      data: {
+        createDomain0015: {
+          domain0015: {
+            domain0015001: 1,
+            createdUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
+            updatedUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
           },
         },
       },
