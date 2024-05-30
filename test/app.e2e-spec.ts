@@ -1,6 +1,7 @@
 import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
+import { Express } from 'express';
 import request from 'supertest';
 import {
   StorageDriver,
@@ -10,7 +11,7 @@ import {
 import { AppModule } from './../src/app.module';
 
 describe('AppController (e2e)', () => {
-  let app: INestApplication;
+  let app: INestApplication<Express>;
 
   beforeAll(async () => {
     initializeTransactionalContext({ storageDriver: StorageDriver.AUTO });
@@ -24,15 +25,16 @@ describe('AppController (e2e)', () => {
   });
 
   it('/ (GET)', () => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     return request(app.getHttpServer())
       .get('/')
       .expect(200)
       .expect('Hello World!');
   });
 
+  /**
+   * because of wsl 2, memory_heap and memory_rss are too high, so we are not validating them
+   */
   it('/health (GET)', () => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     return request(app.getHttpServer())
       .get('/health')
       .expect((res) => {
@@ -55,9 +57,8 @@ describe('AppController (e2e)', () => {
       });
   });
 
-  it('/graphql (POST)', () => {
+  it('/graphql (POST) createDomain0001', () => {
     const configService = app.get(ConfigService);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     return request(app.getHttpServer())
       .post('/graphql')
       .set({
