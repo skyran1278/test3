@@ -25,6 +25,7 @@ import { AppService } from './app.service';
 import { AuditLogModule } from './audit-log/audit-log.module';
 import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
+import { ConfigurationModule } from './configuration/configuration.module';
 import { Domain0001Module } from './domain-0001/domain-0001.module';
 import { Domain0003Module } from './domain-0003/domain-0003.module';
 import { Domain0005Module } from './domain-0005/domain-0005.module';
@@ -41,10 +42,6 @@ import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: process.env.NODE_ENV === 'test' ? '.env.test' : '.env',
-    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -119,6 +116,7 @@ import { UserModule } from './user/user.module';
     }),
     // AlsModule should be imported before any other module that uses als
     AlsModule,
+    ConfigurationModule,
     CommonModule,
     AuditLogModule,
     UserModule,

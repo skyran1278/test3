@@ -61,7 +61,7 @@ describe('AppController (e2e)', () => {
     return request(app.getHttpServer())
       .post('/graphql')
       .set({
-        Authorization: configService.get<string>('AUTHORIZATION_TOKEN') ?? '',
+        Authorization: configService.get<string>('TEST_TOKEN') ?? '',
       })
       .send({
         query:
