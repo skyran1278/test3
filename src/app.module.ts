@@ -26,6 +26,8 @@ import { AuditLogModule } from './audit-log/audit-log.module';
 import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { ConfigurationModule } from './configuration/configuration.module';
+import { EnvironmentVariables } from './configuration/environment-variables';
+import { EnvironmentEnum } from './configuration/environment.enum';
 import { Domain0001Module } from './domain-0001/domain-0001.module';
 import { Domain0003Module } from './domain-0003/domain-0003.module';
 import { Domain0005Module } from './domain-0005/domain-0005.module';
@@ -45,7 +47,9 @@ import { UserModule } from './user/user.module';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
+      useFactory: (
+        configService: ConfigService<EnvironmentVariables, true>,
+      ) => ({
         type: 'postgres',
         host: configService.get('DB_HOST'),
         port: +configService.get('DB_PORT'),
@@ -74,9 +78,11 @@ import { UserModule } from './user/user.module';
       driver: ApolloDriver,
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService): ApolloDriverConfig => {
+      useFactory: (
+        configService: ConfigService<EnvironmentVariables, true>,
+      ): ApolloDriverConfig => {
         const plugins =
-          configService.get('GRAPHQL_SERVER') === 'production'
+          configService.get('GRAPHQL_SERVER') === EnvironmentEnum.Production
             ? [ApolloServerPluginLandingPageProductionDefault()]
             : [ApolloServerPluginLandingPageLocalDefault()];
 
@@ -107,7 +113,9 @@ import { UserModule } from './user/user.module';
     BullModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
+      useFactory: (
+        configService: ConfigService<EnvironmentVariables, true>,
+      ) => ({
         connection: {
           host: configService.get('REDIS_HOST'),
           port: +configService.get('REDIS_PORT'),

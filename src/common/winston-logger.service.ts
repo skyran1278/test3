@@ -2,6 +2,8 @@ import { ConsoleLogger, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import winston, { createLogger, format, transports } from 'winston';
 
+import { EnvironmentEnum } from '../configuration/environment.enum';
+
 @Injectable()
 export class WinstonLogger extends ConsoleLogger {
   private logger!: winston.Logger;
@@ -13,7 +15,7 @@ export class WinstonLogger extends ConsoleLogger {
     this.logger = createLogger({
       level: configService.get('LOGGING_LEVEL'),
       format:
-        configService.get('NODE_ENV') === 'production'
+        configService.get('NODE_ENV') === EnvironmentEnum.Production
           ? format.combine(
               format.timestamp({
                 format: 'YYYY-MM-DD HH:mm:ss',

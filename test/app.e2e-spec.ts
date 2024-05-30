@@ -2,6 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Express } from 'express';
+import { EnvironmentVariables } from 'src/configuration/environment-variables';
 import request from 'supertest';
 import {
   StorageDriver,
@@ -58,11 +59,11 @@ describe('AppController (e2e)', () => {
   });
 
   it('/graphql (POST) createDomain0001', () => {
-    const configService = app.get(ConfigService);
+    const configService = app.get(ConfigService<EnvironmentVariables, true>);
     return request(app.getHttpServer())
       .post('/graphql')
       .set({
-        Authorization: configService.get<string>('TEST_TOKEN') ?? '',
+        Authorization: configService.get('TEST_TOKEN'),
       })
       .send({
         query:
@@ -95,6 +96,8 @@ describe('AppController (e2e)', () => {
         });
       });
   });
+
+  it('/graphql (POST) signIn', () => {});
 
   afterAll(async () => {
     await app.close();

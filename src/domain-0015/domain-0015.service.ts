@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Queue, QueueEvents } from 'bullmq';
+import { EnvironmentVariables } from 'src/configuration/environment-variables';
 import { Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
 
@@ -31,7 +32,7 @@ export class Domain0015Service extends BaseService<Domain0015> {
       CreateDomain0015JobOutput
     >,
     private readonly domain0015QueueEvents: Domain0015QueueEvents,
-    private readonly configService: ConfigService,
+    private readonly configService: ConfigService<EnvironmentVariables, true>,
     private readonly alsService: AlsService,
   ) {
     super(repo);

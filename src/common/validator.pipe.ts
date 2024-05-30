@@ -1,5 +1,6 @@
 import { ValidationError, ValidationPipe } from '@nestjs/common';
 
+import { EnvironmentEnum } from '../configuration/environment.enum';
 import { ValidatorError } from '../error/validator.error';
 
 class ValidatorPipe extends ValidationPipe {
@@ -7,7 +8,8 @@ class ValidatorPipe extends ValidationPipe {
     super({
       transform: true,
       exceptionFactory: (errors) => {
-        const disableErrorMessages = process.env.NODE_ENV === 'production';
+        const disableErrorMessages =
+          process.env.NODE_ENV === EnvironmentEnum.Production;
         if (disableErrorMessages) {
           return new ValidatorError();
         }

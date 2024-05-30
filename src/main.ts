@@ -8,6 +8,7 @@ import {
 
 import { AppModule } from './app.module';
 import { validatorPipe } from './common/validator.pipe';
+import { EnvironmentVariables } from './configuration/environment-variables';
 
 async function bootstrap() {
   initializeTransactionalContext({ storageDriver: StorageDriver.AUTO });
@@ -27,10 +28,10 @@ async function bootstrap() {
   // Be aware of this condition when you are running multiple instances in a single Node process.
   app.enableShutdownHooks();
 
-  const configService = app.get(ConfigService);
+  const configService = app.get(ConfigService<EnvironmentVariables, true>);
 
   app.useGlobalPipes(validatorPipe);
 
-  await app.listen(configService.get('PORT') ?? 3001);
+  await app.listen(configService.get('PORT'));
 }
 void bootstrap();

@@ -2,6 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
+import { EnvironmentVariables } from 'src/configuration/environment-variables';
 
 import { AlsModule } from '../als/als.module';
 import { RepoProxy } from '../common/repo.proxy';
@@ -16,7 +17,9 @@ import { WinstonLogger } from './winston-logger.service';
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
+      useFactory: (
+        configService: ConfigService<EnvironmentVariables, true>,
+      ) => ({
         secret: configService.get('JWT_SECRET'),
       }),
     }),
