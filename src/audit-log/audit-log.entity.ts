@@ -17,7 +17,7 @@ export class AuditLog {
   @CreateDateColumn()
   createdAt!: Date;
 
-  @Column({ type: 'uuid' })
+  @Column({ type: 'varchar', length: 36 })
   requestId!: string;
 
   @Column({ type: 'uuid' })

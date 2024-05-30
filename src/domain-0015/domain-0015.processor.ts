@@ -3,7 +3,7 @@ import { NotImplementedException } from '@nestjs/common';
 import { Job } from 'bullmq';
 import { Transactional } from 'typeorm-transactional';
 
-import { RunAls } from '../als/als.decorator';
+import { QueueAls } from '../als/queue-als.decorator';
 import { QueueEnum } from '../common/queue.enum';
 import { Domain0015Service } from './domain-0015.service';
 import {
@@ -18,7 +18,7 @@ export class Domain0015Processor extends WorkerHost {
     super();
   }
 
-  @RunAls()
+  @QueueAls()
   @Transactional()
   async process(job: Job<unknown, unknown, Domain0015JobEnum>) {
     switch (job.name) {

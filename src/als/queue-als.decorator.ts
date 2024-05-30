@@ -12,6 +12,7 @@ export function QueueAls() {
       setup: (alsService, job: Job<JobInput>) => {
         alsService.set('requestId', job.id ?? randomUUID());
         alsService.set('user', job.data.user);
+        alsService.set('input', JSON.stringify(job.data));
       },
     }),
   );
