@@ -1,5 +1,4 @@
 // import 'dotenv/config';
-import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import {
@@ -8,7 +7,7 @@ import {
 } from 'typeorm-transactional';
 
 import { AppModule } from './app.module';
-import { CustomValidationError } from './error/custom-validation.error';
+import { validatorPipe } from './common/validator.pipe';
 
 async function bootstrap() {
   initializeTransactionalContext({ storageDriver: StorageDriver.AUTO });
@@ -30,19 +29,7 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      transform: true,
-      exceptionFactory: (errors) => {
-        const disableErrorMessages =
-          configService.get<string>('NODE_ENV') === 'production';
-        if (disableErrorMessages) {
-          return new CustomValidationError();
-        }
-        return new CustomValidationError(errors);
-      },
-    }),
-  );
+  app.useGlobalPipes(validatorPipe);
 
   await app.listen(configService.get('PORT') ?? 3001);
 }

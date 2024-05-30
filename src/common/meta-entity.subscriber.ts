@@ -14,7 +14,7 @@ import {
 import { als } from '../als/als.service';
 import { AuditActionEnum } from '../audit-log/audit-action.enum';
 import { AuditLog } from '../audit-log/audit-log.entity';
-import { CustomValidationError } from '../error/custom-validation.error';
+import { ValidatorError } from '../error/validator.error';
 import { MetaEntity } from './meta.entity';
 
 @EventSubscriber()
@@ -233,6 +233,6 @@ export class MetaEntitySubscriber
       'class-validator validation failed': { entity, errors },
     });
 
-    throw new CustomValidationError(errors);
+    throw new ValidatorError(errors);
   }
 }
