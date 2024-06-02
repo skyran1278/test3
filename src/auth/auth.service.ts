@@ -25,14 +25,14 @@ export class AuthService extends BaseService<User> {
   @Transactional()
   async signIn(input: SignInInput): Promise<SignInOutput> {
     const user = await this.userService.findOne({
-      where: { user001: input.user001 },
+      where: { email: input.email },
     });
 
-    if (user?.user002 !== input.user002) {
+    if (user?.hashedPassword !== input.password) {
       throw new CustomAuthenticationError('Invalid password.');
     }
 
-    const { user002, ...payload } = user;
+    const { hashedPassword, ...payload } = user;
 
     return {
       access_token: await this.jwtService.signAsync(payload),

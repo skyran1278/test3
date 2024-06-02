@@ -96,11 +96,8 @@ type CreateDomain0015Output {
 }
 
 input CreateUserInput {
-  """user001"""
-  user001: Int!
-
-  """user002"""
-  user002: Int!
+  email: String!
+  password: String!
 }
 
 type CreateUserOutput {
@@ -751,11 +748,8 @@ type RemoveUserOutput {
 }
 
 input SignInInput {
-  """user001"""
-  user001: Int!
-
-  """user002"""
-  user002: Int!
+  email: String!
+  password: String!
 }
 
 type SignInOutput {
@@ -871,13 +865,9 @@ input UpdateDomain0010Input {
 }
 
 input UpdateUserInput {
+  email: String
   id: ID!
-
-  """user001"""
-  user001: Int
-
-  """user002"""
-  user002: Int
+  password: String
 }
 
 type UpdateUserOutput {
@@ -891,28 +881,18 @@ type User implements MetaEntity {
   deletedAt: DateTime
   deletedUser: User
   deletedUserId: ID
+  email: String!
   id: ID!
   updatedAt: DateTime!
   updatedUser: User
   updatedUserId: ID
-
-  """user001"""
-  user001: Int!
-
-  """user002"""
-  user002: Int!
 }
 
 input UserOrderInput {
   createdAt: NodeOrderEnum
   deletedAt: NodeOrderEnum
+  email: NodeOrderEnum
   updatedAt: NodeOrderEnum
-
-  """user001"""
-  user001: NodeOrderEnum
-
-  """user002"""
-  user002: NodeOrderEnum
 }
 
 type UserPage implements NodePage {
@@ -934,13 +914,8 @@ input UserWhereInput {
   createdUserId: ID
   deletedAt: DateTime
   deletedUserId: ID
+  email: String
   id: ID
   updatedAt: DateTime
   updatedUserId: ID
-
-  """user001"""
-  user001: Int
-
-  """user002"""
-  user002: Int
 }

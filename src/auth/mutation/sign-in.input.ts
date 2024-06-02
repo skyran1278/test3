@@ -1,10 +1,10 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
 export class SignInInput {
-  @Field(() => Int, { description: 'user001' })
-  user001!: number;
+  @Field(() => String)
+  email!: string;
 
-  @Field(() => Int, { description: 'user002' })
-  user002!: number;
+  @Field(() => String)
+  password!: string;
 }
