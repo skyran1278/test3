@@ -19,6 +19,7 @@ import { Column, ColumnOptions } from 'typeorm';
 
 import DecimalScalar from './decimal.scalar';
 import { DecimalTransformer } from './decimal.transformer';
+import { graphqlToTypeormNullable } from './graphql-to-typeorm-nullable';
 
 type ColumnAndFieldOptions = Omit<ColumnOptions, 'nullable'> &
   Pick<FieldOptions, 'deprecationReason' | 'nullable'>;
@@ -136,7 +137,7 @@ function getClassValidatorDecorators(options: ColumnAndFieldOptions) {
 function getColumnDecorator(options: ColumnAndFieldOptions) {
   const columnOptions: ColumnOptions = {
     ...options,
-    nullable: options.nullable === true,
+    nullable: graphqlToTypeormNullable(options.nullable),
   };
 
   if (options.type === 'decimal') {

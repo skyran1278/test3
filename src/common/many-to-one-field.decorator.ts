@@ -3,6 +3,8 @@ import { Field, FieldOptions } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 import { ManyToOne, ObjectType, RelationOptions } from 'typeorm';
 
+import { graphqlToTypeormNullable } from './graphql-to-typeorm-nullable';
+
 type RelationAndFieldOptions = Omit<RelationOptions, 'nullable'> &
   Pick<FieldOptions, 'deprecationReason' | 'nullable'> & {
     /**
@@ -44,7 +46,7 @@ export function ManyToOneField<T>(
     }),
     ManyToOne(typeFunctionOrTarget, inverseSideProperty, {
       ...options,
-      nullable: options?.nullable === true,
+      nullable: graphqlToTypeormNullable(options?.nullable),
     }),
   );
 }

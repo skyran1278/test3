@@ -3,6 +3,8 @@ import { Field, FieldOptions } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 import { ObjectType, OneToMany, RelationOptions } from 'typeorm';
 
+import { graphqlToTypeormNullable } from './graphql-to-typeorm-nullable';
+
 type RelationAndFieldOptions = Omit<RelationOptions, 'nullable'> &
   Pick<FieldOptions, 'deprecationReason' | 'nullable'> & {
     /**
@@ -25,7 +27,7 @@ export function OneToManyField<T>(
     }),
     OneToMany(typeFunctionOrTarget, inverseSide, {
       ...options,
-      nullable: options?.nullable === true,
+      nullable: graphqlToTypeormNullable(options?.nullable),
     }),
   );
 }
