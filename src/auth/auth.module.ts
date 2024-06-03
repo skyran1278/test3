@@ -5,6 +5,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EnvironmentVariables } from 'src/configuration/environment-variables';
 
+import { AlsModule } from '../als/als.module';
 import { User } from '../user/user.entity';
 import { UserModule } from '../user/user.module';
 import { AuthGuard } from './auth.guard';
@@ -27,6 +28,7 @@ import { AuthService } from './auth.service';
       }),
     }),
     UserModule,
+    AlsModule,
   ],
   providers: [
     AuthResolver,

@@ -4,6 +4,7 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 
+import { AlsService } from '../als/als.service';
 import { GraphQLContext } from '../common/graphql-context.interface';
 import { CustomAuthenticationError } from '../error/custom-authentication.error';
 import { User } from '../user/user.entity';
@@ -14,6 +15,7 @@ export class AuthGuard implements CanActivate {
   constructor(
     private readonly jwtService: JwtService,
     private readonly reflector: Reflector,
+    private readonly alsService: AlsService,
   ) {}
 
   canActivate(context: ExecutionContext): boolean {
@@ -36,7 +38,7 @@ export class AuthGuard implements CanActivate {
     const gqlContext: GraphQLContext = ctx.getContext();
 
     // prevent multiple query
-    if (gqlContext.user) {
+    if (this.alsService.get('user')) {
       return true;
     }
 
@@ -46,11 +48,10 @@ export class AuthGuard implements CanActivate {
     }
     try {
       const user = this.jwtService.verify<User>(token);
-      gqlContext.user = {
-        ...user,
-        createdAt: new Date(user.createdAt),
-        updatedAt: new Date(user.updatedAt),
-      };
+      user.createdAt = new Date(user.createdAt);
+      user.updatedAt = new Date(user.updatedAt);
+
+      this.alsService.set('user', user);
     } catch {
       throw new CustomAuthenticationError();
     }
