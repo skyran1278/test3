@@ -85,8 +85,8 @@ describe('AppController (e2e)', () => {
       }`,
       {
         input: {
-          user001: 1,
-          user002: 1,
+          email: 'nai@u-ran',
+          password: '1',
         },
       },
     );
@@ -103,7 +103,7 @@ describe('AppController (e2e)', () => {
       `query Me {
         me {
           id
-          user001
+          email
           updatedAt
           createdAt
         }
@@ -114,9 +114,9 @@ describe('AppController (e2e)', () => {
       data: {
         me: {
           id: '94107a27-4c24-4912-be7b-6f4b0b462acb',
-          user001: 1,
-          updatedAt: '2024-04-19T16:45:02.909Z',
-          createdAt: '2024-04-19T16:45:02.909Z',
+          email: 'nai@u-ran',
+          updatedAt: '2024-06-04T19:22:20.684Z',
+          createdAt: '2024-06-04T19:22:20.684Z',
         },
       },
     });
@@ -299,76 +299,52 @@ describe('AppController (e2e)', () => {
   it('/graphql createDomain0008', async () => {
     const body = await graphqlRequest(
       `mutation CreateDomain0008($input: CreateDomain0008Input!) {
-      createDomain0008(input: $input) {
-        domain0008 {
-          domain0009s {
-            id
-            createdAt
-            createdUser {
-              createdAt
-              createdUserId
-              deletedAt
-              deletedUserId
+        createDomain0008(input: $input) {
+          domain0008 {
+            domain0009s {
               id
-              updatedAt
-              updatedUserId
-              user001
-              user002
-            }
-            createdUserId
-            deletedAt
-            deletedUser {
               createdAt
+              createdUser {
+                id
+              }
               createdUserId
               deletedAt
+              deletedUser {
+                id
+              }
               deletedUserId
-              id
-              updatedAt
-              updatedUserId
-              user001
-              user002
-            }
-            deletedUserId
-            domain0010s {
-              createdAt
-              createdUserId
-              deletedAt
-              deletedUserId
-              domain0009 {
+              domain0010s {
                 createdAt
                 createdUserId
                 deletedAt
                 deletedUserId
-                domain0009001
+                domain0009 {
+                  createdAt
+                  createdUserId
+                  deletedAt
+                  deletedUserId
+                  domain0009001
+                  id
+                  updatedAt
+                  updatedUserId
+                }
+                domain0009Id
+                domain0010001
                 id
                 updatedAt
                 updatedUserId
               }
-              domain0009Id
-              domain0010001
-              id
+              domain0009001
               updatedAt
+              updatedUser {
+                id
+              }
               updatedUserId
             }
-            domain0009001
-            updatedAt
-            updatedUser {
-              createdAt
-              createdUserId
-              deletedAt
-              deletedUserId
-              id
-              updatedAt
-              updatedUserId
-              user001
-              user002
-            }
-            updatedUserId
           }
         }
       }
-    }
-    `,
+      `,
       {
         input: {
           domain0008001: 2,
@@ -396,12 +372,7 @@ describe('AppController (e2e)', () => {
             domain0009s: [
               {
                 createdUser: {
-                  createdUserId: null,
-                  deletedAt: null,
-                  deletedUserId: null,
-                  updatedUserId: null,
-                  user001: 1,
-                  user002: 1,
+                  id: '94107a27-4c24-4912-be7b-6f4b0b462acb',
                 },
                 createdUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
                 deletedAt: null,
@@ -439,12 +410,7 @@ describe('AppController (e2e)', () => {
                 ],
                 domain0009001: 2,
                 updatedUser: {
-                  createdUserId: null,
-                  deletedAt: null,
-                  deletedUserId: null,
-                  updatedUserId: null,
-                  user001: 1,
-                  user002: 1,
+                  id: '94107a27-4c24-4912-be7b-6f4b0b462acb',
                 },
                 updatedUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
               },
