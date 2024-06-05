@@ -48,6 +48,11 @@ export class CustomError extends HttpException {
       reason,
       detail,
     };
+
     super(response, httpErrorCode, { cause });
+
+    if (cause) {
+      this.stack = cause.stack;
+    }
   }
 }
