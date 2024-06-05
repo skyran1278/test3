@@ -52,7 +52,7 @@ export class EnvironmentVariables {
   REDIS_PORT: number = 6379;
 
   @IsString()
-  JWT_SECRET: string = 'secret';
+  JWT_SECRET: string = '001';
 
   @IsString()
   JWT_EXPIRES_IN: string = '100d';
