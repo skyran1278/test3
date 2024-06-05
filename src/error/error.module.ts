@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { APP_FILTER } from '@nestjs/core';
 
-import { AllExceptionFilter } from './catch-anything.exception-filter';
+import { ErrorController } from './error.controller';
 import { HttpExceptionFilter } from './http.exception-filter';
 import { QueryFailedExceptionFilter } from './query-failed.exception-filter';
+import { UnknownExceptionFilter } from './unknown.exception-filter';
 
 @Module({
   providers: [
@@ -15,7 +16,7 @@ import { QueryFailedExceptionFilter } from './query-failed.exception-filter';
      */
     {
       provide: APP_FILTER,
-      useClass: AllExceptionFilter,
+      useClass: UnknownExceptionFilter,
     },
     {
       provide: APP_FILTER,
@@ -26,5 +27,6 @@ import { QueryFailedExceptionFilter } from './query-failed.exception-filter';
       useClass: QueryFailedExceptionFilter,
     },
   ],
+  controllers: [ErrorController],
 })
 export class ErrorModule {}

@@ -4,7 +4,7 @@ import { CustomError } from './custom.error';
 import { HttpExceptionFilter } from './http.exception-filter';
 
 @Catch()
-export class AllExceptionFilter {
+export class UnknownExceptionFilter {
   constructor(private readonly httpExceptionFilter: HttpExceptionFilter) {}
 
   catch(exception: Error, host: ArgumentsHost) {
