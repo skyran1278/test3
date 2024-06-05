@@ -66,3 +66,7 @@ $ pnpm run migration:revert
 - domain-0009: one-to-many (cascade)
 - domain-0010: many-to-one (cascade)
 - domain-0015: bullmq with redis
+
+## Issue
+
+- [Prettier version 3 is not supported!](https://jestjs.io/docs/configuration/#prettierpath-string)
