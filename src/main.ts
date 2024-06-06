@@ -1,6 +1,9 @@
+import path from 'path';
+
 // import 'dotenv/config';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import serveFavicon from 'serve-favicon';
 import {
   StorageDriver,
   initializeTransactionalContext,
@@ -27,6 +30,10 @@ async function bootstrap() {
   // For this reason, enableShutdownHooks is not enabled by default.
   // Be aware of this condition when you are running multiple instances in a single Node process.
   app.enableShutdownHooks();
+
+  app.use(
+    serveFavicon(path.join(__dirname, '..', '..', 'public', 'favicon.ico')),
+  );
 
   const configService = app.get(ConfigService<EnvironmentVariables, true>);
 
