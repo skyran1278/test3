@@ -569,6 +569,14 @@ type Domain0015 implements MetaEntity {
   updatedUserId: ID
 }
 
+type ErrorType {
+  customAuthenticationError: Boolean
+  queryFailedError: Boolean
+  typeORMError: Boolean
+  unknownError: Boolean
+  validatorError: Boolean
+}
+
 """
 The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -690,6 +698,7 @@ type Query {
     """查詢條件"""
     where: [Domain0008WhereInput!]
   ): Domain0008Page!
+  error: ErrorType!
   me: User
   user(id: ID!): User!
   userPage(

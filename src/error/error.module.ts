@@ -5,6 +5,7 @@ import { ErrorController } from './error.controller';
 import { HttpExceptionFilter } from './http.exception-filter';
 import { QueryFailedExceptionFilter } from './query-failed.exception-filter';
 import { UnknownExceptionFilter } from './unknown.exception-filter';
+import { ErrorResolver } from './error.resolver';
 
 @Module({
   providers: [
@@ -26,6 +27,7 @@ import { UnknownExceptionFilter } from './unknown.exception-filter';
       provide: APP_FILTER,
       useClass: QueryFailedExceptionFilter,
     },
+    ErrorResolver,
   ],
   controllers: [ErrorController],
 })
