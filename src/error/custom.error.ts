@@ -28,7 +28,7 @@ export class ErrorInfo {
  */
 interface CustomErrorOptions {
   message: string;
-  httpErrorCode: HttpStatus;
+  statusCode: HttpStatus;
   reason?: ErrorReasonEnum;
   detail?: unknown;
   cause?: Error;
@@ -37,19 +37,19 @@ interface CustomErrorOptions {
 export class CustomError extends HttpException {
   constructor({
     message,
-    httpErrorCode,
+    statusCode,
     reason,
     detail,
     cause,
   }: CustomErrorOptions) {
     const response: CustomHttpExceptionBody = {
       message,
-      statusCode: httpErrorCode,
+      statusCode,
       reason,
       detail,
     };
 
-    super(response, httpErrorCode, { cause });
+    super(response, statusCode, { cause });
 
     if (cause) {
       this.stack = cause.stack;

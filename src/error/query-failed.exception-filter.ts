@@ -14,7 +14,7 @@ export class QueryFailedExceptionFilter {
   ) {
     const error = new CustomError({
       message: exception.message,
-      httpErrorCode: HttpStatus.CONFLICT,
+      statusCode: HttpStatus.CONFLICT,
       detail: {
         code: exception.code,
         detail: exception.detail,

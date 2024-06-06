@@ -10,7 +10,7 @@ export class UnknownExceptionFilter {
   catch(exception: Error, host: ArgumentsHost) {
     const error = new CustomError({
       message: 'Internal server error.',
-      httpErrorCode: HttpStatus.INTERNAL_SERVER_ERROR,
+      statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
       detail: {
         ...exception,
         name: exception.name,

@@ -4,6 +4,6 @@ import { CustomError } from './custom.error';
 
 export class CustomAuthenticationError extends CustomError {
   constructor(message: string = 'Bearer Token is invalid or expired.') {
-    super({ message, httpErrorCode: HttpStatus.UNAUTHORIZED });
+    super({ message, statusCode: HttpStatus.UNAUTHORIZED });
   }
 }

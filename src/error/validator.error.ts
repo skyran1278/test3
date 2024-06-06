@@ -11,7 +11,7 @@ export class ValidatorError extends CustomError {
 
     super({
       message: 'Class validator validation error.',
-      httpErrorCode: HttpStatus.BAD_REQUEST,
+      statusCode: HttpStatus.BAD_REQUEST,
       reason: ErrorReasonEnum.VALIDATION_ERROR,
       detail,
     });
