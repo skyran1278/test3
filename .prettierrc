@@ -3,17 +3,10 @@
   "trailingComma": "all",
   "plugins": [
     "prettier-plugin-embed",
-    "prettier-plugin-import-sort",
-    "prettier-plugin-sql"
+    "prettier-plugin-sql",
+    "prettier-plugin-import-sort"
   ],
-  "overrides": [
-    {
-      "files": "*.sql",
-      "options": {
-        "language": "postgresql",
-        "keywordCase": "upper",
-        "expressionWidth": 1000
-      }
-    }
-  ]
+  "language": "postgresql",
+  "keywordCase": "upper",
+  "expressionWidth": 1000
 }
