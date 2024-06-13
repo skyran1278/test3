@@ -9,10 +9,11 @@ import { als } from './als.service';
 @Injectable()
 export class AlsMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    if (req.body?.operationName === 'IntrospectionQuery') {
-      return next();
-    }
+    // Not need.
+    // We recommend disabling introspection when using Apollo Server in a production environment.
+    // if (req.body?.operationName === 'IntrospectionQuery') {
+    //   return next();
+    // }
 
     const requestId = req.headers['X-Request-Id'] ?? randomUUID();
     res.setHeader('X-Request-Id', requestId);
