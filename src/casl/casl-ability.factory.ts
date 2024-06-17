@@ -6,6 +6,7 @@ import {
 } from '@casl/ability';
 import { Injectable } from '@nestjs/common';
 import { Maybe } from 'graphql/jsutils/Maybe';
+import get from 'lodash/get';
 
 import { PermissionActionEnum } from '../permission/permission-action.enum';
 import { PermissionRepository } from '../permission/permission.repository';
@@ -30,7 +31,7 @@ export class CaslAbilityFactory {
 
     const caslPermissions = permissions.map((permission) => {
       permission.conditions = interpolate(permission.conditions, {
-        userIds: [user.id],
+        user,
       });
       return permission;
     });
@@ -66,7 +67,7 @@ function replacePlaceholder(
   const key = /\${(.*?)}/g.exec(str)?.[1];
 
   if (key) {
-    return vars[key];
+    return get(vars, key);
   }
 
   return str;

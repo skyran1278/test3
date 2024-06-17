@@ -27,23 +27,23 @@ export class Seed1817332628407 implements MigrationInterface {
         public.permission (id, action, subject, conditions)
       VALUES
         ('bc9684a2-2cbf-48ff-8335-90f01a96b86e', 'manage', 'all', NULL),
-        ('655c4f9f-3167-432c-bc43-45bd50f9621b', 'manage', 'Domain0001', '{ "createdUserId": { "$in": "\${userIds}" } }'),
+        ('655c4f9f-3167-432c-bc43-45bd50f9621b', 'manage', 'Domain0001', '{ "createdUserId": "\${user.id}" }'),
         ('396ed16c-5827-4efe-b4b4-29c50330d72f', 'read', 'Domain0001', NULL),
-        ('89548454-54ce-4c64-85ae-081bdd720adf', 'manage', 'Domain0003', '{ "createdUserId": { "$in": "\${userIds}" } }'),
+        ('89548454-54ce-4c64-85ae-081bdd720adf', 'manage', 'Domain0003', '{ "createdUserId": "\${user.id}" }'),
         ('7ba74da2-105f-4c90-b66d-27af338165bd', 'read', 'Domain0003', NULL),
-        ('f5c8b3d9-0f5d-4e1b-8c4a-1b8c6e3e3b0b', 'manage', 'Domain0005', '{ "createdUserId": { "$in": "\${userIds}" } }'),
+        ('f5c8b3d9-0f5d-4e1b-8c4a-1b8c6e3e3b0b', 'manage', 'Domain0005', '{ "createdUserId": "\${user.id}" }'),
         ('6f1ef58c-b8d2-431f-bf2a-ac1d13741b26', 'read', 'Domain0005', NULL),
-        ('52357e5f-6127-41a2-8c11-3555d64353f6', 'manage', 'Domain0006', '{ "createdUserId": { "$in": "\${userIds}" } }'),
+        ('52357e5f-6127-41a2-8c11-3555d64353f6', 'manage', 'Domain0006', '{ "createdUserId": "\${user.id}" }'),
         ('0e98cf27-a8f5-455b-bd25-ffc359f3d046', 'read', 'Domain0006', NULL),
-        ('33933832-689b-4f8f-959c-3d76c5418705', 'manage', 'Domain0007', '{ "createdUserId": { "$in": "\${userIds}" } }'),
+        ('33933832-689b-4f8f-959c-3d76c5418705', 'manage', 'Domain0007', '{ "createdUserId": "\${user.id}" }'),
         ('8d054732-09df-4300-9b33-d2769292dbd6', 'read', 'Domain0007', NULL),
-        ('5057d6c4-2d40-4c3c-974d-a83873337536', 'manage', 'Domain0008', '{ "createdUserId": { "$in": "\${userIds}" } }'),
+        ('5057d6c4-2d40-4c3c-974d-a83873337536', 'manage', 'Domain0008', '{ "createdUserId": "\${user.id}" }'),
         ('db864487-59fb-41ab-b194-0c99e4857ff5', 'read', 'Domain0008', NULL),
-        ('8908c785-bf02-4a90-bcd0-3388968e2a83', 'manage', 'Domain0009', '{ "createdUserId": { "$in": "\${userIds}" } }'),
+        ('8908c785-bf02-4a90-bcd0-3388968e2a83', 'manage', 'Domain0009', '{ "createdUserId": "\${user.id}" }'),
         ('79d0c6ef-6421-4ae5-9622-3b1ef427f3a1', 'read', 'Domain0009', NULL),
-        ('ac2067c7-c03d-4572-a401-18fa7f64282d', 'manage', 'Domain0010', '{ "createdUserId": { "$in": "\${userIds}" } }'),
+        ('ac2067c7-c03d-4572-a401-18fa7f64282d', 'manage', 'Domain0010', '{ "createdUserId": "\${user.id}" }'),
         ('e177a0c1-968f-4c6b-afe4-de9257e05c61', 'read', 'Domain0010', NULL),
-        ('ce224726-bdcf-4447-b170-5381f9ca596b', 'manage', 'Domain0011', '{ "createdUserId": { "$in": "\${userIds}" } }'),
+        ('ce224726-bdcf-4447-b170-5381f9ca596b', 'manage', 'Domain0011', '{ "createdUserId": "\${user.id}" }'),
         ('dd0961d5-2090-4a3f-ab73-0c2f41608c26', 'read', 'Domain0011', NULL);
     `);
 
