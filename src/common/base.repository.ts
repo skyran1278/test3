@@ -9,6 +9,7 @@ import {
   IsNull,
   ObjectLiteral,
   Repository,
+  TreeRepository,
 } from 'typeorm';
 
 import { MetaEntity } from './meta.entity';
@@ -30,7 +31,7 @@ interface NodePageInput<Entity extends ObjectLiteral> {
 
 export abstract class BaseRepository<
   Entity extends MetaEntity,
-> extends Repository<Entity> {
+> extends TreeRepository<Entity> {
   readonly logger = new Logger(this.constructor.name);
 
   constructor(private readonly repository: Repository<Entity>) {
