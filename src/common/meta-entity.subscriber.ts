@@ -1,4 +1,4 @@
-import { Logger, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Logger, NotFoundException } from '@nestjs/common';
 import { validate } from 'class-validator';
 import {
   EntitySubscriberInterface,
@@ -15,6 +15,7 @@ import { als } from '../als/als.service';
 import { AuditActionEnum } from '../audit-log/audit-action.enum';
 import { AuditLog } from '../audit-log/audit-log.entity';
 import { ValidatorError } from '../error/validator.error';
+import { PermissionActionEnum } from '../permission/permission-action.enum';
 import { MetaEntity } from './meta.entity';
 
 @EventSubscriber()
@@ -35,6 +36,11 @@ export class MetaEntitySubscriber
       entity.updatedUserId = user.id;
     }
 
+    const ability = als.get('ability');
+    if (ability?.cannot(PermissionActionEnum.CREATE, entity)) {
+      throw new ForbiddenException();
+    }
+
     await this.validate(entity);
   }
 
@@ -45,6 +51,11 @@ export class MetaEntitySubscriber
     const user = als.get('user');
     if (user) {
       entity.updatedUserId = user.id;
+    }
+
+    const ability = als.get('ability');
+    if (ability?.cannot(PermissionActionEnum.UPDATE, entity)) {
+      throw new ForbiddenException();
     }
 
     await this.validate(entity);
@@ -58,11 +69,26 @@ export class MetaEntitySubscriber
     if (user) {
       entity.deletedUserId = user.id;
 
+      const ability = als.get('ability');
+      if (ability?.cannot(PermissionActionEnum.DELETE, entity)) {
+        throw new ForbiddenException();
+      }
+
       const repo = event.manager.getRepository(event.metadata.target);
       await repo.update(
         { id: entity.id },
         repo.create({ deletedUserId: entity.deletedUserId }),
       );
+    }
+  }
+
+  beforeRemove(event: RemoveEvent<MetaEntity>) {
+    const { entity } = event;
+    if (!this.isMetaEntity(entity)) return;
+
+    const ability = als.get('ability');
+    if (ability?.cannot(PermissionActionEnum.DELETE, entity)) {
+      throw new ForbiddenException();
     }
   }
 

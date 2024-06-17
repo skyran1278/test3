@@ -5,6 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 
 import { AlsService } from '../als/als.service';
+import { CaslAbilityFactory } from '../casl/casl-ability.factory';
 import { GraphQLContext } from '../common/graphql-context.interface';
 import { CustomAuthenticationError } from '../error/custom-authentication.error';
 import { User } from '../user/user.entity';
@@ -16,9 +17,10 @@ export class AuthGuard implements CanActivate {
     private readonly jwtService: JwtService,
     private readonly reflector: Reflector,
     private readonly alsService: AlsService,
+    private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
-  canActivate(context: ExecutionContext): boolean {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const handler = context.getHandler();
     const classRef = context.getClass();
 
@@ -29,6 +31,8 @@ export class AuthGuard implements CanActivate {
     if (noAuthentication) return true;
 
     if (!this.authentication(context)) return false;
+
+    await this.authorization();
 
     return true;
   }
@@ -56,6 +60,13 @@ export class AuthGuard implements CanActivate {
       throw new CustomAuthenticationError();
     }
     return true;
+  }
+
+  private async authorization() {
+    const ability = await this.caslAbilityFactory.createAbilityFor(
+      this.alsService.get('user'),
+    );
+    this.alsService.set('ability', ability);
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
