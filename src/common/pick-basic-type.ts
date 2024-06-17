@@ -24,8 +24,25 @@ export type PickBasicTypeProperty<T> = {
     | Date
     | Buffer
     | Decimal
-    | Array<boolean | number | string | Date | Buffer | Decimal>
-    | Maybe<boolean | number | string | Date | Buffer | Decimal>
+    | Record<string | number | symbol, unknown>
+    | Array<
+        | string
+        | number
+        | boolean
+        | Date
+        | Buffer
+        | Decimal
+        | Record<string | number | symbol, unknown>
+      >
+    | Maybe<
+        | string
+        | number
+        | boolean
+        | Date
+        | Buffer
+        | Decimal
+        | Record<string | number | symbol, unknown>
+      >
     | undefined
     ? P
     : never]: T[P];

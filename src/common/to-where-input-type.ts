@@ -18,11 +18,12 @@ import { Maybe } from 'graphql/jsutils/Maybe';
 import DecimalScalar from './decimal.scalar';
 import { PickBasicType, PickBasicTypeProperty } from './pick-basic-type';
 
-export type OmitDecimalProperty<T> = {
+export type OmitDecimalJsonAndArrayProperty<T> = {
   [P in keyof T as T[P] extends
     | Decimal
+    | Record<string | number | symbol, unknown>
+    | Maybe<Decimal | Record<string | number | symbol, unknown>>
     | Array<unknown>
-    | Maybe<Decimal>
     | undefined
     ? never
     : P]: T[P];
@@ -31,7 +32,7 @@ export type OmitDecimalProperty<T> = {
 export const ToWhereInputType = <T>(
   classRef: Type<T>,
   decorator: ClassDecoratorFactory | undefined = InputType,
-): Type<OmitDecimalProperty<PickBasicTypeProperty<T>>> => {
+): Type<OmitDecimalJsonAndArrayProperty<PickBasicTypeProperty<T>>> => {
   const basicTypeClassRef = PickBasicType(
     PartialType(classRef, decorator),
     decorator,
@@ -90,6 +91,6 @@ export const ToWhereInputType = <T>(
   });
 
   return OmitObjectTypeClass as Type<
-    OmitDecimalProperty<PickBasicTypeProperty<T>>
+    OmitDecimalJsonAndArrayProperty<PickBasicTypeProperty<T>>
   >;
 };
