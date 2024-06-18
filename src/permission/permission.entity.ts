@@ -1,5 +1,6 @@
 import { RawRule } from '@casl/ability';
 import { Field, ObjectType } from '@nestjs/graphql';
+import { Maybe } from 'graphql/jsutils/Maybe';
 import { Entity, ManyToMany } from 'typeorm';
 
 import { ColumnField } from '../common/column-field.decorator';
@@ -17,7 +18,7 @@ export class Permission extends MetaEntity implements RawRule {
   subject!: string;
 
   @ColumnField({ type: 'jsonb', nullable: true })
-  conditions?: Record<string, unknown>;
+  conditions?: Maybe<Record<string, unknown>>;
 
   @Field(() => [Role], { nullable: true, description: '職務' })
   @ManyToMany(() => Role, (role) => role.permissions)

@@ -4,10 +4,11 @@ import {
   Subject,
   createMongoAbility,
 } from '@casl/ability';
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { Maybe } from 'graphql/jsutils/Maybe';
 import get from 'lodash/get';
 
+import { CustomError } from '../error/custom.error';
 import { PermissionActionEnum } from '../permission/permission-action.enum';
 import { PermissionRepository } from '../permission/permission.repository';
 import { User } from '../user/user.entity';
@@ -30,45 +31,57 @@ export class CaslAbilityFactory {
     });
 
     const caslPermissions = permissions.map((permission) => {
-      permission.conditions = interpolate(permission.conditions, {
-        user,
-      });
-      return permission;
+      return {
+        ...permission,
+        conditions: this.interpolate(permission.conditions, {
+          user,
+        }),
+      };
     });
 
     return createMongoAbility<CaslAbility>(caslPermissions);
   }
-}
 
-function interpolate(
-  conditions: Maybe<Record<string, unknown>>,
-  vars: Record<string, unknown>,
-): Record<string, unknown> | undefined {
-  if (!conditions) return undefined;
+  interpolate(
+    record: Maybe<Record<string, unknown>>,
+    vars: Record<string, unknown>,
+  ): Record<string, unknown> | undefined {
+    if (!record) return undefined;
 
-  for (const key in conditions) {
-    if (typeof conditions[key] === 'object') {
-      conditions[key] = interpolate(
-        conditions[key] as Record<string, unknown>,
-        vars,
-      );
-    } else if (typeof conditions[key] === 'string') {
-      conditions[key] = replacePlaceholder(conditions[key] as string, vars);
+    for (const key in record) {
+      const value = record[key];
+      if (this.isRecord(value)) {
+        record[key] = this.interpolate(value, vars);
+      } else if (typeof value === 'string') {
+        record[key] = this.replacePlaceholder(value, vars);
+      }
     }
+
+    return record;
   }
 
-  return conditions;
-}
+  replacePlaceholder(str: string, vars: Record<string, unknown>): unknown {
+    const key = /\${(.*?)}/g.exec(str)?.[1];
 
-function replacePlaceholder(
-  str: string,
-  vars: Record<string, unknown>,
-): unknown {
-  const key = /\${(.*?)}/g.exec(str)?.[1];
+    if (key) {
+      const value = get(vars, key);
+      if (value === undefined) {
+        throw new CustomError({
+          message: `Can't find value for key "${key}" in Permission's Conditions`,
+          statusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+          detail: {
+            key,
+            vars,
+          },
+        });
+      }
+      return value;
+    }
 
-  if (key) {
-    return get(vars, key);
+    return str;
   }
 
-  return str;
+  isRecord(value: unknown): value is Record<string, unknown> {
+    return typeof value === 'object' && value !== null && !Array.isArray(value);
+  }
 }
