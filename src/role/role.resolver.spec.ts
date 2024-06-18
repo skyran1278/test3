@@ -9,11 +9,11 @@ describe('RoleResolver', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [RoleResolver, RoleService],
-    }).compile();
+    })
+      .useMocker(() => ({}))
+      .compile();
 
-    resolver = module.get<RoleResolver>(
-      RoleResolver,
-    );
+    resolver = module.get<RoleResolver>(RoleResolver);
   });
 
   it('should be defined', () => {

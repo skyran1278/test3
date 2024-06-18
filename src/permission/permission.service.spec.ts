@@ -8,11 +8,11 @@ describe('PermissionService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [PermissionService],
-    }).compile();
+    })
+      .useMocker(() => ({}))
+      .compile();
 
-    service = module.get<PermissionService>(
-      PermissionService,
-    );
+    service = module.get<PermissionService>(PermissionService);
   });
 
   it('should be defined', () => {

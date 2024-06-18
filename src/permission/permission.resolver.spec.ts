@@ -9,11 +9,11 @@ describe('PermissionResolver', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [PermissionResolver, PermissionService],
-    }).compile();
+    })
+      .useMocker(() => ({}))
+      .compile();
 
-    resolver = module.get<PermissionResolver>(
-      PermissionResolver,
-    );
+    resolver = module.get<PermissionResolver>(PermissionResolver);
   });
 
   it('should be defined', () => {
