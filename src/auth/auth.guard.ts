@@ -63,9 +63,12 @@ export class AuthGuard implements CanActivate {
   }
 
   private async authorization() {
-    const ability = await this.caslAbilityFactory.createAbilityFor(
+    const rules = await this.caslAbilityFactory.createRulesFor(
       this.alsService.get('user'),
     );
+    const ability = this.caslAbilityFactory.createAbilityFor(rules);
+
+    this.alsService.set('rules', rules);
     this.alsService.set('ability', ability);
   }
 

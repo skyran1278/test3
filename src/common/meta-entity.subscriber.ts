@@ -31,13 +31,11 @@ export class MetaEntitySubscriber
     if (!this.isMetaEntity(entity)) return;
 
     const user = als.get('user');
-    if (user) {
-      entity.createdUserId = user.id;
-      entity.updatedUserId = user.id;
-    }
+    entity.createdUserId = user.id;
+    entity.updatedUserId = user.id;
 
     const ability = als.get('ability');
-    if (ability?.cannot(PermissionActionEnum.CREATE, entity)) {
+    if (ability.cannot(PermissionActionEnum.CREATE, entity)) {
       throw new ForbiddenException();
     }
 
@@ -49,9 +47,7 @@ export class MetaEntitySubscriber
     if (!this.isMetaEntity(entity)) return;
 
     const user = als.get('user');
-    if (user) {
-      entity.updatedUserId = user.id;
-    }
+    entity.updatedUserId = user.id;
 
     const ability = als.get('ability');
     if (ability?.cannot(PermissionActionEnum.UPDATE, entity)) {
@@ -65,21 +61,19 @@ export class MetaEntitySubscriber
     const { entity } = event;
     if (!this.isMetaEntity(entity)) return;
 
-    const user = als.get('user');
-    if (user) {
-      entity.deletedUserId = user.id;
-
-      const ability = als.get('ability');
-      if (ability?.cannot(PermissionActionEnum.DELETE, entity)) {
-        throw new ForbiddenException();
-      }
-
-      const repo = event.manager.getRepository(event.metadata.target);
-      await repo.update(
-        { id: entity.id },
-        repo.create({ deletedUserId: entity.deletedUserId }),
-      );
+    const ability = als.get('ability');
+    if (ability?.cannot(PermissionActionEnum.DELETE, entity)) {
+      throw new ForbiddenException();
     }
+
+    const user = als.get('user');
+    entity.deletedUserId = user.id;
+
+    const repo = event.manager.getRepository(event.metadata.target);
+    await repo.update(
+      { id: entity.id },
+      repo.create({ deletedUserId: entity.deletedUserId }),
+    );
   }
 
   beforeRemove(event: RemoveEvent<MetaEntity>) {
@@ -98,6 +92,13 @@ export class MetaEntitySubscriber
 
     const auditLogRepo = event.manager.getRepository(AuditLog);
     return auditLogRepo.save(auditLogs);
+  }
+
+  afterLoad(entity: MetaEntity) {
+    const ability = als.get('ability');
+    if (ability?.cannot(PermissionActionEnum.READ, entity)) {
+      throw new ForbiddenException();
+    }
   }
 
   afterInsert(event: InsertEvent<MetaEntity>) {

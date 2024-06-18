@@ -1,6 +1,7 @@
 import {
   MongoAbility,
   MongoQuery,
+  RawRuleFrom,
   Subject,
   createMongoAbility,
 } from '@casl/ability';
@@ -15,13 +16,14 @@ import { User } from '../user/user.entity';
 
 type PossibleAbilities = [PermissionActionEnum, Subject];
 type Conditions = MongoQuery;
+export type CaslRules = RawRuleFrom<PossibleAbilities, Conditions>[];
 export type CaslAbility = MongoAbility<PossibleAbilities, Conditions>;
 
 @Injectable()
 export class CaslAbilityFactory {
   constructor(private readonly permissionRepository: PermissionRepository) {}
 
-  async createAbilityFor(user: User) {
+  async createRulesFor(user: User): Promise<CaslRules> {
     const permissions = await this.permissionRepository.findBy({
       roles: {
         users: {
@@ -39,7 +41,11 @@ export class CaslAbilityFactory {
       };
     });
 
-    return createMongoAbility<CaslAbility>(caslPermissions);
+    return caslPermissions;
+  }
+
+  createAbilityFor(rules: CaslRules): CaslAbility {
+    return createMongoAbility<CaslAbility>(rules);
   }
 
   interpolate(
