@@ -1,22 +1,17 @@
-import { InjectQueue } from '@nestjs/bullmq';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Queue, QueueEvents } from 'bullmq';
+import { QueueEvents } from 'bullmq';
 import { EnvironmentVariables } from 'src/configuration/environment-variables';
 import { Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
 
-import { AlsService } from '../als/als.service';
 import { BaseService } from '../common/base.service';
 import { QueueEnum } from '../common/queue.enum';
 import { Domain0015 } from './domain-0015.entity';
+import { Domain0015Queue } from './domain-0015.queue';
 import { Domain0015QueueEvents } from './domain-0015.queue-events';
 import { CreateDomain0015Input } from './dto/create-domain-0015.input';
-import {
-  CreateDomain0015JobInput,
-  CreateDomain0015JobOutput,
-} from './dto/create-domain-0015.job';
 import { Domain0015JobEnum } from './dto/domain-0015-job.enum';
 import { Domain0015PageArgs } from './dto/domain-0015-page.args';
 import { UpdateDomain0015Input } from './dto/update-domain-0015.input';
@@ -26,14 +21,9 @@ export class Domain0015Service extends BaseService<Domain0015> {
   constructor(
     @InjectRepository(Domain0015)
     readonly repo: Repository<Domain0015>,
-    @InjectQueue(QueueEnum.DOMAIN0015)
-    private domain0015Queue: Queue<
-      CreateDomain0015JobInput,
-      CreateDomain0015JobOutput
-    >,
+    private domain0015Queue: Domain0015Queue,
     private readonly domain0015QueueEvents: Domain0015QueueEvents,
     private readonly configService: ConfigService<EnvironmentVariables, true>,
-    private readonly alsService: AlsService,
   ) {
     super(repo);
   }
@@ -42,15 +32,10 @@ export class Domain0015Service extends BaseService<Domain0015> {
   async saveOne(
     input: CreateDomain0015Input | UpdateDomain0015Input,
   ): Promise<Domain0015> {
-    const user = this.alsService.getOrFail('user');
-    const rules = this.alsService.getOrFail('rules');
-
     const job = await this.domain0015Queue.add(
       Domain0015JobEnum.CREATE_DOMAIN0015_JOB,
       {
         input,
-        user,
-        rules,
       },
     );
 
@@ -65,15 +50,10 @@ export class Domain0015Service extends BaseService<Domain0015> {
   async testQueueEventsRaceCondition(
     input: CreateDomain0015Input | UpdateDomain0015Input,
   ): Promise<Domain0015> {
-    const user = this.alsService.getOrFail('user');
-    const rules = this.alsService.getOrFail('rules');
-
     const job = await this.domain0015Queue.add(
       Domain0015JobEnum.CREATE_DOMAIN0015_JOB,
       {
         input,
-        user,
-        rules,
       },
     );
 
