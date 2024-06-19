@@ -4,9 +4,11 @@ import { User } from '../user/user.entity';
 
 export interface AlsStore {
   requestId: string;
-  user: User;
-  rules: CaslRules;
-  ability: CaslAbility;
   input: string;
+  user?: User;
+  rules?: CaslRules;
+  ability?: CaslAbility;
+  noAuthentication?: boolean;
+  noAuthorization?: boolean;
   auditLogs?: AuditLog[];
 }

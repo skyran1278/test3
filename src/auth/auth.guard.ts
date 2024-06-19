@@ -10,6 +10,7 @@ import { GraphQLContext } from '../common/graphql-context.interface';
 import { CustomAuthenticationError } from '../error/custom-authentication.error';
 import { User } from '../user/user.entity';
 import { NoAuthentication } from './no-authentication.decorator';
+import { NoAuthorization } from './no-authorization.decorator';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -28,9 +29,23 @@ export class AuthGuard implements CanActivate {
       NoAuthentication,
       [handler, classRef],
     );
-    if (noAuthentication) return true;
+
+    const noAuthorization = this.reflector.getAllAndOverride<boolean>(
+      NoAuthorization,
+      [handler, classRef],
+    );
+
+    if (noAuthentication) {
+      this.alsService.set('noAuthentication', true);
+      return true;
+    }
 
     if (!this.authentication(context)) return false;
+
+    if (noAuthorization) {
+      this.alsService.set('noAuthorization', true);
+      return true;
+    }
 
     await this.authorization();
 
@@ -64,7 +79,7 @@ export class AuthGuard implements CanActivate {
 
   private async authorization() {
     const rules = await this.caslAbilityFactory.createRulesFor(
-      this.alsService.get('user'),
+      this.alsService.getOrFail('user'),
     );
     const ability = this.caslAbilityFactory.createAbilityFor(rules);
 

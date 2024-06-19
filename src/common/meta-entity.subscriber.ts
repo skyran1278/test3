@@ -30,7 +30,7 @@ export class MetaEntitySubscriber
     const { entity } = event;
     if (!this.isMetaEntity(entity)) return;
 
-    const user = als.get('user');
+    const user = als.getOrFail('user');
     entity.createdUserId = user.id;
     entity.updatedUserId = user.id;
 
@@ -43,7 +43,7 @@ export class MetaEntitySubscriber
     const { entity } = event;
     if (!this.isMetaEntity(entity)) return;
 
-    const user = als.get('user');
+    const user = als.getOrFail('user');
     entity.updatedUserId = user.id;
 
     this.checkPermission(PermissionActionEnum.UPDATE, entity);
@@ -57,7 +57,7 @@ export class MetaEntitySubscriber
 
     this.checkPermission(PermissionActionEnum.DELETE, entity);
 
-    const user = als.get('user');
+    const user = als.getOrFail('user');
     entity.deletedUserId = user.id;
 
     await this.updateDeletedUserId(event, user.id);
@@ -79,13 +79,13 @@ export class MetaEntitySubscriber
   }
 
   afterLoad(entity: MetaEntity) {
-    if (als.has('user')) {
-      this.checkPermission(PermissionActionEnum.READ, entity);
-    } else {
-      this.logger.debug(
-        'No user in als, skip permission check for afterLoad hook.',
+    if (als.has('noAuthentication') || als.has('noAuthorization')) {
+      return this.logger.debug(
+        'Skip the permission check for the afterLoad hook when noAuthentication or noAuthorization is present in ALS.',
       );
     }
+
+    this.checkPermission(PermissionActionEnum.READ, entity);
   }
 
   afterInsert(event: InsertEvent<MetaEntity>) {
@@ -128,7 +128,7 @@ export class MetaEntitySubscriber
   }
 
   private checkPermission(action: PermissionActionEnum, entity: MetaEntity) {
-    const ability = als.get('ability');
+    const ability = als.getOrFail('ability');
     if (ability.cannot(action, entity)) {
       throw new ForbiddenException();
     }
@@ -173,7 +173,7 @@ export class MetaEntitySubscriber
     entityDetail: object,
   ) {
     const requestId = als.get('requestId');
-    const user = als.get('user');
+    const user = als.getOrFail('user');
     const input = als.get('input');
     const auditLogs = als.get('auditLogs') ?? [];
 

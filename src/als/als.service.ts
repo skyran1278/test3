@@ -21,6 +21,16 @@ export class AlsService {
     return value;
   }
 
+  public getOrFail<T extends keyof AlsStore>(key: T): NonNullable<AlsStore[T]> {
+    const value = this.get(key);
+
+    if (!value) {
+      throw new InternalServerErrorException(`${key} not found in store`);
+    }
+
+    return value;
+  }
+
   public set<T extends keyof AlsStore>(key: T, value: AlsStore[T]): void {
     const store = this.getStore();
     store[key] = value;
