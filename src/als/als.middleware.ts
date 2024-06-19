@@ -4,7 +4,7 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 
 import { AlsStore } from './als-store.interface';
-import { als } from './als.service';
+import { alsService } from './als.service';
 
 @Injectable()
 export class AlsMiddleware implements NestMiddleware {
@@ -18,7 +18,7 @@ export class AlsMiddleware implements NestMiddleware {
     const requestId = req.headers['X-Request-Id'] ?? randomUUID();
     res.setHeader('X-Request-Id', requestId);
 
-    als.run(
+    alsService.run(
       {
         requestId,
         input: JSON.stringify({

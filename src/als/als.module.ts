@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { AlsService, als } from './als.service';
+import { AlsService, alsService } from './als.service';
 
 /**
  * @see https://docs.nestjs.com/recipes/async-local-storage
@@ -10,7 +10,7 @@ import { AlsService, als } from './als.service';
   providers: [
     {
       provide: AlsService,
-      useValue: als,
+      useValue: alsService,
     },
   ],
   exports: [AlsService],

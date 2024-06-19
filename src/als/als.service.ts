@@ -51,4 +51,4 @@ export class AlsService {
   }
 }
 
-export const als = new AlsService();
+export const alsService = new AlsService();

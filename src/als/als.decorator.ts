@@ -1,7 +1,7 @@
 import { InternalServerErrorException } from '@nestjs/common';
 
 import { AlsStore } from './als-store.interface';
-import { AlsService, als } from './als.service';
+import { AlsService, alsService } from './als.service';
 
 interface RunAlsOptions<T extends unknown[]> {
   setup?: (als: AlsService, ...args: T) => void | Promise<void>;
@@ -21,9 +21,9 @@ export function RunAls<T extends unknown[]>(options?: RunAlsOptions<T>) {
     }
 
     descriptor.value = function (...args: T) {
-      return als.run<unknown>({} as AlsStore, async () => {
+      return alsService.run<unknown>({} as AlsStore, async () => {
         if (options?.setup) {
-          await options.setup.apply(this, [als, ...args]);
+          await options.setup.apply(this, [alsService, ...args]);
         }
         return originalMethod.apply(this, args);
       });

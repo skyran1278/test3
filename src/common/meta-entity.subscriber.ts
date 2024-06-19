@@ -11,7 +11,7 @@ import {
   UpdateEvent,
 } from 'typeorm';
 
-import { als } from '../als/als.service';
+import { alsService } from '../als/als.service';
 import { AuditActionEnum } from '../audit-log/audit-action.enum';
 import { AuditLog } from '../audit-log/audit-log.entity';
 import { ValidatorError } from '../error/validator.error';
@@ -31,7 +31,7 @@ export class MetaEntitySubscriber
     const { entity } = event;
     if (!this.isMetaEntity(entity)) return;
 
-    const user = als.getOrFail('user');
+    const user = alsService.getOrFail('user');
     entity.createdUserId = user.id;
     entity.updatedUserId = user.id;
 
@@ -44,7 +44,7 @@ export class MetaEntitySubscriber
     const { entity } = event;
     if (!this.isMetaEntity(entity)) return;
 
-    const user = als.getOrFail('user');
+    const user = alsService.getOrFail('user');
     entity.updatedUserId = user.id;
 
     this.checkPermission(PermissionActionEnum.UPDATE, entity);
@@ -58,7 +58,7 @@ export class MetaEntitySubscriber
 
     this.checkPermission(PermissionActionEnum.DELETE, entity);
 
-    const user = als.getOrFail('user');
+    const user = alsService.getOrFail('user');
     entity.deletedUserId = user.id;
 
     await this.updateDeletedUserId(event, user.id);
@@ -72,7 +72,7 @@ export class MetaEntitySubscriber
   }
 
   beforeTransactionCommit(event: TransactionCommitEvent) {
-    const auditLogs = als.get('auditLogs') ?? [];
+    const auditLogs = alsService.get('auditLogs') ?? [];
     if (auditLogs.length === 0) return;
 
     const auditLogRepo = event.manager.getRepository(AuditLog);
@@ -84,7 +84,10 @@ export class MetaEntitySubscriber
       return;
     }
 
-    if (als.has('noAuthentication') || als.has('noAuthorization')) {
+    if (
+      alsService.has('noAuthentication') ||
+      alsService.has('noAuthorization')
+    ) {
       return this.logger.debug(
         'Skip the permission check for the afterLoad hook when noAuthentication or noAuthorization is present in ALS.',
       );
@@ -133,7 +136,7 @@ export class MetaEntitySubscriber
   }
 
   private checkPermission(action: PermissionActionEnum, entity: MetaEntity) {
-    const ability = als.getOrFail('ability');
+    const ability = alsService.getOrFail('ability');
     if (ability.cannot(action, entity)) {
       throw new ForbiddenException();
     }
@@ -177,10 +180,10 @@ export class MetaEntitySubscriber
     entityId: string,
     entityDetail: object,
   ) {
-    const requestId = als.get('requestId');
-    const user = als.getOrFail('user');
-    const input = als.get('input');
-    const auditLogs = als.get('auditLogs') ?? [];
+    const requestId = alsService.get('requestId');
+    const user = alsService.getOrFail('user');
+    const input = alsService.get('input');
+    const auditLogs = alsService.get('auditLogs') ?? [];
 
     const auditLogRepo = event.manager.getRepository(AuditLog);
 
@@ -194,7 +197,7 @@ export class MetaEntitySubscriber
       entityDetail,
     });
 
-    als.set('auditLogs', [...auditLogs, auditLog]);
+    alsService.set('auditLogs', [...auditLogs, auditLog]);
   }
 
   private isMetaEntity(entity: unknown): entity is MetaEntity {
