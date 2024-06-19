@@ -7,10 +7,8 @@ export class BaseQueue<
   DataType extends JobInput = JobInput,
   ResultType = unknown,
   NameType extends string = string,
-> extends Queue<DataType, ResultType, NameType> {
-  constructor(private readonly queue: Queue<DataType, ResultType, NameType>) {
-    super(queue.name, queue.opts);
-  }
+> {
+  constructor(private readonly queue: Queue<DataType, ResultType, NameType>) {}
 
   add(
     name: NameType,
