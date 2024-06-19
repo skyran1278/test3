@@ -1,4 +1,4 @@
-import { Logger, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Logger, NotFoundException } from '@nestjs/common';
 import { validate } from 'class-validator';
 import {
   EntitySubscriberInterface,
@@ -15,6 +15,7 @@ import { als } from '../als/als.service';
 import { AuditActionEnum } from '../audit-log/audit-action.enum';
 import { AuditLog } from '../audit-log/audit-log.entity';
 import { ValidatorError } from '../error/validator.error';
+import { PermissionActionEnum } from '../permission/permission-action.enum';
 import { MetaEntity } from './meta.entity';
 
 @EventSubscriber()
@@ -30,10 +31,10 @@ export class MetaEntitySubscriber
     if (!this.isMetaEntity(entity)) return;
 
     const user = als.get('user');
-    if (user) {
-      entity.createdUserId = user.id;
-      entity.updatedUserId = user.id;
-    }
+    entity.createdUserId = user.id;
+    entity.updatedUserId = user.id;
+
+    this.checkPermission(PermissionActionEnum.CREATE, entity);
 
     await this.validate(entity);
   }
@@ -43,9 +44,9 @@ export class MetaEntitySubscriber
     if (!this.isMetaEntity(entity)) return;
 
     const user = als.get('user');
-    if (user) {
-      entity.updatedUserId = user.id;
-    }
+    entity.updatedUserId = user.id;
+
+    this.checkPermission(PermissionActionEnum.UPDATE, entity);
 
     await this.validate(entity);
   }
@@ -54,16 +55,19 @@ export class MetaEntitySubscriber
     const { entity } = event;
     if (!this.isMetaEntity(entity)) return;
 
-    const user = als.get('user');
-    if (user) {
-      entity.deletedUserId = user.id;
+    this.checkPermission(PermissionActionEnum.DELETE, entity);
 
-      const repo = event.manager.getRepository(event.metadata.target);
-      await repo.update(
-        { id: entity.id },
-        repo.create({ deletedUserId: entity.deletedUserId }),
-      );
-    }
+    const user = als.get('user');
+    entity.deletedUserId = user.id;
+
+    await this.updateDeletedUserId(event, user.id);
+  }
+
+  beforeRemove(event: RemoveEvent<MetaEntity>) {
+    const { entity } = event;
+    if (!this.isMetaEntity(entity)) return;
+
+    this.checkPermission(PermissionActionEnum.DELETE, entity);
   }
 
   beforeTransactionCommit(event: TransactionCommitEvent) {
@@ -72,6 +76,16 @@ export class MetaEntitySubscriber
 
     const auditLogRepo = event.manager.getRepository(AuditLog);
     return auditLogRepo.save(auditLogs);
+  }
+
+  afterLoad(entity: MetaEntity) {
+    if (als.has('user')) {
+      this.checkPermission(PermissionActionEnum.READ, entity);
+    } else {
+      this.logger.debug(
+        'No user in als, skip permission check for afterLoad hook.',
+      );
+    }
   }
 
   afterInsert(event: InsertEvent<MetaEntity>) {
@@ -100,6 +114,24 @@ export class MetaEntitySubscriber
 
   afterRecover(event: RecoverEvent<MetaEntity>) {
     this.removeKindEventAuditLog(event, AuditActionEnum.RECOVER);
+  }
+
+  private updateDeletedUserId(
+    event: SoftRemoveEvent<MetaEntity>,
+    deletedUserId: string,
+  ) {
+    const { entity } = event;
+    if (!this.isMetaEntity(entity)) return;
+
+    const repo = event.manager.getRepository(event.metadata.target);
+    return repo.update({ id: entity.id }, repo.create({ deletedUserId }));
+  }
+
+  private checkPermission(action: PermissionActionEnum, entity: MetaEntity) {
+    const ability = als.get('ability');
+    if (ability.cannot(action, entity)) {
+      throw new ForbiddenException();
+    }
   }
 
   private removeKindEventAuditLog(

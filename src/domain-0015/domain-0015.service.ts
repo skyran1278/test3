@@ -43,12 +43,14 @@ export class Domain0015Service extends BaseService<Domain0015> {
     input: CreateDomain0015Input | UpdateDomain0015Input,
   ): Promise<Domain0015> {
     const user = this.alsService.get('user');
+    const rules = this.alsService.get('rules');
 
     const job = await this.domain0015Queue.add(
       Domain0015JobEnum.CREATE_DOMAIN0015_JOB,
       {
         input,
         user,
+        rules,
       },
     );
 
@@ -64,12 +66,14 @@ export class Domain0015Service extends BaseService<Domain0015> {
     input: CreateDomain0015Input | UpdateDomain0015Input,
   ): Promise<Domain0015> {
     const user = this.alsService.get('user');
+    const rules = this.alsService.get('rules');
 
     const job = await this.domain0015Queue.add(
       Domain0015JobEnum.CREATE_DOMAIN0015_JOB,
       {
         input,
         user,
+        rules,
       },
     );
 

@@ -11,7 +11,7 @@ import { EnvironmentEnum } from './environment.enum';
 
 export class EnvironmentVariables {
   @IsEnum(EnvironmentEnum)
-  NODE_ENV: EnvironmentEnum = EnvironmentEnum.Development;
+  NODE_ENV: EnvironmentEnum = EnvironmentEnum.DEVELOPMENT;
 
   @IsNumber()
   @Min(0)
@@ -43,7 +43,7 @@ export class EnvironmentVariables {
   DB_LOGGING: boolean = true;
 
   @IsEnum(EnvironmentEnum)
-  GRAPHQL_SERVER: EnvironmentEnum = EnvironmentEnum.Development;
+  GRAPHQL_SERVER: EnvironmentEnum = EnvironmentEnum.DEVELOPMENT;
 
   @IsString()
   REDIS_HOST: string = 'localhost';

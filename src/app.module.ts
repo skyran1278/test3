@@ -24,6 +24,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuditLogModule } from './audit-log/audit-log.module';
 import { AuthModule } from './auth/auth.module';
+import { CaslModule } from './casl/casl.module';
 import { CommonModule } from './common/common.module';
 import { ConfigurationModule } from './configuration/configuration.module';
 import { EnvironmentVariables } from './configuration/environment-variables';
@@ -40,6 +41,8 @@ import { Domain0015Module } from './domain-0015/domain-0015.module';
 import { CustomHttpExceptionBody } from './error/custom.error';
 import { ErrorModule } from './error/error.module';
 import { HealthModule } from './health/health.module';
+import { PermissionModule } from './permission/permission.module';
+import { RoleModule } from './role/role.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -82,7 +85,7 @@ import { UserModule } from './user/user.module';
         configService: ConfigService<EnvironmentVariables, true>,
       ): ApolloDriverConfig => {
         const plugins =
-          configService.get('GRAPHQL_SERVER') === EnvironmentEnum.Production
+          configService.get('GRAPHQL_SERVER') === EnvironmentEnum.PRODUCTION
             ? [ApolloServerPluginLandingPageProductionDefault()]
             : [ApolloServerPluginLandingPageLocalDefault()];
 
@@ -127,6 +130,9 @@ import { UserModule } from './user/user.module';
     AuthModule,
     ConfigurationModule,
     CommonModule,
+    RoleModule,
+    PermissionModule,
+    CaslModule,
     ErrorModule,
     HealthModule,
     UserModule,

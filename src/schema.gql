@@ -641,6 +641,33 @@ interface NodePage {
 """Integers that will have a value of 0 or more."""
 scalar NonNegativeInt
 
+type Permission implements MetaEntity {
+  action: PermissionActionEnum!
+  conditions: JSONObject
+  createdAt: DateTime!
+  createdUser: User
+  createdUserId: ID
+  deletedAt: DateTime
+  deletedUser: User
+  deletedUserId: ID
+  id: ID!
+
+  """角色"""
+  roles: [Role!]
+  subject: String!
+  updatedAt: DateTime!
+  updatedUser: User
+  updatedUserId: ID
+}
+
+enum PermissionActionEnum {
+  CREATE
+  DELETE
+  MANAGE
+  READ
+  UPDATE
+}
+
 type Query {
   domain0001(id: ID!): Domain0001!
   domain0001Page(
@@ -754,6 +781,25 @@ input RemoveUserInput {
 
 type RemoveUserOutput {
   user: User!
+}
+
+type Role implements MetaEntity {
+  createdAt: DateTime!
+  createdUser: User
+  createdUserId: ID
+  deletedAt: DateTime
+  deletedUser: User
+  deletedUserId: ID
+  id: ID!
+
+  """角色名稱"""
+  name: String!
+
+  """權限"""
+  permissions: [Permission!]
+  updatedAt: DateTime!
+  updatedUser: User
+  updatedUserId: ID
 }
 
 input SignInInput {
@@ -892,6 +938,9 @@ type User implements MetaEntity {
   deletedUserId: ID
   email: String!
   id: ID!
+
+  """角色"""
+  roles: [Role!]
   updatedAt: DateTime!
   updatedUser: User
   updatedUserId: ID
