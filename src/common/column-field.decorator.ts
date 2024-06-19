@@ -35,6 +35,16 @@ export function ColumnField(options: ColumnAndFieldOptions) {
 export function getFieldDecorator(options: ColumnAndFieldOptions) {
   const defaultValue = getDefaultValue(options);
 
+  // Due to a type issue in @nestjs/graphql 12.1.1, we need to handle nullable separately
+  if (options.nullable === true) {
+    return Field(getReturnTypeFunc(options), {
+      description: options.comment,
+      nullable: true,
+      deprecationReason: options.deprecationReason,
+      defaultValue,
+    });
+  }
+
   return Field(getReturnTypeFunc(options), {
     description: options.comment,
     nullable: options.nullable,
