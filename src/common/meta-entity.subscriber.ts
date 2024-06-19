@@ -16,6 +16,7 @@ import { AuditActionEnum } from '../audit-log/audit-action.enum';
 import { AuditLog } from '../audit-log/audit-log.entity';
 import { ValidatorError } from '../error/validator.error';
 import { PermissionActionEnum } from '../permission/permission-action.enum';
+import { Permission } from '../permission/permission.entity';
 import { MetaEntity } from './meta.entity';
 
 @EventSubscriber()
@@ -79,6 +80,10 @@ export class MetaEntitySubscriber
   }
 
   afterLoad(entity: MetaEntity) {
+    if (entity instanceof Permission) {
+      return;
+    }
+
     if (als.has('noAuthentication') || als.has('noAuthorization')) {
       return this.logger.debug(
         'Skip the permission check for the afterLoad hook when noAuthentication or noAuthorization is present in ALS.',

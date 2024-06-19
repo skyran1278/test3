@@ -105,8 +105,6 @@ describe('AppController (e2e)', () => {
         me {
           id
           email
-          updatedAt
-          createdAt
         }
       }`,
     );
@@ -116,8 +114,6 @@ describe('AppController (e2e)', () => {
         me: {
           id: '94107a27-4c24-4912-be7b-6f4b0b462acb',
           email: 'nai@u-ran',
-          updatedAt: '2024-06-04T19:22:20.684Z',
-          createdAt: '2024-06-04T19:22:20.684Z',
         },
       },
     });
