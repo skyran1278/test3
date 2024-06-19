@@ -34,10 +34,7 @@ export class MetaEntitySubscriber
     entity.createdUserId = user.id;
     entity.updatedUserId = user.id;
 
-    const ability = als.get('ability');
-    if (ability.cannot(PermissionActionEnum.CREATE, entity)) {
-      throw new ForbiddenException();
-    }
+    this.checkPermission(PermissionActionEnum.CREATE, entity);
 
     await this.validate(entity);
   }
@@ -49,10 +46,7 @@ export class MetaEntitySubscriber
     const user = als.get('user');
     entity.updatedUserId = user.id;
 
-    const ability = als.get('ability');
-    if (ability?.cannot(PermissionActionEnum.UPDATE, entity)) {
-      throw new ForbiddenException();
-    }
+    this.checkPermission(PermissionActionEnum.UPDATE, entity);
 
     await this.validate(entity);
   }
@@ -61,29 +55,19 @@ export class MetaEntitySubscriber
     const { entity } = event;
     if (!this.isMetaEntity(entity)) return;
 
-    const ability = als.get('ability');
-    if (ability?.cannot(PermissionActionEnum.DELETE, entity)) {
-      throw new ForbiddenException();
-    }
+    this.checkPermission(PermissionActionEnum.DELETE, entity);
 
     const user = als.get('user');
     entity.deletedUserId = user.id;
 
-    const repo = event.manager.getRepository(event.metadata.target);
-    await repo.update(
-      { id: entity.id },
-      repo.create({ deletedUserId: entity.deletedUserId }),
-    );
+    await this.updateDeletedUserId(event, user.id);
   }
 
   beforeRemove(event: RemoveEvent<MetaEntity>) {
     const { entity } = event;
     if (!this.isMetaEntity(entity)) return;
 
-    const ability = als.get('ability');
-    if (ability?.cannot(PermissionActionEnum.DELETE, entity)) {
-      throw new ForbiddenException();
-    }
+    this.checkPermission(PermissionActionEnum.DELETE, entity);
   }
 
   beforeTransactionCommit(event: TransactionCommitEvent) {
@@ -95,9 +79,8 @@ export class MetaEntitySubscriber
   }
 
   afterLoad(entity: MetaEntity) {
-    const ability = als.get('ability');
-    if (ability?.cannot(PermissionActionEnum.READ, entity)) {
-      throw new ForbiddenException();
+    if (als.isActive()) {
+      this.checkPermission(PermissionActionEnum.READ, entity);
     }
   }
 
@@ -127,6 +110,24 @@ export class MetaEntitySubscriber
 
   afterRecover(event: RecoverEvent<MetaEntity>) {
     this.removeKindEventAuditLog(event, AuditActionEnum.RECOVER);
+  }
+
+  private updateDeletedUserId(
+    event: SoftRemoveEvent<MetaEntity>,
+    deletedUserId: string,
+  ) {
+    const { entity } = event;
+    if (!this.isMetaEntity(entity)) return;
+
+    const repo = event.manager.getRepository(event.metadata.target);
+    return repo.update({ id: entity.id }, repo.create({ deletedUserId }));
+  }
+
+  private checkPermission(action: PermissionActionEnum, entity: MetaEntity) {
+    const ability = als.get('ability');
+    if (ability?.cannot(action, entity)) {
+      throw new ForbiddenException();
+    }
   }
 
   private removeKindEventAuditLog(
