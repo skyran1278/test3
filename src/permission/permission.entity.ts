@@ -20,7 +20,7 @@ export class Permission extends MetaEntity implements RawRule {
   @ColumnField({ type: 'jsonb', nullable: true })
   conditions?: Maybe<Record<string, unknown>>;
 
-  @Field(() => [Role], { nullable: true, description: '職務' })
+  @Field(() => [Role], { nullable: true, description: '角色' })
   @ManyToMany(() => Role, (role) => role.permissions)
   roles?: Role[];
 }

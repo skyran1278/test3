@@ -12,7 +12,7 @@ export class Role extends MetaEntity {
   @ColumnField({
     type: 'varchar',
     length: 20,
-    comment: '職務名稱',
+    comment: '角色名稱',
   })
   name!: string;
 

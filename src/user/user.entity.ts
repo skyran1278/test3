@@ -20,7 +20,7 @@ export class User extends MetaEntity {
   })
   hashedPassword!: string;
 
-  @Field(() => [Role], { nullable: true, description: '職務' })
+  @Field(() => [Role], { nullable: true, description: '角色' })
   @JoinTable()
   @ManyToMany(() => Role, (item) => item.users)
   roles?: Role[];

@@ -3,7 +3,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { Permission } from './permission.entity';
 import { PermissionRepository } from './permission.repository';
-import { PermissionResolver } from './permission.resolver';
 import { PermissionService } from './permission.service';
 
 @Module({
@@ -11,7 +10,7 @@ import { PermissionService } from './permission.service';
   providers: [
     PermissionRepository,
     PermissionService,
-    PermissionResolver,
+    // PermissionResolver,
     // PermissionByIdLoader,
     // PermissionByIdResolver,
   ],

@@ -95,25 +95,6 @@ type CreateDomain0015Output {
   domain0015: Domain0015!
 }
 
-input CreatePermissionInput {
-  action: PermissionActionEnum!
-  conditions: JSONObject
-  subject: String!
-}
-
-type CreatePermissionOutput {
-  permission: Permission!
-}
-
-input CreateRoleInput {
-  """職務名稱"""
-  name: String!
-}
-
-type CreateRoleOutput {
-  role: Role!
-}
-
 input CreateUserInput {
   email: String!
   password: String!
@@ -620,15 +601,11 @@ type Mutation {
   createDomain0005(input: CreateDomain0005Input!): CreateDomain0005Output!
   createDomain0008(input: CreateDomain0008Input!): CreateDomain0008Output!
   createDomain0015(input: CreateDomain0015Input!): CreateDomain0015Output!
-  createPermission(input: CreatePermissionInput!): CreatePermissionOutput!
-  createRole(input: CreateRoleInput!): CreateRoleOutput!
   createUser(createUserInput: CreateUserInput!): CreateUserOutput!
   removeDomain0001(input: RemoveDomain0001Input!): RemoveDomain0001Output!
   removeDomain0003(input: RemoveDomain0003Input!): RemoveDomain0003Output!
   removeDomain0005(input: RemoveDomain0005Input!): RemoveDomain0005Output!
   removeDomain0008(input: RemoveDomain0008Input!): RemoveDomain0008Output!
-  removePermission(input: RemovePermissionInput!): RemovePermissionOutput!
-  removeRole(input: RemoveRoleInput!): RemoveRoleOutput!
   removeUser(input: RemoveUserInput!): RemoveUserOutput!
   signIn(input: SignInInput!): SignInOutput!
   softRemoveDomain0005(input: SoftRemoveDomain0005Input!): SoftRemoveDomain0005Output!
@@ -638,8 +615,6 @@ type Mutation {
   updateDomain0005(input: UpdateDomain0005Input!): UpdateDomain0005Output!
   updateDomain0008(input: UpdateDomain0008Input!): UpdateDomain0008Output!
   updateDomain0008s(input: UpdateDomain0008sInput!): UpdateDomain0008sOutput!
-  updatePermission(input: UpdatePermissionInput!): UpdatePermissionOutput!
-  updateRole(input: UpdateRoleInput!): UpdateRoleOutput!
   updateUser(input: UpdateUserInput!): UpdateUserOutput!
 }
 
@@ -677,7 +652,7 @@ type Permission implements MetaEntity {
   deletedUserId: ID
   id: ID!
 
-  """職務"""
+  """角色"""
   roles: [Role!]
   subject: String!
   updatedAt: DateTime!
@@ -691,41 +666,6 @@ enum PermissionActionEnum {
   MANAGE
   READ
   UPDATE
-}
-
-input PermissionOrderInput {
-  action: NodeOrderEnum
-  conditions: NodeOrderEnum
-  createdAt: NodeOrderEnum
-  deletedAt: NodeOrderEnum
-  subject: NodeOrderEnum
-  updatedAt: NodeOrderEnum
-}
-
-type PermissionPage implements NodePage {
-  """Nodes in this page"""
-  nodes: [Permission!]!
-
-  """Amount of nodes to skip from the beginning of this page"""
-  skip: NonNegativeInt
-
-  """Maximum amount of nodes in this page"""
-  take: NonNegativeInt
-
-  """Total amount of nodes"""
-  total: NonNegativeInt
-}
-
-input PermissionWhereInput {
-  action: PermissionActionEnum
-  createdAt: DateTime
-  createdUserId: ID
-  deletedAt: DateTime
-  deletedUserId: ID
-  id: ID
-  subject: String
-  updatedAt: DateTime
-  updatedUserId: ID
 }
 
 type Query {
@@ -787,34 +727,6 @@ type Query {
   ): Domain0008Page!
   error: ErrorType!
   me: User
-  permission(id: ID!): Permission!
-  permissionPage(
-    """排序欄位與方式"""
-    order: PermissionOrderInput! = {}
-
-    """Amount of nodes to skip from the beginning of this page"""
-    skip: NonNegativeInt
-
-    """Maximum amount of nodes in this page"""
-    take: NonNegativeInt
-
-    """查詢條件"""
-    where: [PermissionWhereInput!]
-  ): PermissionPage!
-  role(id: ID!): Role!
-  rolePage(
-    """排序欄位與方式"""
-    order: RoleOrderInput! = {}
-
-    """Amount of nodes to skip from the beginning of this page"""
-    skip: NonNegativeInt
-
-    """Maximum amount of nodes in this page"""
-    take: NonNegativeInt
-
-    """查詢條件"""
-    where: [RoleWhereInput!]
-  ): RolePage!
   user(id: ID!): User!
   userPage(
     """排序欄位與方式"""
@@ -863,22 +775,6 @@ type RemoveDomain0008Output {
   domain0008: Domain0008!
 }
 
-input RemovePermissionInput {
-  id: ID!
-}
-
-type RemovePermissionOutput {
-  permission: Permission!
-}
-
-input RemoveRoleInput {
-  id: ID!
-}
-
-type RemoveRoleOutput {
-  role: Role!
-}
-
 input RemoveUserInput {
   id: ID!
 }
@@ -896,49 +792,13 @@ type Role implements MetaEntity {
   deletedUserId: ID
   id: ID!
 
-  """職務名稱"""
+  """角色名稱"""
   name: String!
 
   """權限"""
   permissions: [Permission!]
   updatedAt: DateTime!
   updatedUser: User
-  updatedUserId: ID
-}
-
-input RoleOrderInput {
-  createdAt: NodeOrderEnum
-  deletedAt: NodeOrderEnum
-
-  """職務名稱"""
-  name: NodeOrderEnum
-  updatedAt: NodeOrderEnum
-}
-
-type RolePage implements NodePage {
-  """Nodes in this page"""
-  nodes: [Role!]!
-
-  """Amount of nodes to skip from the beginning of this page"""
-  skip: NonNegativeInt
-
-  """Maximum amount of nodes in this page"""
-  take: NonNegativeInt
-
-  """Total amount of nodes"""
-  total: NonNegativeInt
-}
-
-input RoleWhereInput {
-  createdAt: DateTime
-  createdUserId: ID
-  deletedAt: DateTime
-  deletedUserId: ID
-  id: ID
-
-  """職務名稱"""
-  name: String
-  updatedAt: DateTime
   updatedUserId: ID
 }
 
@@ -1059,28 +919,6 @@ input UpdateDomain0010Input {
   id: ID!
 }
 
-input UpdatePermissionInput {
-  action: PermissionActionEnum
-  conditions: JSONObject
-  id: ID!
-  subject: String
-}
-
-type UpdatePermissionOutput {
-  permission: Permission!
-}
-
-input UpdateRoleInput {
-  id: ID!
-
-  """職務名稱"""
-  name: String
-}
-
-type UpdateRoleOutput {
-  role: Role!
-}
-
 input UpdateUserInput {
   email: String
   id: ID!
@@ -1101,7 +939,7 @@ type User implements MetaEntity {
   email: String!
   id: ID!
 
-  """職務"""
+  """角色"""
   roles: [Role!]
   updatedAt: DateTime!
   updatedUser: User

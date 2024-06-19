@@ -3,7 +3,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { Role } from './role.entity';
 import { RoleRepository } from './role.repository';
-import { RoleResolver } from './role.resolver';
 import { RoleService } from './role.service';
 
 @Module({
@@ -11,7 +10,7 @@ import { RoleService } from './role.service';
   providers: [
     RoleRepository,
     RoleService,
-    RoleResolver,
+    // RoleResolver,
     // RoleByIdLoader,
     // RoleByIdResolver,
   ],
