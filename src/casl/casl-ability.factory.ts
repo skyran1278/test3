@@ -10,6 +10,7 @@ import { Maybe } from 'graphql/jsutils/Maybe';
 import get from 'lodash/get';
 
 import { CustomError } from '../error/custom.error';
+import { ErrorReasonEnum } from '../error/error-reason.enum';
 import { PermissionActionEnum } from '../permission/permission-action.enum';
 import { PermissionRepository } from '../permission/permission.repository';
 import { User } from '../user/user.entity';
@@ -66,7 +67,10 @@ export class CaslAbilityFactory {
     return record;
   }
 
-  replacePlaceholder(str: string, vars: Record<string, unknown>): unknown {
+  private replacePlaceholder(
+    str: string,
+    vars: Record<string, unknown>,
+  ): unknown {
     const key = /\${(.*?)}/g.exec(str)?.[1];
 
     if (key) {
@@ -75,6 +79,7 @@ export class CaslAbilityFactory {
         throw new CustomError({
           message: `Can't find value for key "${key}" in Permission's Conditions`,
           statusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+          reason: ErrorReasonEnum.PERMISSION_INTERPOLATE_ERROR,
           detail: {
             key,
             vars,
@@ -87,7 +92,7 @@ export class CaslAbilityFactory {
     return str;
   }
 
-  isRecord(value: unknown): value is Record<string, unknown> {
+  private isRecord(value: unknown): value is Record<string, unknown> {
     return typeof value === 'object' && value !== null && !Array.isArray(value);
   }
 }
