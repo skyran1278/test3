@@ -85,7 +85,7 @@ import { UserModule } from './user/user.module';
         configService: ConfigService<EnvironmentVariables, true>,
       ): ApolloDriverConfig => {
         const plugins =
-          configService.get('GRAPHQL_SERVER') === EnvironmentEnum.Production
+          configService.get('GRAPHQL_SERVER') === EnvironmentEnum.PRODUCTION
             ? [ApolloServerPluginLandingPageProductionDefault()]
             : [ApolloServerPluginLandingPageLocalDefault()];
 

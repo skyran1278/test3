@@ -15,7 +15,7 @@ export class WinstonLogger extends ConsoleLogger {
     this.logger = createLogger({
       level: configService.get('LOGGING_LEVEL'),
       format:
-        configService.get('NODE_ENV') === EnvironmentEnum.Production
+        configService.get('NODE_ENV') === EnvironmentEnum.PRODUCTION
           ? format.combine(
               format.timestamp({
                 format: 'YYYY-MM-DD HH:mm:ss',

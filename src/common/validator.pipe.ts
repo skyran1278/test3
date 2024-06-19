@@ -9,7 +9,7 @@ class ValidatorPipe extends ValidationPipe {
       transform: true,
       exceptionFactory: (errors) => {
         const disableErrorMessages =
-          process.env.NODE_ENV === EnvironmentEnum.Production;
+          process.env.NODE_ENV === EnvironmentEnum.PRODUCTION;
         if (disableErrorMessages) {
           return new ValidatorError();
         }
