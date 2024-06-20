@@ -4,11 +4,7 @@ import { runInTransaction } from 'typeorm-transactional';
 
 @Injectable()
 export class TransactionMiddleware implements NestMiddleware {
-  use(req: Request, _res: Response, next: NextFunction) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    if (req.body?.operationName === 'IntrospectionQuery') {
-      return next();
-    }
+  use(_req: Request, _res: Response, next: NextFunction) {
     runInTransaction(next);
   }
 }
