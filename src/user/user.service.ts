@@ -1,37 +1,34 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
 
-import { BaseService } from '../common/base.service';
+import { User } from './user.entity';
+import { UserRepository } from './user.repository';
 import { CreateUserInput } from './mutation/create-user.input';
 import { UpdateUserInput } from './mutation/update-user.input';
 import { UserPageArgs } from './query/user-page.args';
-import { User } from './user.entity';
 
 @Injectable()
-export class UserService extends BaseService<User> {
-  constructor(
-    @InjectRepository(User)
-    readonly repo: Repository<User>,
-  ) {
-    super(repo);
-  }
+export class UserService {
+  constructor(private readonly repo: UserRepository) {}
 
   @Transactional()
-  async saveOne(input: CreateUserInput | UpdateUserInput): Promise<User> {
-    return this.save(input);
+  async saveOne(
+    input: CreateUserInput | UpdateUserInput,
+  ): Promise<User> {
+    const user = await this.repo.save(input);
+
+    return user;
   }
 
   @Transactional()
   findPage(args: UserPageArgs) {
-    return this.findNodePage(args);
+    return this.repo.findNodePage(args);
   }
 
   @Transactional()
   async removeOne(id: string) {
-    const user = await this.findOneByOrFail({ id });
+    const user = await this.repo.findOneByOrFail({ id });
 
-    return this.softRemove(user);
+    return this.repo.softRemove(user);
   }
 }

@@ -1,30 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
 
-import { BaseService } from '../common/base.service';
 import { CustomAuthenticationError } from '../error/custom-authentication.error';
-import { User } from '../user/user.entity';
-import { UserService } from '../user/user.service';
+import { UserRepository } from '../user/user.repository';
 import { SignInInput } from './mutation/sign-in.input';
 import { SignInOutput } from './mutation/sign-in.output';
 
 @Injectable()
-export class SecurityService extends BaseService<User> {
+export class SecurityService {
   constructor(
     private jwtService: JwtService,
-    private userService: UserService,
-    @InjectRepository(User)
-    readonly repo: Repository<User>,
-  ) {
-    super(repo);
-  }
+    private userRepository: UserRepository,
+  ) {}
 
   @Transactional()
   async signIn(input: SignInInput): Promise<SignInOutput> {
-    const user = await this.userService.findOne({
+    const user = await this.userRepository.findOne({
       where: { email: input.email },
     });
 

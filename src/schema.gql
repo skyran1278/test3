@@ -601,7 +601,7 @@ type Mutation {
   createDomain0005(input: CreateDomain0005Input!): CreateDomain0005Output!
   createDomain0008(input: CreateDomain0008Input!): CreateDomain0008Output!
   createDomain0015(input: CreateDomain0015Input!): CreateDomain0015Output!
-  createUser(createUserInput: CreateUserInput!): CreateUserOutput!
+  createUser(input: CreateUserInput!): CreateUserOutput!
   removeDomain0001(input: RemoveDomain0001Input!): RemoveDomain0001Output!
   removeDomain0003(input: RemoveDomain0003Input!): RemoveDomain0003Output!
   removeDomain0005(input: RemoveDomain0005Input!): RemoveDomain0005Output!
