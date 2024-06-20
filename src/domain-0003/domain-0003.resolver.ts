@@ -3,19 +3,23 @@ import { Maybe } from 'graphql/jsutils/Maybe';
 import { Transactional } from 'typeorm-transactional';
 
 import { Domain0003 } from './domain-0003.entity';
+import { Domain0003Repository } from './domain-0003.repository';
 import { Domain0003Service } from './domain-0003.service';
-import { CreateDomain0003Input } from './dto/create-domain-0003.input';
-import { CreateDomain0003Output } from './dto/create-domain-0003.output';
-import { Domain0003PageArgs } from './dto/domain-0003-page.args';
-import { Domain0003Page } from './dto/domain-0003-page.type';
-import { RemoveDomain0003Input } from './dto/remove-domain-0003.input';
-import { RemoveDomain0003Output } from './dto/remove-domain-0003.output';
-import { UpdateDomain0003Input } from './dto/update-domain-0003.input';
-import { UpdateDomain0003Output } from './dto/update-domain-0003.output';
+import { CreateDomain0003Input } from './mutation/create-domain-0003.input';
+import { CreateDomain0003Output } from './mutation/create-domain-0003.output';
+import { RemoveDomain0003Input } from './mutation/remove-domain-0003.input';
+import { RemoveDomain0003Output } from './mutation/remove-domain-0003.output';
+import { UpdateDomain0003Input } from './mutation/update-domain-0003.input';
+import { UpdateDomain0003Output } from './mutation/update-domain-0003.output';
+import { Domain0003PageArgs } from './query/domain-0003-page.args';
+import { Domain0003Page } from './query/domain-0003-page.type';
 
 @Resolver(() => Domain0003)
 export class Domain0003Resolver {
-  constructor(private readonly domain0003Service: Domain0003Service) {}
+  constructor(
+    private readonly domain0003Repository: Domain0003Repository,
+    private readonly domain0003Service: Domain0003Service,
+  ) {}
 
   @Transactional()
   @Mutation(() => CreateDomain0003Output)
@@ -37,7 +41,7 @@ export class Domain0003Resolver {
   domain0003(
     @Args('id', { type: () => ID }) id: string,
   ): Promise<Maybe<Domain0003>> {
-    return this.domain0003Service.findOne({ where: { id } });
+    return this.domain0003Repository.findOne({ where: { id } });
   }
 
   @Transactional()
