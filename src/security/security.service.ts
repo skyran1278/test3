@@ -12,7 +12,7 @@ import { SignInInput } from './mutation/sign-in.input';
 import { SignInOutput } from './mutation/sign-in.output';
 
 @Injectable()
-export class AuthService extends BaseService<User> {
+export class SecurityService extends BaseService<User> {
   constructor(
     private jwtService: JwtService,
     private userService: UserService,

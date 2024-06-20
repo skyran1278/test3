@@ -1,4 +1,4 @@
-import { CaslRules } from '../casl/casl-ability.factory';
+import { CaslRules } from '../security/authorization.factory';
 import { User } from '../user/user.entity';
 
 export interface JobInput {

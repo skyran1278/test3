@@ -6,12 +6,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { EnvironmentVariables } from 'src/configuration/environment-variables';
 
 import { AlsModule } from '../als/als.module';
-import { CaslModule } from '../casl/casl.module';
+import { PermissionModule } from '../permission/permission.module';
 import { User } from '../user/user.entity';
 import { UserModule } from '../user/user.module';
-import { AuthGuard } from './auth.guard';
-import { AuthResolver } from './auth.resolver';
-import { AuthService } from './auth.service';
+import { AuthorizationFactory } from './authorization.factory';
+import { SecurityGuard } from './security.guard';
+import { SecurityResolver } from './security.resolver';
+import { SecurityService } from './security.service';
 
 @Module({
   imports: [
@@ -30,15 +31,16 @@ import { AuthService } from './auth.service';
     }),
     UserModule,
     AlsModule,
-    CaslModule,
+    PermissionModule,
   ],
   providers: [
-    AuthResolver,
-    AuthService,
+    AuthorizationFactory,
+    SecurityResolver,
+    SecurityService,
     {
       provide: APP_GUARD,
-      useClass: AuthGuard,
+      useClass: SecurityGuard,
     },
   ],
 })
-export class AuthModule {}
+export class SecurityModule {}

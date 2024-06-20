@@ -21,7 +21,7 @@ export type CaslRules = RawRuleFrom<PossibleAbilities, Conditions>[];
 export type CaslAbility = MongoAbility<PossibleAbilities, Conditions>;
 
 @Injectable()
-export class CaslAbilityFactory {
+export class AuthorizationFactory {
   constructor(private readonly permissionRepository: PermissionRepository) {}
 
   async createRulesFor(user: User): Promise<CaslRules> {

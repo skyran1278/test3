@@ -5,14 +5,14 @@ import { CustomError } from '../error/custom.error';
 import { ErrorReasonEnum } from '../error/error-reason.enum';
 import { PermissionActionEnum } from '../permission/permission-action.enum';
 import { User } from '../user/user.entity';
-import { CaslAbility, CaslAbilityFactory } from './casl-ability.factory';
+import { AuthorizationFactory, CaslAbility } from './authorization.factory';
 
-describe('CaslAbilityFactory', () => {
-  let service: CaslAbilityFactory;
+describe('AuthorizationFactory', () => {
+  let service: AuthorizationFactory;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [CaslAbilityFactory],
+      providers: [AuthorizationFactory],
     })
       .useMocker(() => ({
         findBy: () => [
@@ -32,7 +32,7 @@ describe('CaslAbilityFactory', () => {
       }))
       .compile();
 
-    service = module.get<CaslAbilityFactory>(CaslAbilityFactory);
+    service = module.get<AuthorizationFactory>(AuthorizationFactory);
   });
 
   it('should be defined', () => {

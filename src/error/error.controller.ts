@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 
-import { NoAuthentication } from '../auth/no-authentication.decorator';
+import { NoAuthentication } from '../security/no-authentication.decorator';
 import { CustomAuthenticationError } from './custom-authentication.error';
 
 /**

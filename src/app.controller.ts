@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 
 import { AppService } from './app.service';
-import { NoAuthentication } from './auth/no-authentication.decorator';
+import { NoAuthentication } from './security/no-authentication.decorator';
 
 @Controller()
 export class AppController {

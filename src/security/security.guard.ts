@@ -5,20 +5,20 @@ import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 
 import { AlsService } from '../als/als.service';
-import { CaslAbilityFactory } from '../casl/casl-ability.factory';
 import { GraphQLContext } from '../common/graphql-context.interface';
 import { CustomAuthenticationError } from '../error/custom-authentication.error';
 import { User } from '../user/user.entity';
+import { AuthorizationFactory } from './authorization.factory';
 import { NoAuthentication } from './no-authentication.decorator';
 import { NoAuthorization } from './no-authorization.decorator';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class SecurityGuard implements CanActivate {
   constructor(
     private readonly jwtService: JwtService,
     private readonly reflector: Reflector,
     private readonly alsService: AlsService,
-    private readonly caslAbilityFactory: CaslAbilityFactory,
+    private readonly caslAbilityFactory: AuthorizationFactory,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {

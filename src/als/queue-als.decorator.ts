@@ -4,8 +4,8 @@ import { createMongoAbility } from '@casl/ability';
 import { applyDecorators } from '@nestjs/common';
 import { Job } from 'bullmq';
 
-import { CaslAbility } from '../casl/casl-ability.factory';
 import { JobInput } from '../common/job';
+import { CaslAbility } from '../security/authorization.factory';
 import { RunAls } from './als.decorator';
 
 export function QueueAls() {

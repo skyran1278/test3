@@ -7,7 +7,7 @@ import {
   TypeOrmHealthIndicator,
 } from '@nestjs/terminus';
 
-import { NoAuthentication } from '../auth/no-authentication.decorator';
+import { NoAuthentication } from '../security/no-authentication.decorator';
 
 /**
  * @see https://docs.nestjs.com/recipes/terminus
