@@ -56,16 +56,31 @@ $ pnpm run migration:revert
 
 ## Folder Structure
 
-- domain-0001: schematic
-- domain-0003: multiple column type
-- domain-0005: many-to-one (without cascade)
-- domain-0006: one-to-many (without cascade)
-- domain-0007: one-to-many (without cascade)
-  - give up 3 layer save, because of delete domain-0006 will cause domain-0007 error
-  - if 3 layer save, use `cascade: true`
-- domain-0009: one-to-many (cascade)
-- domain-0010: many-to-one (cascade)
-- domain-0015: bullmq with redis
+- migration: Config for database migration, managing schema changes.
+- src
+  - als: Manages asynchronous local storage by request.
+  - audit-log: Logs database actions for auditing.
+  - common: Shared utilities, helpers, and constants.
+  - configuration: Manages environment variables and settings.
+  - error: Error management, including custom classes and exception filters.
+  - health: Health check endpoints.
+  - permission: Manages user permissions and access policies.
+  - role: Manages role-based access control.
+  - security: Authentication & authorization.
+  - user: Manages user-related functionality.
+  - domain-0001: Schematic.
+  - domain-0003:Handles multiple column types.
+  - domain-0005: one-to-many (without cascade)
+  - domain-0006: one-to-many (without cascade)
+  - domain-0007: one-to-many (without cascade)
+    - Note: Avoid 3-layer save; deleting domain-0006 causes domain-0007 error.
+    - If necessary, use `cascade: true`.
+  - domain-0008: one-to-many (cascade)
+  - domain-0009: one-to-many (cascade)
+  - domain-0010: one-to-many (cascade)
+  - domain-0015: Queue management with BullMQ and Redis.
+- test: End-to-end tests for full workflow validation.
+
 
 ## Issue
 
