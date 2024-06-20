@@ -3,7 +3,7 @@ import { validateSync } from 'class-validator';
 
 import { EnvironmentVariables } from './environment-variables';
 
-export function validate(config: Record<string, unknown>) {
+export function configurationValidate(config: Record<string, unknown>) {
   const validatedConfig = plainToInstance(EnvironmentVariables, config, {
     enableImplicitConversion: true,
   });

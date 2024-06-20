@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
-import { validate } from './configuration.validation';
+import { configurationValidate } from './configuration.validation';
 
 /**
  * @see https://docs.nestjs.com/techniques/configuration#schema-validation
@@ -13,7 +13,7 @@ import { validate } from './configuration.validation';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: process.env.NODE_ENV === 'test' ? '.env.test' : '.env',
-      validate,
+      validate: configurationValidate,
     }),
   ],
 })
