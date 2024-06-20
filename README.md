@@ -1,91 +1,111 @@
 ## Installation
 
 ```bash
-# install package
-$ pnpm install
+# Install package
+pnpm install
 
-# start docker
+# Start Docker
 docker-compose down --remove-orphans
 docker-compose up -d
 
-# run migration
-$ pnpm run migration:run
+# Run migration
+pnpm run migration:run
 
-# watch mode
-$ pnpm run start:dev
+# Watch mode
+pnpm run start:dev
 ```
 
-## Running the app
+## Running the App
 
 ```bash
-# development
-$ pnpm run start
+# Watch mode
+pnpm run start:dev
 
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+# Production mode
+pnpm run start:prod
 ```
 
-## Test
+## Testing
 
 ```bash
-# unit tests
-$ pnpm run test
+# Unit tests
+pnpm run test:watch
 
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+# E2E tests
+pnpm run test:e2e --watch
 ```
 
 ## Migration
 
 ```bash
-# generate migration
-$ pnpm run migration:generate <migration-path>
+# Generate migration
+pnpm run migration:generate <migration-path>
 
-# run migration
-$ pnpm run migration:run
+# Run migration
+pnpm run migration:run
 
-# revert migration
-$ pnpm run migration:revert
+# Revert migration
+pnpm run migration:revert
 ```
 
 ## Folder Structure
 
-- migration: Config for database migration, managing schema changes.
-- src
-  - als: Manages asynchronous local storage by request.
-  - audit-log: Logs database actions for auditing.
-  - common: Shared utilities, helpers, and constants.
-  - configuration: Manages environment variables and settings.
-  - error: Error management, including custom classes and exception filters.
-  - health: Health check endpoints.
-  - permission: Manages user permissions and access policies.
-  - role: Manages role-based access control.
-  - security: Authentication & authorization.
-  - user: Manages user-related functionality.
-  - domain-0001: Schematic.
-  - domain-0003:Handles multiple column types.
-  - domain-0008: one-to-many (cascade)
-  - domain-0009: one-to-many (cascade)
-  - domain-0010: one-to-many (cascade)
-  - domain-0015: Queue management with BullMQ and Redis.
-- test: End-to-end tests for full workflow validation.
+- **migration**: Config for database migration, managing schema changes.
+- **src**
+  - **als**: Manages asynchronous local storage by request.
+  - **audit-log**: Logs database actions for auditing.
+  - **common**: Shared utilities, helpers, and constants.
+  - **configuration**: Manages environment variables and settings.
+  - **error**: Error management, including custom classes and exception filters.
+  - **health**: Health check endpoints.
+  - **permission**: Manages user permissions and access policies.
+  - **role**: Manages role-based access control.
+  - **security**: Authentication & authorization.
+  - **user**: Manages user-related functionality.
+  - **domain-0001**: Schematic.
+  - **domain-0003**: Handles multiple column types.
+  - **domain-0008**: One-to-many (cascade).
+  - **domain-0009**: One-to-many (cascade).
+  - **domain-0010**: One-to-many (cascade).
+  - **domain-0015**: Queue management with BullMQ and Redis.
+- **test**: End-to-end tests for full workflow validation.
 
-## Issue
+## Issues
 
-- [Prettier version 3 is not supported!](https://jestjs.io/docs/configuration/#prettierpath-string)
+- [Prettier version 3 is not supported in Jest!](https://jestjs.io/docs/configuration/#prettierpath-string)
 
 ## Decision Record
 
-- Remove without cascade example, because we could not easily update 3-layer without cascade.
-  - 如果要存 3 層結構，優先要存最上層的，下面的才拿得到上層的 ID，但是一旦儲存上層的，會觸發刪除中層的 entity，但更下面的那層卻還依賴中層的 ID，造成錯誤。
-  - domain-0005: one-to-many (without cascade)
-  - domain-0006: one-to-many (without cascade)
-  - domain-0007: one-to-many (without cascade)
-    - Note: Avoid 3-layer save; deleting domain-0006 causes domain-0007 error.
-    - If necessary, use `cascade: true`.
+### Remove without Cascade Example
+
+We encountered difficulties updating a 3-layer structure without using cascade.
+
+- When storing a 3-layer structure, start by saving the top layer first, as the lower layers require the upper layer's ID. However, saving the top layer triggers the deletion of the middle-layer entity, while the lowest layer still depends on the middle layer's ID, leading to errors.
+- **domain-0005**: One-to-many (without cascade).
+- **domain-0006**: One-to-many (without cascade).
+- **domain-0007**: One-to-many (without cascade).
+  - **Note**: Avoid saving a 3-layer structure; deleting domain-0006 causes errors in domain-0007.
+  - If necessary, use `cascade: true`.
+
+### Placement of Migration Folder
+
+When deciding where to place the migration folder in your project structure, consider the following:
+
+1. **Inside the `src` Folder**:
+
+   - **Pros**:
+     - Keeps all source code-related files together, making it easier to manage.
+     - Ideal for smaller projects where the project structure is less complex.
+   - **Cons**:
+     - Can make the `src` folder cluttered if there are many migration files.
+
+2. **Next to the `src` Folder**:
+   - **Pros**:
+     - Separates migrations from the source code, keeping the `src` folder clean and focused on the application's core logic.
+     - Easier to manage and find migration files in larger projects.
+   - **Cons**:
+     - Might slightly complicate the project structure if not well-documented or if there are many other folders at the same level.
+
+#### Recommendation
+
+For most projects, especially larger ones, placing the migration folder next to the `src` folder is usually the better choice. It helps maintain a clear separation of concerns and keeps the source code directory less cluttered. However, for smaller projects, placing it inside the `src` folder might be more convenient.
