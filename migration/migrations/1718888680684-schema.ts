@@ -1,23 +1,20 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class Schema1718766344260 implements MigrationInterface {
-    name = 'Schema1718766344260'
+export class Schema1718888680684 implements MigrationInterface {
+    name = 'Schema1718888680684'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TYPE "public"."permission_action_enum" AS ENUM('manage', 'create', 'read', 'update', 'delete')`);
         await queryRunner.query(`CREATE TABLE "permission" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "createdUserId" uuid, "updatedUserId" uuid, "deletedUserId" uuid, "action" "public"."permission_action_enum" NOT NULL, "subject" character varying(50) NOT NULL, "conditions" jsonb, CONSTRAINT "PK_3b8b97af9d9d8807e41e6f48362" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "role" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "createdUserId" uuid, "updatedUserId" uuid, "deletedUserId" uuid, "name" character varying(20) NOT NULL, CONSTRAINT "PK_b36bcfe02fc8de3c57a8b2391c2" PRIMARY KEY ("id")); COMMENT ON COLUMN "role"."name" IS '角色名稱'`);
         await queryRunner.query(`CREATE TABLE "user" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "createdUserId" uuid, "updatedUserId" uuid, "deletedUserId" uuid, "email" character varying(255) NOT NULL, "hashedPassword" character varying(255) NOT NULL, CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "domain0015" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "createdUserId" uuid, "updatedUserId" uuid, "deletedUserId" uuid, "domain0015001" integer, CONSTRAINT "PK_dc02d7db6f4f91c1d9744bad417" PRIMARY KEY ("id")); COMMENT ON COLUMN "domain0015"."domain0015001" IS 'domain0015001'`);
+        await queryRunner.query(`CREATE TYPE "public"."domain0003_domain0003006_enum" AS ENUM('ACTIVE', 'INACTIVE')`);
+        await queryRunner.query(`CREATE TABLE "domain0003" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "createdUserId" uuid, "updatedUserId" uuid, "deletedUserId" uuid, "domain0003001" boolean, "domain0003002" integer, "domain0003003" character varying(10), "domain0003004" date, "domain0003005" numeric(32,6), "domain0003006" "public"."domain0003_domain0003006_enum", "domain0003007" jsonb, "domain0003008" json, "domain0003011" integer array, CONSTRAINT "PK_2504b6403d98c82e3704c404639" PRIMARY KEY ("id")); COMMENT ON COLUMN "domain0003"."domain0003001" IS 'boolean'; COMMENT ON COLUMN "domain0003"."domain0003002" IS 'int'; COMMENT ON COLUMN "domain0003"."domain0003003" IS 'varchar'; COMMENT ON COLUMN "domain0003"."domain0003004" IS 'date'; COMMENT ON COLUMN "domain0003"."domain0003005" IS 'decimal'; COMMENT ON COLUMN "domain0003"."domain0003006" IS 'enum'; COMMENT ON COLUMN "domain0003"."domain0003007" IS 'jsonb'; COMMENT ON COLUMN "domain0003"."domain0003008" IS 'json'; COMMENT ON COLUMN "domain0003"."domain0003011" IS 'Array<int>'`);
         await queryRunner.query(`CREATE TABLE "domain0008" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "createdUserId" uuid, "updatedUserId" uuid, "deletedUserId" uuid, "domain0008001" integer, CONSTRAINT "PK_e52a5bac3f8cd885e2496f980ec" PRIMARY KEY ("id")); COMMENT ON COLUMN "domain0008"."domain0008001" IS 'domain0008001'`);
         await queryRunner.query(`CREATE TABLE "domain0009" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "createdUserId" uuid, "updatedUserId" uuid, "deletedUserId" uuid, "domain0008Id" uuid NOT NULL, "domain0009001" integer, CONSTRAINT "PK_e483c32c7c30e744636c5d407ea" PRIMARY KEY ("id")); COMMENT ON COLUMN "domain0009"."domain0009001" IS 'domain0009001'`);
         await queryRunner.query(`CREATE TABLE "domain0010" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "createdUserId" uuid, "updatedUserId" uuid, "deletedUserId" uuid, "domain0009Id" uuid NOT NULL, "domain0010001" integer, CONSTRAINT "PK_633fe903a5b0e5e79d28130d825" PRIMARY KEY ("id")); COMMENT ON COLUMN "domain0010"."domain0010001" IS 'domain0010001'`);
-        await queryRunner.query(`CREATE TABLE "domain0005" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "createdUserId" uuid, "updatedUserId" uuid, "deletedUserId" uuid, "domain0005001" integer, CONSTRAINT "PK_4bc922c2a18f2452a6f7f480215" PRIMARY KEY ("id")); COMMENT ON COLUMN "domain0005"."domain0005001" IS 'domain0005001'`);
-        await queryRunner.query(`CREATE TABLE "domain0006" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "createdUserId" uuid, "updatedUserId" uuid, "deletedUserId" uuid, "domain0006001" integer, "domain0005Id" uuid NOT NULL, CONSTRAINT "PK_11aa6524b5d868b3151309e4a85" PRIMARY KEY ("id")); COMMENT ON COLUMN "domain0006"."domain0006001" IS 'domain0006001'; COMMENT ON COLUMN "domain0006"."domain0005Id" IS 'domain0005Id'`);
-        await queryRunner.query(`CREATE TABLE "domain0007" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "createdUserId" uuid, "updatedUserId" uuid, "deletedUserId" uuid, "domain0007001" integer, "domain0006Id" uuid NOT NULL, CONSTRAINT "PK_34985b7a1eb08f069f9439cd505" PRIMARY KEY ("id")); COMMENT ON COLUMN "domain0007"."domain0007001" IS 'domain0007001'; COMMENT ON COLUMN "domain0007"."domain0006Id" IS 'domain0006Id'`);
-        await queryRunner.query(`CREATE TABLE "domain0015" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "createdUserId" uuid, "updatedUserId" uuid, "deletedUserId" uuid, "domain0015001" integer, CONSTRAINT "PK_dc02d7db6f4f91c1d9744bad417" PRIMARY KEY ("id")); COMMENT ON COLUMN "domain0015"."domain0015001" IS 'domain0015001'`);
         await queryRunner.query(`CREATE TABLE "domain0001" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "createdUserId" uuid, "updatedUserId" uuid, "deletedUserId" uuid, "domain0001001" integer, CONSTRAINT "PK_40ca50595fa1f689cf544953ee2" PRIMARY KEY ("id")); COMMENT ON COLUMN "domain0001"."domain0001001" IS 'domain0001001'`);
-        await queryRunner.query(`CREATE TYPE "public"."domain0003_domain0003006_enum" AS ENUM('ACTIVE', 'INACTIVE')`);
-        await queryRunner.query(`CREATE TABLE "domain0003" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "createdUserId" uuid, "updatedUserId" uuid, "deletedUserId" uuid, "domain0003001" boolean, "domain0003002" integer, "domain0003003" character varying(10), "domain0003004" date, "domain0003005" numeric(32,6), "domain0003006" "public"."domain0003_domain0003006_enum", "domain0003007" jsonb, "domain0003008" json, "domain0003011" integer array, CONSTRAINT "PK_2504b6403d98c82e3704c404639" PRIMARY KEY ("id")); COMMENT ON COLUMN "domain0003"."domain0003001" IS 'boolean'; COMMENT ON COLUMN "domain0003"."domain0003002" IS 'int'; COMMENT ON COLUMN "domain0003"."domain0003003" IS 'varchar'; COMMENT ON COLUMN "domain0003"."domain0003004" IS 'date'; COMMENT ON COLUMN "domain0003"."domain0003005" IS 'decimal'; COMMENT ON COLUMN "domain0003"."domain0003006" IS 'enum'; COMMENT ON COLUMN "domain0003"."domain0003007" IS 'jsonb'; COMMENT ON COLUMN "domain0003"."domain0003008" IS 'json'; COMMENT ON COLUMN "domain0003"."domain0003011" IS 'Array<int>'`);
         await queryRunner.query(`CREATE TYPE "public"."audit_log_action_enum" AS ENUM('INSERT', 'UPDATE', 'REMOVE', 'SOFT_REMOVE', 'RECOVER')`);
         await queryRunner.query(`CREATE TABLE "audit_log" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "requestId" character varying(36) NOT NULL, "userId" uuid NOT NULL, "input" text NOT NULL, "tableName" character varying(255) NOT NULL, "action" "public"."audit_log_action_enum" NOT NULL, "entityId" uuid NOT NULL, "entityDetail" json NOT NULL, CONSTRAINT "PK_07fefa57f7f5ab8fc3f52b3ed0b" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "role_permissions_permission" ("roleId" uuid NOT NULL, "permissionId" uuid NOT NULL, CONSTRAINT "PK_b817d7eca3b85f22130861259dd" PRIMARY KEY ("roleId", "permissionId"))`);
@@ -35,6 +32,12 @@ export class Schema1718766344260 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "user" ADD CONSTRAINT "FK_a4d1f438d79344a566cfbed0777" FOREIGN KEY ("createdUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "user" ADD CONSTRAINT "FK_9fc00fcd60b1466f08aa1b1d80d" FOREIGN KEY ("updatedUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "user" ADD CONSTRAINT "FK_e5f3d1e13026597fc95060f6da0" FOREIGN KEY ("deletedUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "domain0015" ADD CONSTRAINT "FK_bd84052d9edc900387bb142bf99" FOREIGN KEY ("createdUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "domain0015" ADD CONSTRAINT "FK_86252b6f09f7bad4e9b6911bc6c" FOREIGN KEY ("updatedUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "domain0015" ADD CONSTRAINT "FK_1eef8e4d45ad62eb832ccd8777d" FOREIGN KEY ("deletedUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "domain0003" ADD CONSTRAINT "FK_b83ca791fee574cf1c4e8eee39d" FOREIGN KEY ("createdUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "domain0003" ADD CONSTRAINT "FK_9dca2dd4b221f948f1d85974168" FOREIGN KEY ("updatedUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "domain0003" ADD CONSTRAINT "FK_44549ae1a031d0b0af615a0e076" FOREIGN KEY ("deletedUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "domain0008" ADD CONSTRAINT "FK_034339afe30374f2e009b5e485f" FOREIGN KEY ("createdUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "domain0008" ADD CONSTRAINT "FK_95c1a239d8d659dfb8784831469" FOREIGN KEY ("updatedUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "domain0008" ADD CONSTRAINT "FK_b7580533f7b88e76c077e58579c" FOREIGN KEY ("deletedUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
@@ -46,26 +49,9 @@ export class Schema1718766344260 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "domain0010" ADD CONSTRAINT "FK_7c503eb93bfeec5225bf7bf8079" FOREIGN KEY ("updatedUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "domain0010" ADD CONSTRAINT "FK_1e1f74d412e896f97f07b33437a" FOREIGN KEY ("deletedUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "domain0010" ADD CONSTRAINT "FK_ec9f04cb2fe4d002cdb516db9f4" FOREIGN KEY ("domain0009Id") REFERENCES "domain0009"("id") ON DELETE CASCADE ON UPDATE CASCADE`);
-        await queryRunner.query(`ALTER TABLE "domain0005" ADD CONSTRAINT "FK_c9ddd5b1a4798fc2fed78245430" FOREIGN KEY ("createdUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "domain0005" ADD CONSTRAINT "FK_6b10819c9d11f334fe6d2cee02d" FOREIGN KEY ("updatedUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "domain0005" ADD CONSTRAINT "FK_0e6fc70653b2fbe507f65a707a7" FOREIGN KEY ("deletedUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "domain0006" ADD CONSTRAINT "FK_d68c4ff85d859fa1cbaf2af5891" FOREIGN KEY ("createdUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "domain0006" ADD CONSTRAINT "FK_ff6fbf505b7e50f6b2440d25056" FOREIGN KEY ("updatedUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "domain0006" ADD CONSTRAINT "FK_9ccdae0aeed8a907cf4d513f2ea" FOREIGN KEY ("deletedUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "domain0006" ADD CONSTRAINT "FK_ca58a3bedba7ae56686665973b6" FOREIGN KEY ("domain0005Id") REFERENCES "domain0005"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "domain0007" ADD CONSTRAINT "FK_d3b8590937060765b7a0afa0ddc" FOREIGN KEY ("createdUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "domain0007" ADD CONSTRAINT "FK_6b67120b7d7d452ff8a489448ce" FOREIGN KEY ("updatedUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "domain0007" ADD CONSTRAINT "FK_8350a7db83f7617580ff1dc0266" FOREIGN KEY ("deletedUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "domain0007" ADD CONSTRAINT "FK_147b44a46093f074ab7face5204" FOREIGN KEY ("domain0006Id") REFERENCES "domain0006"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "domain0015" ADD CONSTRAINT "FK_bd84052d9edc900387bb142bf99" FOREIGN KEY ("createdUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "domain0015" ADD CONSTRAINT "FK_86252b6f09f7bad4e9b6911bc6c" FOREIGN KEY ("updatedUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "domain0015" ADD CONSTRAINT "FK_1eef8e4d45ad62eb832ccd8777d" FOREIGN KEY ("deletedUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "domain0001" ADD CONSTRAINT "FK_311bc4ca7bce20d08ba9f03a563" FOREIGN KEY ("createdUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "domain0001" ADD CONSTRAINT "FK_7185d7adb727e4194adac95f318" FOREIGN KEY ("updatedUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "domain0001" ADD CONSTRAINT "FK_918ff60e49d3c0548afc61c9daf" FOREIGN KEY ("deletedUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "domain0003" ADD CONSTRAINT "FK_b83ca791fee574cf1c4e8eee39d" FOREIGN KEY ("createdUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "domain0003" ADD CONSTRAINT "FK_9dca2dd4b221f948f1d85974168" FOREIGN KEY ("updatedUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "domain0003" ADD CONSTRAINT "FK_44549ae1a031d0b0af615a0e076" FOREIGN KEY ("deletedUserId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "audit_log" ADD CONSTRAINT "FK_2621409ebc295c5da7ff3e41396" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "role_permissions_permission" ADD CONSTRAINT "FK_b36cb2e04bc353ca4ede00d87b9" FOREIGN KEY ("roleId") REFERENCES "role"("id") ON DELETE CASCADE ON UPDATE CASCADE`);
         await queryRunner.query(`ALTER TABLE "role_permissions_permission" ADD CONSTRAINT "FK_bfbc9e263d4cea6d7a8c9eb3ad2" FOREIGN KEY ("permissionId") REFERENCES "permission"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
@@ -79,26 +65,9 @@ export class Schema1718766344260 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "role_permissions_permission" DROP CONSTRAINT "FK_bfbc9e263d4cea6d7a8c9eb3ad2"`);
         await queryRunner.query(`ALTER TABLE "role_permissions_permission" DROP CONSTRAINT "FK_b36cb2e04bc353ca4ede00d87b9"`);
         await queryRunner.query(`ALTER TABLE "audit_log" DROP CONSTRAINT "FK_2621409ebc295c5da7ff3e41396"`);
-        await queryRunner.query(`ALTER TABLE "domain0003" DROP CONSTRAINT "FK_44549ae1a031d0b0af615a0e076"`);
-        await queryRunner.query(`ALTER TABLE "domain0003" DROP CONSTRAINT "FK_9dca2dd4b221f948f1d85974168"`);
-        await queryRunner.query(`ALTER TABLE "domain0003" DROP CONSTRAINT "FK_b83ca791fee574cf1c4e8eee39d"`);
         await queryRunner.query(`ALTER TABLE "domain0001" DROP CONSTRAINT "FK_918ff60e49d3c0548afc61c9daf"`);
         await queryRunner.query(`ALTER TABLE "domain0001" DROP CONSTRAINT "FK_7185d7adb727e4194adac95f318"`);
         await queryRunner.query(`ALTER TABLE "domain0001" DROP CONSTRAINT "FK_311bc4ca7bce20d08ba9f03a563"`);
-        await queryRunner.query(`ALTER TABLE "domain0015" DROP CONSTRAINT "FK_1eef8e4d45ad62eb832ccd8777d"`);
-        await queryRunner.query(`ALTER TABLE "domain0015" DROP CONSTRAINT "FK_86252b6f09f7bad4e9b6911bc6c"`);
-        await queryRunner.query(`ALTER TABLE "domain0015" DROP CONSTRAINT "FK_bd84052d9edc900387bb142bf99"`);
-        await queryRunner.query(`ALTER TABLE "domain0007" DROP CONSTRAINT "FK_147b44a46093f074ab7face5204"`);
-        await queryRunner.query(`ALTER TABLE "domain0007" DROP CONSTRAINT "FK_8350a7db83f7617580ff1dc0266"`);
-        await queryRunner.query(`ALTER TABLE "domain0007" DROP CONSTRAINT "FK_6b67120b7d7d452ff8a489448ce"`);
-        await queryRunner.query(`ALTER TABLE "domain0007" DROP CONSTRAINT "FK_d3b8590937060765b7a0afa0ddc"`);
-        await queryRunner.query(`ALTER TABLE "domain0006" DROP CONSTRAINT "FK_ca58a3bedba7ae56686665973b6"`);
-        await queryRunner.query(`ALTER TABLE "domain0006" DROP CONSTRAINT "FK_9ccdae0aeed8a907cf4d513f2ea"`);
-        await queryRunner.query(`ALTER TABLE "domain0006" DROP CONSTRAINT "FK_ff6fbf505b7e50f6b2440d25056"`);
-        await queryRunner.query(`ALTER TABLE "domain0006" DROP CONSTRAINT "FK_d68c4ff85d859fa1cbaf2af5891"`);
-        await queryRunner.query(`ALTER TABLE "domain0005" DROP CONSTRAINT "FK_0e6fc70653b2fbe507f65a707a7"`);
-        await queryRunner.query(`ALTER TABLE "domain0005" DROP CONSTRAINT "FK_6b10819c9d11f334fe6d2cee02d"`);
-        await queryRunner.query(`ALTER TABLE "domain0005" DROP CONSTRAINT "FK_c9ddd5b1a4798fc2fed78245430"`);
         await queryRunner.query(`ALTER TABLE "domain0010" DROP CONSTRAINT "FK_ec9f04cb2fe4d002cdb516db9f4"`);
         await queryRunner.query(`ALTER TABLE "domain0010" DROP CONSTRAINT "FK_1e1f74d412e896f97f07b33437a"`);
         await queryRunner.query(`ALTER TABLE "domain0010" DROP CONSTRAINT "FK_7c503eb93bfeec5225bf7bf8079"`);
@@ -110,6 +79,12 @@ export class Schema1718766344260 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "domain0008" DROP CONSTRAINT "FK_b7580533f7b88e76c077e58579c"`);
         await queryRunner.query(`ALTER TABLE "domain0008" DROP CONSTRAINT "FK_95c1a239d8d659dfb8784831469"`);
         await queryRunner.query(`ALTER TABLE "domain0008" DROP CONSTRAINT "FK_034339afe30374f2e009b5e485f"`);
+        await queryRunner.query(`ALTER TABLE "domain0003" DROP CONSTRAINT "FK_44549ae1a031d0b0af615a0e076"`);
+        await queryRunner.query(`ALTER TABLE "domain0003" DROP CONSTRAINT "FK_9dca2dd4b221f948f1d85974168"`);
+        await queryRunner.query(`ALTER TABLE "domain0003" DROP CONSTRAINT "FK_b83ca791fee574cf1c4e8eee39d"`);
+        await queryRunner.query(`ALTER TABLE "domain0015" DROP CONSTRAINT "FK_1eef8e4d45ad62eb832ccd8777d"`);
+        await queryRunner.query(`ALTER TABLE "domain0015" DROP CONSTRAINT "FK_86252b6f09f7bad4e9b6911bc6c"`);
+        await queryRunner.query(`ALTER TABLE "domain0015" DROP CONSTRAINT "FK_bd84052d9edc900387bb142bf99"`);
         await queryRunner.query(`ALTER TABLE "user" DROP CONSTRAINT "FK_e5f3d1e13026597fc95060f6da0"`);
         await queryRunner.query(`ALTER TABLE "user" DROP CONSTRAINT "FK_9fc00fcd60b1466f08aa1b1d80d"`);
         await queryRunner.query(`ALTER TABLE "user" DROP CONSTRAINT "FK_a4d1f438d79344a566cfbed0777"`);
@@ -127,16 +102,13 @@ export class Schema1718766344260 implements MigrationInterface {
         await queryRunner.query(`DROP TABLE "role_permissions_permission"`);
         await queryRunner.query(`DROP TABLE "audit_log"`);
         await queryRunner.query(`DROP TYPE "public"."audit_log_action_enum"`);
-        await queryRunner.query(`DROP TABLE "domain0003"`);
-        await queryRunner.query(`DROP TYPE "public"."domain0003_domain0003006_enum"`);
         await queryRunner.query(`DROP TABLE "domain0001"`);
-        await queryRunner.query(`DROP TABLE "domain0015"`);
-        await queryRunner.query(`DROP TABLE "domain0007"`);
-        await queryRunner.query(`DROP TABLE "domain0006"`);
-        await queryRunner.query(`DROP TABLE "domain0005"`);
         await queryRunner.query(`DROP TABLE "domain0010"`);
         await queryRunner.query(`DROP TABLE "domain0009"`);
         await queryRunner.query(`DROP TABLE "domain0008"`);
+        await queryRunner.query(`DROP TABLE "domain0003"`);
+        await queryRunner.query(`DROP TYPE "public"."domain0003_domain0003006_enum"`);
+        await queryRunner.query(`DROP TABLE "domain0015"`);
         await queryRunner.query(`DROP TABLE "user"`);
         await queryRunner.query(`DROP TABLE "role"`);
         await queryRunner.query(`DROP TABLE "permission"`);

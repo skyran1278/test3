@@ -70,18 +70,22 @@ $ pnpm run migration:revert
   - user: Manages user-related functionality.
   - domain-0001: Schematic.
   - domain-0003:Handles multiple column types.
-  - domain-0005: one-to-many (without cascade)
-  - domain-0006: one-to-many (without cascade)
-  - domain-0007: one-to-many (without cascade)
-    - Note: Avoid 3-layer save; deleting domain-0006 causes domain-0007 error.
-    - If necessary, use `cascade: true`.
   - domain-0008: one-to-many (cascade)
   - domain-0009: one-to-many (cascade)
   - domain-0010: one-to-many (cascade)
   - domain-0015: Queue management with BullMQ and Redis.
 - test: End-to-end tests for full workflow validation.
 
-
 ## Issue
 
 - [Prettier version 3 is not supported!](https://jestjs.io/docs/configuration/#prettierpath-string)
+
+## Decision Record
+
+- Remove without cascade example, because we could not easily update 3-layer without cascade.
+  - 如果要存 3 層結構，優先要存最上層的，下面的才拿得到上層的 ID，但是一旦儲存上層的，會觸發刪除中層的 entity，但更下面的那層卻還依賴中層的 ID，造成錯誤。
+  - domain-0005: one-to-many (without cascade)
+  - domain-0006: one-to-many (without cascade)
+  - domain-0007: one-to-many (without cascade)
+    - Note: Avoid 3-layer save; deleting domain-0006 causes domain-0007 error.
+    - If necessary, use `cascade: true`.

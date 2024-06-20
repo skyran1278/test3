@@ -44,23 +44,6 @@ type CreateDomain0003Output {
   domain0003: Domain0003!
 }
 
-input CreateDomain0005Input {
-  """domain0006s"""
-  domain0006s: [CreateDomain0006Input!]!
-
-  """domain0005001"""
-  domain0005001: Int
-}
-
-type CreateDomain0005Output {
-  domain0005: Domain0005!
-}
-
-input CreateDomain0006Input {
-  """domain0006001"""
-  domain0006001: Int
-}
-
 input CreateDomain0008Input {
   """domain0009s"""
   domain0009s: [CreateDomain0009Input!]!
@@ -296,164 +279,6 @@ input Domain0003WhereInput {
   updatedUserId: ID
 }
 
-type Domain0005 implements MetaEntity {
-  createdAt: DateTime!
-  createdUser: User
-  createdUserId: ID
-  deletedAt: DateTime
-  deletedUser: User
-  deletedUserId: ID
-  domain0006Page(
-    """排序欄位與方式"""
-    order: Domain0006OrderInput! = {}
-
-    """Amount of nodes to skip from the beginning of this page"""
-    skip: NonNegativeInt
-
-    """Maximum amount of nodes in this page"""
-    take: NonNegativeInt
-
-    """查詢條件"""
-    where: [Domain0006WhereInput!]
-  ): Domain0006Page!
-
-  """OneToMany"""
-  domain0006s: [Domain0006!]
-
-  """domain0005001"""
-  domain0005001: Int
-  id: ID!
-  updatedAt: DateTime!
-  updatedUser: User
-  updatedUserId: ID
-}
-
-input Domain0005OrderInput {
-  createdAt: NodeOrderEnum
-  deletedAt: NodeOrderEnum
-
-  """domain0005001"""
-  domain0005001: NodeOrderEnum
-  updatedAt: NodeOrderEnum
-}
-
-type Domain0005Page implements NodePage {
-  """Nodes in this page"""
-  nodes: [Domain0005!]!
-
-  """Amount of nodes to skip from the beginning of this page"""
-  skip: NonNegativeInt
-
-  """Maximum amount of nodes in this page"""
-  take: NonNegativeInt
-
-  """Total amount of nodes"""
-  total: NonNegativeInt
-}
-
-input Domain0005WhereInput {
-  createdAt: DateTime
-  createdUserId: ID
-  deletedAt: DateTime
-  deletedUserId: ID
-  domain0006s: Domain0006WhereInput
-
-  """domain0005001"""
-  domain0005001: Int
-  id: ID
-  updatedAt: DateTime
-  updatedUserId: ID
-}
-
-type Domain0006 implements MetaEntity {
-  createdAt: DateTime!
-  createdUser: User
-  createdUserId: ID
-  deletedAt: DateTime
-  deletedUser: User
-  deletedUserId: ID
-
-  """ManyToOne"""
-  domain0005: Domain0005!
-
-  """domain0005Id"""
-  domain0005Id: ID!
-
-  """OneToMany"""
-  domain0007s: [Domain0007!]
-
-  """domain0006001"""
-  domain0006001: Int
-  id: ID!
-  updatedAt: DateTime!
-  updatedUser: User
-  updatedUserId: ID
-}
-
-input Domain0006OrderInput {
-  createdAt: NodeOrderEnum
-  deletedAt: NodeOrderEnum
-
-  """domain0005Id"""
-  domain0005Id: NodeOrderEnum
-
-  """domain0006001"""
-  domain0006001: NodeOrderEnum
-  updatedAt: NodeOrderEnum
-}
-
-type Domain0006Page implements NodePage {
-  """Nodes in this page"""
-  nodes: [Domain0006!]!
-
-  """Amount of nodes to skip from the beginning of this page"""
-  skip: NonNegativeInt
-
-  """Maximum amount of nodes in this page"""
-  take: NonNegativeInt
-
-  """Total amount of nodes"""
-  total: NonNegativeInt
-}
-
-input Domain0006WhereInput {
-  createdAt: DateTime
-  createdUserId: ID
-  deletedAt: DateTime
-  deletedUserId: ID
-
-  """domain0005Id"""
-  domain0005Id: ID
-
-  """domain0006001"""
-  domain0006001: Int
-  id: ID
-  updatedAt: DateTime
-  updatedUserId: ID
-}
-
-type Domain0007 implements MetaEntity {
-  createdAt: DateTime!
-  createdUser: User
-  createdUserId: ID
-  deletedAt: DateTime
-  deletedUser: User
-  deletedUserId: ID
-
-  """ManyToOne"""
-  domain0006: Domain0006!
-
-  """domain0006Id"""
-  domain0006Id: ID!
-
-  """domain0007001"""
-  domain0007001: Int
-  id: ID!
-  updatedAt: DateTime!
-  updatedUser: User
-  updatedUserId: ID
-}
-
 type Domain0008 implements MetaEntity {
   createdAt: DateTime!
   createdUser: User
@@ -598,21 +423,17 @@ interface MetaEntity {
 type Mutation {
   createDomain0001(input: CreateDomain0001Input!): CreateDomain0001Output!
   createDomain0003(input: CreateDomain0003Input!): CreateDomain0003Output!
-  createDomain0005(input: CreateDomain0005Input!): CreateDomain0005Output!
   createDomain0008(input: CreateDomain0008Input!): CreateDomain0008Output!
   createDomain0015(input: CreateDomain0015Input!): CreateDomain0015Output!
   createUser(input: CreateUserInput!): CreateUserOutput!
   removeDomain0001(input: RemoveDomain0001Input!): RemoveDomain0001Output!
   removeDomain0003(input: RemoveDomain0003Input!): RemoveDomain0003Output!
-  removeDomain0005(input: RemoveDomain0005Input!): RemoveDomain0005Output!
   removeDomain0008(input: RemoveDomain0008Input!): RemoveDomain0008Output!
   removeUser(input: RemoveUserInput!): RemoveUserOutput!
   signIn(input: SignInInput!): SignInOutput!
-  softRemoveDomain0005(input: SoftRemoveDomain0005Input!): SoftRemoveDomain0005Output!
   testQueueEventsRaceCondition(input: CreateDomain0015Input!): CreateDomain0015Output!
   updateDomain0001(input: UpdateDomain0001Input!): UpdateDomain0001Output!
   updateDomain0003(input: UpdateDomain0003Input!): UpdateDomain0003Output!
-  updateDomain0005(input: UpdateDomain0005Input!): UpdateDomain0005Output!
   updateDomain0008(input: UpdateDomain0008Input!): UpdateDomain0008Output!
   updateDomain0008s(input: UpdateDomain0008sInput!): UpdateDomain0008sOutput!
   updateUser(input: UpdateUserInput!): UpdateUserOutput!
@@ -697,20 +518,6 @@ type Query {
     """查詢條件"""
     where: [Domain0003WhereInput!]
   ): Domain0003Page!
-  domain0005(id: ID!): Domain0005!
-  domain0005Page(
-    """排序欄位與方式"""
-    order: Domain0005OrderInput! = {}
-
-    """Amount of nodes to skip from the beginning of this page"""
-    skip: NonNegativeInt
-
-    """Maximum amount of nodes in this page"""
-    take: NonNegativeInt
-
-    """查詢條件"""
-    where: [Domain0005WhereInput!]
-  ): Domain0005Page!
   domain0008(id: ID!): Domain0008!
   domain0008Page(
     """排序欄位與方式"""
@@ -759,14 +566,6 @@ type RemoveDomain0003Output {
   domain0003: Domain0003!
 }
 
-input RemoveDomain0005Input {
-  id: ID!
-}
-
-type RemoveDomain0005Output {
-  domain0005: Domain0005!
-}
-
 input RemoveDomain0008Input {
   id: ID!
 }
@@ -811,14 +610,6 @@ type SignInOutput {
   access_token: String!
 }
 
-input SoftRemoveDomain0005Input {
-  id: ID!
-}
-
-type SoftRemoveDomain0005Output {
-  domain0005: Domain0005!
-}
-
 input UpdateDomain0001Input {
   """domain0001001"""
   domain0001001: Int
@@ -861,25 +652,6 @@ input UpdateDomain0003Input {
 
 type UpdateDomain0003Output {
   domain0003: Domain0003!
-}
-
-input UpdateDomain0005Input {
-  """domain0006s"""
-  domain0006s: [UpdateDomain0006Input!]
-
-  """domain0005001"""
-  domain0005001: Int
-  id: ID
-}
-
-type UpdateDomain0005Output {
-  domain0005: Domain0005!
-}
-
-input UpdateDomain0006Input {
-  """domain0006001"""
-  domain0006001: Int
-  id: ID
 }
 
 input UpdateDomain0008Input {

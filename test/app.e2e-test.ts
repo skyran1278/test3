@@ -50,33 +50,6 @@ describe('AppController (e2e)', () => {
       .expect('Hello World!');
   });
 
-  /**
-   * because of in wsl 2, memory_heap and memory_rss are too high, so we are not validating them
-   * because of in github actions, storage is too high, so we are not validating it
-   */
-  // it('/health (GET)', () => {
-  //   return request(app.getHttpServer())
-  //     .get('/health')
-  //     .expect((res) => {
-  //       expect(res.body).toMatchObject({
-  //         // status: 'ok',
-  //         info: {
-  //           database: { status: 'up' },
-  //           // memory_heap: { status: 'up' },
-  //           // memory_rss: { status: 'up' },
-  //           // storage: { status: 'up' },
-  //         },
-  //         error: {},
-  //         details: {
-  //           database: { status: 'up' },
-  //           // memory_heap: { status: 'up' },
-  //           // memory_rss: { status: 'up' },
-  //           // storage: { status: 'up' },
-  //         },
-  //       });
-  //     });
-  // });
-
   it('/graphql signIn', async () => {
     const body = await graphqlRequest(
       `mutation SignIn($input: SignInInput!) {
@@ -219,74 +192,6 @@ describe('AppController (e2e)', () => {
               domain0003008: 'domain0003008',
             },
             domain0003011: [1, 2, 3],
-          },
-        },
-      },
-    });
-  });
-
-  it('/graphql createDomain0005', async () => {
-    const body = await graphqlRequest(
-      `mutation CreateDomain0005($input: CreateDomain0005Input!) {
-        createDomain0005(input: $input) {
-          domain0005 {
-            id
-            domain0005001
-            createdUserId
-            updatedUserId
-            domain0006s {
-              id
-              domain0006001
-              domain0005Id
-              createdUserId
-              updatedUserId
-              domain0007s {
-                id
-                domain0007001
-                domain0006Id
-                createdUserId
-                updatedUserId
-              }
-            }
-          }
-        }
-      }`,
-      {
-        input: {
-          domain0005001: 1,
-          domain0006s: [
-            {
-              domain0006001: 1,
-            },
-            {
-              domain0006001: 2,
-            },
-          ],
-        },
-      },
-    );
-
-    expect(body).toMatchObject({
-      data: {
-        createDomain0005: {
-          domain0005: {
-            domain0005001: 1,
-            createdUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
-            updatedUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
-            domain0006s: [
-              {
-                domain0006001: 1,
-                createdUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
-                updatedUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
-                domain0007s: null,
-              },
-              {
-                domain0006001: 2,
-                createdUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
-                updatedUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
-                domain0007s: null,
-              },
-            ],
           },
         },
       },
