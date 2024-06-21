@@ -11,7 +11,7 @@ import {
   MiddlewareConsumer,
   Module,
 } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLFormattedError } from 'graphql';
@@ -25,8 +25,8 @@ import { AppService } from './app.service';
 import { AuditLogModule } from './audit-log/audit-log.module';
 import { CommonModule } from './common/common.module';
 import { ConfigurationModule } from './configuration/configuration.module';
-import { EnvironmentVariables } from './configuration/environment-variables';
 import { EnvironmentEnum } from './configuration/environment.enum';
+import { TypedConfigService } from './configuration/typed-config.service';
 import { Domain0001Module } from './domain-0001/domain-0001.module';
 import { Domain0003Module } from './domain-0003/domain-0003.module';
 import { Domain0008Module } from './domain-0008/domain-0008.module';
@@ -45,19 +45,17 @@ import { UserModule } from './user/user.module';
   imports: [
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (
-        configService: ConfigService<EnvironmentVariables, true>,
-      ) => ({
+      inject: [TypedConfigService],
+      useFactory: (configService: TypedConfigService) => ({
         type: 'postgres',
         host: configService.get('DB_HOST'),
-        port: +configService.get('DB_PORT'),
+        port: configService.get('DB_PORT'),
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
         schema: configService.get('DB_SCHEMA'),
         autoLoadEntities: true, // every entity registered through the forFeature() method will be automatically added to the entities array of the configuration object.
-        logging: !!configService.get('DB_LOGGING'),
+        logging: configService.get('DB_LOGGING'),
         subscribers: [join(__dirname, '**', '*.subscriber.{ts,js}')],
         migrations: ['dist/migration/migrations/*.js'],
       }),
@@ -76,10 +74,8 @@ import { UserModule } from './user/user.module';
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
       imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (
-        configService: ConfigService<EnvironmentVariables, true>,
-      ): ApolloDriverConfig => {
+      inject: [TypedConfigService],
+      useFactory: (configService: TypedConfigService): ApolloDriverConfig => {
         const plugins =
           configService.get('GRAPHQL_SERVER') === EnvironmentEnum.PRODUCTION
             ? [ApolloServerPluginLandingPageProductionDefault()]
@@ -111,13 +107,11 @@ import { UserModule } from './user/user.module';
     }),
     BullModule.forRootAsync({
       imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (
-        configService: ConfigService<EnvironmentVariables, true>,
-      ) => ({
+      inject: [TypedConfigService],
+      useFactory: (configService: TypedConfigService) => ({
         connection: {
           host: configService.get('REDIS_HOST'),
-          port: +configService.get('REDIS_PORT'),
+          port: configService.get('REDIS_PORT'),
         },
       }),
     }),

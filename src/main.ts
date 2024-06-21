@@ -1,7 +1,6 @@
 import path from 'path';
 
 // import 'dotenv/config';
-import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import serveFavicon from 'serve-favicon';
 import {
@@ -11,7 +10,7 @@ import {
 
 import { AppModule } from './app.module';
 import { validatorPipe } from './common/validator.pipe';
-import { EnvironmentVariables } from './configuration/environment-variables';
+import { TypedConfigService } from './configuration/typed-config.service';
 
 async function bootstrap() {
   initializeTransactionalContext({ storageDriver: StorageDriver.AUTO });
@@ -35,7 +34,7 @@ async function bootstrap() {
     serveFavicon(path.join(__dirname, '..', '..', 'public', 'favicon.ico')),
   );
 
-  const configService = app.get(ConfigService<EnvironmentVariables, true>);
+  const configService = app.get(TypedConfigService);
 
   app.useGlobalPipes(validatorPipe);
 

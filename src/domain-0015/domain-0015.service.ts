@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { QueueEvents } from 'bullmq';
-import { EnvironmentVariables } from 'src/configuration/environment-variables';
 import { Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
 
 import { BaseService } from '../common/base.service';
 import { QueueEnum } from '../common/queue.enum';
+import { TypedConfigService } from '../configuration/typed-config.service';
 import { Domain0015 } from './domain-0015.entity';
 import { Domain0015Queue } from './domain-0015.queue';
 import { Domain0015QueueEvents } from './domain-0015.queue-events';
@@ -23,7 +22,7 @@ export class Domain0015Service extends BaseService<Domain0015> {
     readonly repo: Repository<Domain0015>,
     private domain0015Queue: Domain0015Queue,
     private readonly domain0015QueueEvents: Domain0015QueueEvents,
-    private readonly configService: ConfigService<EnvironmentVariables, true>,
+    private readonly configService: TypedConfigService,
   ) {
     super(repo);
   }

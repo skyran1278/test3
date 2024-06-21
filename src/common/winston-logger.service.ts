@@ -1,19 +1,19 @@
 import { ConsoleLogger, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import winston, { createLogger, format, transports } from 'winston';
 
 import { EnvironmentEnum } from '../configuration/environment.enum';
+import { TypedConfigService } from '../configuration/typed-config.service';
 
 @Injectable()
 export class WinstonLogger extends ConsoleLogger {
   private logger!: winston.Logger;
 
-  constructor(readonly configService: ConfigService) {
+  constructor(readonly configService: TypedConfigService) {
     super();
     // https://expressjs.com/en/advanced/best-practice-performance.html#do-logging-correctly
     // https://github.com/winstonjs/winston/blob/master/examples/quick-start.js
     this.logger = createLogger({
-      level: configService.get('LOGGING_LEVEL'),
+      // level: configService.get('LOGGING_LEVEL'),
       format:
         configService.get('NODE_ENV') === EnvironmentEnum.PRODUCTION
           ? format.combine(
@@ -33,9 +33,9 @@ export class WinstonLogger extends ConsoleLogger {
               format.splat(),
               format.simple(),
             ),
-      defaultMeta: {
-        service: configService.get<string>('LOGGING_SERVICE_NAME'),
-      },
+      // defaultMeta: {
+      //   service: configService.get('LOGGING_SERVICE_NAME'),
+      // },
       transports: [new transports.Console()],
     });
   }

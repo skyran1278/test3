@@ -1,11 +1,11 @@
 import { Global, Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
-import { EnvironmentVariables } from 'src/configuration/environment-variables';
 
 import { AlsModule } from '../als/als.module';
 import { RepoProxy } from '../common/repo.proxy';
+import { TypedConfigService } from '../configuration/typed-config.service';
 import { UserModule } from '../user/user.module';
 import { LoggingInterceptor } from './logging.interceptor';
 import { MetaEntityResolver } from './meta.resolver';
@@ -16,10 +16,8 @@ import { WinstonLogger } from './winston-logger.service';
   imports: [
     JwtModule.registerAsync({
       imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (
-        configService: ConfigService<EnvironmentVariables, true>,
-      ) => ({
+      inject: [TypedConfigService],
+      useFactory: (configService: TypedConfigService) => ({
         secret: configService.get('JWT_SECRET'),
       }),
     }),

@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { EnvironmentVariables } from 'src/configuration/environment-variables';
 
 import { AlsModule } from '../als/als.module';
+import { TypedConfigService } from '../configuration/typed-config.service';
 import { PermissionModule } from '../permission/permission.module';
 import { User } from '../user/user.entity';
 import { UserModule } from '../user/user.module';
@@ -19,10 +19,8 @@ import { SecurityService } from './security.service';
     TypeOrmModule.forFeature([User]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (
-        configService: ConfigService<EnvironmentVariables, true>,
-      ) => ({
+      inject: [TypedConfigService],
+      useFactory: (configService: TypedConfigService) => ({
         secret: configService.get('JWT_SECRET'),
         signOptions: {
           expiresIn: configService.get('JWT_EXPIRES_IN'),

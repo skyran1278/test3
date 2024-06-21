@@ -2,7 +2,6 @@ import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Express } from 'express';
-import { EnvironmentVariables } from 'src/configuration/environment-variables';
 import request from 'supertest';
 import {
   StorageDriver,
@@ -10,15 +9,16 @@ import {
 } from 'typeorm-transactional';
 
 import { AppModule } from './../src/app.module';
+import { TypedConfigService } from '../src/configuration/typed-config.service';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication<Express>;
-  let configService: ConfigService<EnvironmentVariables, true>;
+  let configService: TypedConfigService;
 
   async function graphqlRequest(
     query: string,
     variables = {},
-    token: string = configService.get('TEST_TOKEN'),
+    token = configService.get('TEST_TOKEN'),
   ) {
     const res = await request(app.getHttpServer())
       .post('/graphql')
