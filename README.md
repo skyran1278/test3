@@ -109,3 +109,8 @@ When deciding where to place the migration folder in your project structure, con
 #### Recommendation
 
 For most projects, especially larger ones, placing the migration folder next to the `src` folder is usually the better choice. It helps maintain a clear separation of concerns and keeps the source code directory less cluttered. However, for smaller projects, placing it inside the `src` folder might be more convenient.
+
+### Do not recommend using softRemove
+
+Do not recommend using softRemove because if one item is soft-removed, the other still maintains the relationship but cannot access the data.
+Therefore, if you want to preserve data, use status control instead.
