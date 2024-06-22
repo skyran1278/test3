@@ -54,7 +54,7 @@
     "winston": "^3.13.0"
   },
   "devDependencies": {
-    "4itech-schematics": "^11.5.2",
+    "4itech-schematics": "^11.7.0-5",
     "@nestjs/cli": "^10.3.2",
     "@nestjs/schematics": "^10.1.1",
     "@nestjs/testing": "^10.3.9",

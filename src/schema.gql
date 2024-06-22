@@ -279,7 +279,7 @@ input Domain0003WhereInput {
   updatedUserId: ID
 }
 
-type Domain0008 implements MetaEntity {
+type Domain0008 implements Domain0009sByDomain0008Id & MetaEntity {
   createdAt: DateTime!
   createdUser: User
   createdUserId: ID
@@ -334,7 +334,7 @@ input Domain0008WhereInput {
   updatedUserId: ID
 }
 
-type Domain0009 implements MetaEntity {
+type Domain0009 implements Domain0010sByDomain0009Id & MetaEntity {
   createdAt: DateTime!
   createdUser: User
   createdUserId: ID
@@ -360,6 +360,11 @@ interface Domain0009ById {
   domain0009Id: ID
 }
 
+interface Domain0009sByDomain0008Id {
+  domain0009s: [Domain0009!]
+  id: ID!
+}
+
 type Domain0010 implements Domain0009ById & MetaEntity {
   createdAt: DateTime!
   createdUser: User
@@ -376,6 +381,11 @@ type Domain0010 implements Domain0009ById & MetaEntity {
   updatedAt: DateTime!
   updatedUser: User
   updatedUserId: ID
+}
+
+interface Domain0010sByDomain0009Id {
+  domain0010s: [Domain0010!]
+  id: ID!
 }
 
 type Domain0015 implements MetaEntity {

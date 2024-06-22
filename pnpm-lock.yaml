@@ -94,8 +94,8 @@ importers:
         version: 3.13.0
     devDependencies:
       4itech-schematics:
-        specifier: ^11.5.2
-        version: 11.5.2(chokidar@3.6.0)(typescript@5.5.2)
+        specifier: ^11.7.0-5
+        version: 11.7.0-5(chokidar@3.6.0)(typescript@5.5.2)
       '@nestjs/cli':
         specifier: ^10.3.2
         version: 10.3.2
@@ -189,8 +189,8 @@ importers:
 
 packages:
 
-  4itech-schematics@11.5.2:
-    resolution: {integrity: sha512-pmzSqUYFOvrgYXedQGbKSgT/RG93VB/4BzH0nUoEebSfz+dajUBaT7SmBS/jTA+uWpA7dLYBx/vZ+vacE4ZTwQ==}
+  4itech-schematics@11.7.0-5:
+    resolution: {integrity: sha512-XzacN9fNhgwCDwlFNAKqu7cUNQfI5WYm8Ieve/SJ71P5RWIUyxzL5/gMQCyVkv9DA2L6R8efkFxBZECFBb6T/A==}
     peerDependencies:
       typescript: '>=4.8.2'
 
@@ -4903,7 +4903,7 @@ packages:
 
 snapshots:
 
-  4itech-schematics@11.5.2(chokidar@3.6.0)(typescript@5.5.2):
+  4itech-schematics@11.7.0-5(chokidar@3.6.0)(typescript@5.5.2):
     dependencies:
       '@angular-devkit/core': 17.1.2(chokidar@3.6.0)
       '@angular-devkit/schematics': 17.1.2(chokidar@3.6.0)

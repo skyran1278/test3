@@ -8,6 +8,8 @@ import { Domain0009 } from './domain-0009.entity';
 import { Domain0009Repository } from './domain-0009.repository';
 import { Domain0009Resolver } from './domain-0009.resolver';
 import { Domain0009Service } from './domain-0009.service';
+import { Domain0009sByDomain0008IdLoader } from './domain-0009s-by-domain-0008-id.loader';
+import { Domain0009sByDomain0008IdResolver } from './domain-0009s-by-domain-0008-id.resolver';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Domain0009]), Domain0010Module],
@@ -17,6 +19,8 @@ import { Domain0009Service } from './domain-0009.service';
     Domain0009Resolver,
     Domain0009ByIdLoader,
     Domain0009ByIdResolver,
+    Domain0009sByDomain0008IdLoader,
+    Domain0009sByDomain0008IdResolver
   ],
   exports: [Domain0009Repository],
 })
