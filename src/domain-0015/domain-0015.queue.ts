@@ -7,8 +7,8 @@ import { QueueEnum } from '../common/queue.enum';
 import {
   CreateDomain0015JobInput,
   CreateDomain0015JobOutput,
-} from './dto/create-domain-0015.job';
-import { Domain0015JobEnum } from './dto/domain-0015-job.enum';
+} from './mutation/create-domain-0015.job';
+import { Domain0015JobEnum } from './mutation/domain-0015-job.enum';
 
 @Injectable()
 export class Domain0015Queue extends BaseQueue<

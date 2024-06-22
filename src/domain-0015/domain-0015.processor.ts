@@ -5,16 +5,16 @@ import { Transactional } from 'typeorm-transactional';
 
 import { QueueAls } from '../als/queue-als.decorator';
 import { QueueEnum } from '../common/queue.enum';
-import { Domain0015Service } from './domain-0015.service';
+import { Domain0015Repository } from './domain-0015.repository';
 import {
   CreateDomain0015JobInput,
   CreateDomain0015JobOutput,
-} from './dto/create-domain-0015.job';
-import { Domain0015JobEnum } from './dto/domain-0015-job.enum';
+} from './mutation/create-domain-0015.job';
+import { Domain0015JobEnum } from './mutation/domain-0015-job.enum';
 
 @Processor(QueueEnum.DOMAIN0015)
 export class Domain0015Processor extends WorkerHost {
-  constructor(private readonly domain0015Service: Domain0015Service) {
+  constructor(private readonly domain0015Repo: Domain0015Repository) {
     super();
   }
 
@@ -34,7 +34,7 @@ export class Domain0015Processor extends WorkerHost {
   ): Promise<CreateDomain0015JobOutput> {
     const { input } = job.data;
 
-    const domain0015 = await this.domain0015Service.save(input);
+    const domain0015 = await this.domain0015Repo.save(input);
 
     return { domain0015 };
   }

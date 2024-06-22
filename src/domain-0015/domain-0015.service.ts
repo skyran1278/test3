@@ -1,33 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { QueueEvents } from 'bullmq';
-import { Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
 
-import { BaseService } from '../common/base.service';
 import { QueueEnum } from '../common/queue.enum';
 import { TypedConfigService } from '../configuration/typed-config.service';
 import { Domain0015 } from './domain-0015.entity';
 import { Domain0015Queue } from './domain-0015.queue';
 import { Domain0015QueueEvents } from './domain-0015.queue-events';
-import { CreateDomain0015Input } from './dto/create-domain-0015.input';
-import { Domain0015JobEnum } from './dto/domain-0015-job.enum';
-import { Domain0015PageArgs } from './dto/domain-0015-page.args';
-import { UpdateDomain0015Input } from './dto/update-domain-0015.input';
+import { Domain0015Repository } from './domain-0015.repository';
+import { CreateDomain0015Input } from './mutation/create-domain-0015.input';
+import { Domain0015JobEnum } from './mutation/domain-0015-job.enum';
+import { UpdateDomain0015Input } from './mutation/update-domain-0015.input';
+import { Domain0015PageArgs } from './query/domain-0015-page.args';
 
 @Injectable()
-export class Domain0015Service extends BaseService<Domain0015> {
+export class Domain0015Service {
   constructor(
-    @InjectRepository(Domain0015)
-    readonly repo: Repository<Domain0015>,
-    private domain0015Queue: Domain0015Queue,
+    private readonly repo: Domain0015Repository,
+    private readonly domain0015Queue: Domain0015Queue,
     private readonly domain0015QueueEvents: Domain0015QueueEvents,
     private readonly configService: TypedConfigService,
-  ) {
-    super(repo);
-  }
+  ) {}
 
-  // @Transactional()
+  @Transactional()
   async saveOne(
     input: CreateDomain0015Input | UpdateDomain0015Input,
   ): Promise<Domain0015> {
@@ -70,13 +65,13 @@ export class Domain0015Service extends BaseService<Domain0015> {
 
   @Transactional()
   findPage(args: Domain0015PageArgs) {
-    return this.findNodePage(args);
+    return this.repo.findNodePage(args);
   }
 
   @Transactional()
   async removeOne(id: string) {
-    const domain0015 = await this.findOneByOrFail({ id });
+    const domain0015 = await this.repo.findOneByOrFail({ id });
 
-    return this.softRemove(domain0015);
+    return this.repo.softRemove(domain0015);
   }
 }
