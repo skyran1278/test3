@@ -1,7 +1,7 @@
 import { Field, ID, InputType, OmitType, PartialType } from '@nestjs/graphql';
 
 import { TypeField } from '../../common/type-field.decorator';
-import { UpdateDomain0010Input } from '../../domain-0010/dto/update-domain-0010.input';
+import { UpdateDomain0010Input } from '../../domain-0010/mutation/update-domain-0010.input';
 import { CreateDomain0009Input } from './create-domain-0009.input';
 
 @InputType()

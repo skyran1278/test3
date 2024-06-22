@@ -2,7 +2,7 @@ import { InputType, OmitType } from '@nestjs/graphql';
 
 import { ToCreateInputType } from '../../common/to-create-input-type';
 import { TypeField } from '../../common/type-field.decorator';
-import { CreateDomain0010Input } from '../../domain-0010/dto/create-domain-0010.input';
+import { CreateDomain0010Input } from '../../domain-0010/mutation/create-domain-0010.input';
 import { Domain0009 } from '../domain-0009.entity';
 
 @InputType()

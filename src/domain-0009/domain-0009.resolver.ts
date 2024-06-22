@@ -1,12 +1,12 @@
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 
 import { Domain0010 } from '../domain-0010/domain-0010.entity';
-import { Domain0010Service } from '../domain-0010/domain-0010.service';
+import { Domain0010Repository } from '../domain-0010/domain-0010.repository';
 import { Domain0009 } from './domain-0009.entity';
 
 @Resolver(() => Domain0009)
 export class Domain0009Resolver {
-  constructor(private readonly domain0010Service: Domain0010Service) {}
+  constructor(private readonly domain0010Repository: Domain0010Repository) {}
 
   // @Transactional()
   // @Mutation(() => CreateDomain0009Output)
@@ -62,7 +62,7 @@ export class Domain0009Resolver {
   ): Promise<Domain0010[]> {
     if (domain0010s) return domain0010s;
 
-    return this.domain0010Service.findBy({
+    return this.domain0010Repository.findBy({
       domain0009Id: id,
     });
   }

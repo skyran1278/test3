@@ -11,7 +11,7 @@ import { Maybe } from 'graphql/jsutils/Maybe';
 import { Transactional } from 'typeorm-transactional';
 
 import { Domain0009 } from '../domain-0009/domain-0009.entity';
-import { Domain0009Service } from '../domain-0009/domain-0009.service';
+import { Domain0009Repository } from '../domain-0009/domain-0009.repository';
 import { Domain0008 } from './domain-0008.entity';
 import { Domain0008Repository } from './domain-0008.repository';
 import { Domain0008Service } from './domain-0008.service';
@@ -31,7 +31,7 @@ export class Domain0008Resolver {
   constructor(
     private readonly domain0008Repository: Domain0008Repository,
     private readonly domain0008Service: Domain0008Service,
-    private readonly domain0009Service: Domain0009Service,
+    private readonly domain0009Repository: Domain0009Repository,
   ) {}
 
   @Transactional()
@@ -89,7 +89,7 @@ export class Domain0008Resolver {
     @Parent() { id, domain0009s }: Domain0008,
   ): Promise<Domain0009[]> {
     if (domain0009s) return domain0009s;
-    return this.domain0009Service.findBy({
+    return this.domain0009Repository.findBy({
       domain0008Id: id,
     });
   }

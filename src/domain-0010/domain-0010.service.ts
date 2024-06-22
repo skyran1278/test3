@@ -1,38 +1,34 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
 
-import { BaseService } from '../common/base.service';
 import { Domain0010 } from './domain-0010.entity';
-import { CreateDomain0010Input } from './dto/create-domain-0010.input';
-import { Domain0010PageArgs } from './dto/domain-0010-page.args';
+import { Domain0010Repository } from './domain-0010.repository';
+import { CreateDomain0010Input } from './mutation/create-domain-0010.input';
+import { UpdateDomain0010Input } from './mutation/update-domain-0010.input';
+import { Domain0010PageArgs } from './query/domain-0010-page.args';
 
 @Injectable()
-export class Domain0010Service extends BaseService<Domain0010> {
-  constructor(
-    @InjectRepository(Domain0010)
-    readonly repo: Repository<Domain0010>,
-  ) {
-    super(repo);
-  }
+export class Domain0010Service {
+  constructor(private readonly repo: Domain0010Repository) {}
 
   @Transactional()
   async saveOne(
-    input: CreateDomain0010Input | Domain0010,
+    input: CreateDomain0010Input | UpdateDomain0010Input,
   ): Promise<Domain0010> {
-    return this.save(input);
+    const domain0010 = await this.repo.save(input);
+
+    return domain0010;
   }
 
   @Transactional()
   findPage(args: Domain0010PageArgs) {
-    return this.findNodePage(args);
+    return this.repo.findNodePage(args);
   }
 
   @Transactional()
   async removeOne(id: string) {
-    const domain0010 = await this.findOneByOrFail({ id });
+    const domain0010 = await this.repo.findOneByOrFail({ id });
 
-    return this.softRemove(domain0010);
+    return this.repo.softRemove(domain0010);
   }
 }
