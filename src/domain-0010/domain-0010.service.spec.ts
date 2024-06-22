@@ -9,12 +9,10 @@ describe('Domain0010Service', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [Domain0010Service],
     })
-    .useMocker(() => ({}))
-    .compile();
+      .useMocker(() => ({}))
+      .compile();
 
-    service = module.get<Domain0010Service>(
-      Domain0010Service,
-    );
+    service = module.get<Domain0010Service>(Domain0010Service);
   });
 
   it('should be defined', () => {

@@ -2,15 +2,15 @@ import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
 import { Transactional } from 'typeorm-transactional';
 
-import { Permission } from './permission.entity';
-import { PermissionRepository } from './permission.repository';
-import { PermissionService } from './permission.service';
 import { CreatePermissionInput } from './mutation/create-permission.input';
 import { CreatePermissionOutput } from './mutation/create-permission.output';
 import { RemovePermissionInput } from './mutation/remove-permission.input';
 import { RemovePermissionOutput } from './mutation/remove-permission.output';
 import { UpdatePermissionInput } from './mutation/update-permission.input';
 import { UpdatePermissionOutput } from './mutation/update-permission.output';
+import { Permission } from './permission.entity';
+import { PermissionRepository } from './permission.repository';
+import { PermissionService } from './permission.service';
 import { PermissionPageArgs } from './query/permission-page.args';
 import { PermissionPage } from './query/permission-page.type';
 

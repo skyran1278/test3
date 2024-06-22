@@ -1,20 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { Transactional } from 'typeorm-transactional';
 
-import { Role } from './role.entity';
-import { RoleRepository } from './role.repository';
 import { CreateRoleInput } from './mutation/create-role.input';
 import { UpdateRoleInput } from './mutation/update-role.input';
 import { RolePageArgs } from './query/role-page.args';
+import { Role } from './role.entity';
+import { RoleRepository } from './role.repository';
 
 @Injectable()
 export class RoleService {
   constructor(private readonly repo: RoleRepository) {}
 
   @Transactional()
-  async saveOne(
-    input: CreateRoleInput | UpdateRoleInput,
-  ): Promise<Role> {
+  async saveOne(input: CreateRoleInput | UpdateRoleInput): Promise<Role> {
     const role = await this.repo.save(input);
 
     return role;

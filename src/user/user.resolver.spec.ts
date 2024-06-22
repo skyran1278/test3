@@ -10,12 +10,10 @@ describe('UserResolver', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [UserResolver, UserService],
     })
-    .useMocker(() => ({}))
-    .compile();
+      .useMocker(() => ({}))
+      .compile();
 
-    resolver = module.get<UserResolver>(
-      UserResolver,
-    );
+    resolver = module.get<UserResolver>(UserResolver);
   });
 
   it('should be defined', () => {

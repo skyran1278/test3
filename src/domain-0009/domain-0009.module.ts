@@ -20,7 +20,7 @@ import { Domain0009sByDomain0008IdResolver } from './domain-0009s-by-domain-0008
     Domain0009ByIdLoader,
     Domain0009ByIdResolver,
     Domain0009sByDomain0008IdLoader,
-    Domain0009sByDomain0008IdResolver
+    Domain0009sByDomain0008IdResolver,
   ],
   exports: [Domain0009Repository],
 })

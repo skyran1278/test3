@@ -2,9 +2,6 @@ import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
 import { Transactional } from 'typeorm-transactional';
 
-import { Role } from './role.entity';
-import { RoleRepository } from './role.repository';
-import { RoleService } from './role.service';
 import { CreateRoleInput } from './mutation/create-role.input';
 import { CreateRoleOutput } from './mutation/create-role.output';
 import { RemoveRoleInput } from './mutation/remove-role.input';
@@ -13,6 +10,9 @@ import { UpdateRoleInput } from './mutation/update-role.input';
 import { UpdateRoleOutput } from './mutation/update-role.output';
 import { RolePageArgs } from './query/role-page.args';
 import { RolePage } from './query/role-page.type';
+import { Role } from './role.entity';
+import { RoleRepository } from './role.repository';
+import { RoleService } from './role.service';
 
 @Resolver(() => Role)
 export class RoleResolver {
@@ -38,9 +38,7 @@ export class RoleResolver {
 
   @Transactional()
   @Query(() => Role)
-  role(
-    @Args('id', { type: () => ID }) id: string,
-  ): Promise<Maybe<Role>> {
+  role(@Args('id', { type: () => ID }) id: string): Promise<Maybe<Role>> {
     return this.roleRepository.findOne({ where: { id } });
   }
 

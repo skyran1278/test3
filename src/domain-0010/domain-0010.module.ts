@@ -13,7 +13,7 @@ import { Domain0010sByDomain0009IdResolver } from './domain-0010s-by-domain-0009
     Domain0010Repository,
     Domain0010Service,
     Domain0010sByDomain0009IdLoader,
-    Domain0010sByDomain0009IdResolver
+    Domain0010sByDomain0009IdResolver,
     // Domain0010Resolver,
     // Domain0010ByIdLoader,
     // Domain0010ByIdResolver,

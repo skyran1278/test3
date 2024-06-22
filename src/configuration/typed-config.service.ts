@@ -5,9 +5,13 @@ import { EnvironmentVariables } from './environment-variables';
 
 @Injectable()
 export class TypedConfigService {
-  constructor(private configService: ConfigService<EnvironmentVariables, true>) {}
+  constructor(
+    private configService: ConfigService<EnvironmentVariables, true>,
+  ) {}
 
-  get<P extends Path<EnvironmentVariables>>(propertyPath: P): PathValue<EnvironmentVariables, P> {
+  get<P extends Path<EnvironmentVariables>>(
+    propertyPath: P,
+  ): PathValue<EnvironmentVariables, P> {
     return this.configService.get(propertyPath, { infer: true });
   }
 }

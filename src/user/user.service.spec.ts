@@ -9,12 +9,10 @@ describe('UserService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [UserService],
     })
-    .useMocker(() => ({}))
-    .compile();
+      .useMocker(() => ({}))
+      .compile();
 
-    service = module.get<UserService>(
-      UserService,
-    );
+    service = module.get<UserService>(UserService);
   });
 
   it('should be defined', () => {

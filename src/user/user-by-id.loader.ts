@@ -7,10 +7,7 @@ import { In, Repository } from 'typeorm';
 import { User } from './user.entity';
 
 @Injectable({ scope: Scope.REQUEST })
-export class UserByIdLoader extends DataLoader<
-  string,
-  Maybe<User>
-> {
+export class UserByIdLoader extends DataLoader<string, Maybe<User>> {
   constructor(
     @InjectRepository(User)
     private readonly repo: Repository<User>,

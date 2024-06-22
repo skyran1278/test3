@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Transactional } from 'typeorm-transactional';
 
-import { Permission } from './permission.entity';
-import { PermissionRepository } from './permission.repository';
 import { CreatePermissionInput } from './mutation/create-permission.input';
 import { UpdatePermissionInput } from './mutation/update-permission.input';
+import { Permission } from './permission.entity';
+import { PermissionRepository } from './permission.repository';
 import { PermissionPageArgs } from './query/permission-page.args';
 
 @Injectable()
