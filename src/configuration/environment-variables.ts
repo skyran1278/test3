@@ -11,55 +11,55 @@ import { EnvironmentEnum } from './environment.enum';
 
 export class EnvironmentVariables {
   @IsEnum(EnvironmentEnum)
-  NODE_ENV: EnvironmentEnum = EnvironmentEnum.DEVELOPMENT;
+  NODE_ENV!: EnvironmentEnum;
 
   @IsNumber()
   @Min(0)
   @Max(65535)
-  PORT: number = 3010;
+  PORT!: number;
 
   @IsBoolean()
-  NEST_DEBUG: boolean = true;
+  NEST_DEBUG!: boolean;
 
   @IsString()
-  DB_HOST: string = 'localhost';
+  DB_HOST!: string;
 
   @IsNumber()
-  DB_PORT: number = 5510;
+  DB_PORT!: number;
 
   @IsString()
-  DB_USERNAME: string = 'postgres';
+  DB_USERNAME!: string;
 
   @IsString()
-  DB_PASSWORD: string = 'root';
+  DB_PASSWORD!: string;
 
   @IsString()
-  DB_NAME: string = 'postgres';
+  DB_NAME!: string;
 
   @IsString()
-  DB_SCHEMA: string = 'public';
+  DB_SCHEMA!: string;
 
   @IsBoolean()
-  DB_LOGGING: boolean = true;
+  DB_LOGGING!: boolean;
 
   @IsEnum(EnvironmentEnum)
-  GRAPHQL_SERVER: EnvironmentEnum = EnvironmentEnum.DEVELOPMENT;
+  GRAPHQL_SERVER!: EnvironmentEnum;
 
   @IsString()
-  REDIS_HOST: string = 'localhost';
+  REDIS_HOST!: string;
 
   @IsNumber()
-  REDIS_PORT: number = 6379;
+  REDIS_PORT!: number;
 
   @IsString()
-  JWT_SECRET: string = '001';
+  JWT_SECRET!: string;
 
   @IsString()
-  JWT_EXPIRES_IN: string = '100d';
+  JWT_EXPIRES_IN!: string;
 
   @IsString()
-  GITHUB_TOKEN: string = '';
+  GITHUB_TOKEN!: string;
 
   @IsString()
-  TEST_TOKEN: string = '';
+  TEST_TOKEN!: string;
 }
