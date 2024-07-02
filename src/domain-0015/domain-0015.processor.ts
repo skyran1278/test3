@@ -1,9 +1,10 @@
-import { OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
+import { Processor } from '@nestjs/bullmq';
 import { NotImplementedException } from '@nestjs/common';
 import { Job } from 'bullmq';
 import { Transactional } from 'typeorm-transactional';
 
 import { QueueAls } from '../als/queue-als.decorator';
+import { EventHandlerWorkerHost } from '../common/event-handler-worker-host';
 import { QueueEnum } from '../common/queue.enum';
 import { Domain0015Repository } from './domain-0015.repository';
 import {
@@ -13,7 +14,7 @@ import {
 import { Domain0015JobEnum } from './mutation/domain-0015-job.enum';
 
 @Processor(QueueEnum.DOMAIN0015)
-export class Domain0015Processor extends WorkerHost {
+export class Domain0015Processor extends EventHandlerWorkerHost {
   constructor(private readonly domain0015Repo: Domain0015Repository) {
     super();
   }
@@ -37,10 +38,5 @@ export class Domain0015Processor extends WorkerHost {
     const domain0015 = await this.domain0015Repo.save(input);
 
     return { domain0015 };
-  }
-
-  @OnWorkerEvent('completed')
-  onCompleted() {
-    // do some stuff
   }
 }
