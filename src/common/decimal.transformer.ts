@@ -9,9 +9,9 @@ export class DecimalTransformer implements ValueTransformer {
     // noop
   }
 
-  to(value: Maybe<Decimal>): string | null {
+  to(value: Maybe<Decimal>): Maybe<string> {
     if (value == null) {
-      return null;
+      return value;
     }
 
     return new Decimal(value).toFixed();
