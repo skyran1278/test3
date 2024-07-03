@@ -68,6 +68,7 @@ pnpm run migration:revert
   - **domain-0009**: One-to-many (cascade).
   - **domain-0010**: One-to-many (cascade).
   - **domain-0015**: Queue management with BullMQ and Redis.
+  - **domain-0021**: Tree entity.
 - **test**: End-to-end tests for full workflow validation.
 
 ## Issues

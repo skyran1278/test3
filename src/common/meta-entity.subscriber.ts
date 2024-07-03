@@ -1,5 +1,6 @@
 import { ForbiddenException, Logger, NotFoundException } from '@nestjs/common';
 import { validate } from 'class-validator';
+import { isObject } from 'lodash';
 import {
   EntitySubscriberInterface,
   EventSubscriber,
@@ -105,6 +106,8 @@ export class MetaEntitySubscriber
     const previousEntity = event.databaseEntity;
     const newEntity = event.entity;
 
+    if (this.isUpdateMpath(event)) return;
+
     this.addAuditLog(event, AuditActionEnum.UPDATE, previousEntity.id, {
       previousEntity,
       newEntity,
@@ -198,6 +201,21 @@ export class MetaEntitySubscriber
     });
 
     alsService.set('auditLogs', [...auditLogs, auditLog]);
+  }
+
+  private isUpdateMpath(event: UpdateEvent<MetaEntity>) {
+    const previousEntity = event.databaseEntity;
+    const newEntity = event.entity;
+
+    if (
+      previousEntity === undefined &&
+      isObject(newEntity) &&
+      'mpath' in newEntity
+    ) {
+      return true;
+    }
+
+    return false;
   }
 
   private isMetaEntity(entity: unknown): entity is MetaEntity {

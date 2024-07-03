@@ -78,6 +78,18 @@ type CreateDomain0015Output {
   domain0015: Domain0015!
 }
 
+input CreateDomain0021Input {
+  """domain0021001"""
+  domain0021001: Int
+
+  """parent ID"""
+  parentId: ID
+}
+
+type CreateDomain0021Output {
+  domain0021: Domain0021!
+}
+
 input CreateUserInput {
   email: String!
   password: String!
@@ -404,6 +416,72 @@ type Domain0015 implements MetaEntity {
   updatedUserId: ID
 }
 
+type Domain0021 implements MetaEntity {
+  """tree children"""
+  children: [Domain0021!]
+  createdAt: DateTime!
+  createdUser: User
+  createdUserId: ID
+  deletedAt: DateTime
+  deletedUser: User
+  deletedUserId: ID
+
+  """domain0021001"""
+  domain0021001: Int
+  id: ID!
+
+  """parent"""
+  parent: Domain0021
+
+  """parent ID"""
+  parentId: ID
+  updatedAt: DateTime!
+  updatedUser: User
+  updatedUserId: ID
+}
+
+input Domain0021OrderInput {
+  createdAt: NodeOrderEnum
+  deletedAt: NodeOrderEnum
+
+  """domain0021001"""
+  domain0021001: NodeOrderEnum
+
+  """parent ID"""
+  parentId: NodeOrderEnum
+  updatedAt: NodeOrderEnum
+}
+
+type Domain0021Page implements NodePage {
+  """Nodes in this page"""
+  nodes: [Domain0021!]!
+
+  """Amount of nodes to skip from the beginning of this page"""
+  skip: NonNegativeInt
+
+  """Maximum amount of nodes in this page"""
+  take: NonNegativeInt
+
+  """Total amount of nodes"""
+  total: NonNegativeInt
+}
+
+input Domain0021WhereInput {
+  createdAt: DateTime
+  createdUserId: ID
+  deletedAt: DateTime
+  deletedUserId: ID
+
+  """domain0021001"""
+  domain0021001: Int
+  id: ID
+
+  """parent ID"""
+  parentId: ID
+  updatedAt: DateTime
+  updatedUserId: ID
+}
+
 type ErrorType {
   customAuthenticationError: Boolean
   queryFailedError: Boolean
@@ -435,10 +513,12 @@ type Mutation {
   createDomain0003(input: CreateDomain0003Input!): CreateDomain0003Output!
   createDomain0008(input: CreateDomain0008Input!): CreateDomain0008Output!
   createDomain0015(input: CreateDomain0015Input!): CreateDomain0015Output!
+  createDomain0021(input: CreateDomain0021Input!): CreateDomain0021Output!
   createUser(input: CreateUserInput!): CreateUserOutput!
   removeDomain0001(input: RemoveDomain0001Input!): RemoveDomain0001Output!
   removeDomain0003(input: RemoveDomain0003Input!): RemoveDomain0003Output!
   removeDomain0008(input: RemoveDomain0008Input!): RemoveDomain0008Output!
+  removeDomain0021(input: RemoveDomain0021Input!): RemoveDomain0021Output!
   removeUser(input: RemoveUserInput!): RemoveUserOutput!
   signIn(input: SignInInput!): SignInOutput!
   testQueueEventsRaceCondition(input: CreateDomain0015Input!): CreateDomain0015Output!
@@ -446,6 +526,7 @@ type Mutation {
   updateDomain0003(input: UpdateDomain0003Input!): UpdateDomain0003Output!
   updateDomain0008(input: UpdateDomain0008Input!): UpdateDomain0008Output!
   updateDomain0008s(input: UpdateDomain0008sInput!): UpdateDomain0008sOutput!
+  updateDomain0021(input: UpdateDomain0021Input!): UpdateDomain0021Output!
   updateUser(input: UpdateUserInput!): UpdateUserOutput!
 }
 
@@ -542,6 +623,20 @@ type Query {
     """查詢條件"""
     where: [Domain0008WhereInput!]
   ): Domain0008Page!
+  domain0021(id: ID!): Domain0021!
+  domain0021Page(
+    """排序欄位與方式"""
+    order: Domain0021OrderInput! = {}
+
+    """Amount of nodes to skip from the beginning of this page"""
+    skip: NonNegativeInt
+
+    """Maximum amount of nodes in this page"""
+    take: NonNegativeInt
+
+    """查詢條件"""
+    where: [Domain0021WhereInput!]
+  ): Domain0021Page!
   error: ErrorType!
   me: User
   user(id: ID!): User!
@@ -582,6 +677,14 @@ input RemoveDomain0008Input {
 
 type RemoveDomain0008Output {
   domain0008: Domain0008!
+}
+
+input RemoveDomain0021Input {
+  id: ID!
+}
+
+type RemoveDomain0021Output {
+  domain0021: Domain0021!
 }
 
 input RemoveUserInput {
@@ -699,6 +802,19 @@ input UpdateDomain0010Input {
   """domain0010001"""
   domain0010001: Int
   id: ID!
+}
+
+input UpdateDomain0021Input {
+  """domain0021001"""
+  domain0021001: Int
+  id: ID!
+
+  """parent ID"""
+  parentId: ID
+}
+
+type UpdateDomain0021Output {
+  domain0021: Domain0021!
 }
 
 input UpdateUserInput {

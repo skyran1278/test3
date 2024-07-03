@@ -40,6 +40,7 @@ import { PermissionModule } from './permission/permission.module';
 import { RoleModule } from './role/role.module';
 import { SecurityModule } from './security/security.module';
 import { UserModule } from './user/user.module';
+import { Domain0021Module } from './domain-0021/domain-0021.module';
 
 @Module({
   imports: [
@@ -131,6 +132,7 @@ import { UserModule } from './user/user.module';
     Domain0009Module,
     Domain0010Module,
     Domain0015Module,
+    Domain0021Module,
   ],
   controllers: [AppController],
   providers: [AppService],

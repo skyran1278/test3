@@ -355,6 +355,33 @@ describe('AppController (e2e)', () => {
     });
   });
 
+  it('/graphql createDomain0021', async () => {
+    const body = await graphqlRequest(
+      `mutation CreateDomain0021($input: CreateDomain0021Input!) {
+        createDomain0021(input: $input) {
+          domain0021 {
+            domain0021001
+          }
+        }
+      }`,
+      {
+        input: {
+          domain0021001: 1,
+        },
+      },
+    );
+
+    expect(body).toMatchObject({
+      data: {
+        createDomain0021: {
+          domain0021: {
+            domain0021001: 1,
+          },
+        },
+      },
+    });
+  });
+
   afterAll(async () => {
     await app.close();
   });
