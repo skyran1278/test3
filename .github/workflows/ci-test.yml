@@ -1,0 +1,24 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: CI Test
+
+on:
+  push:
+    branches: [ci-test]
+
+jobs:
+  test:
+    name: Run Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: 0.0.2-0
+          fetch-tags: true
+
+      - name: Set tag as environment variable
+        run: |
+          echo "TAG=$(git describe --tags --exclude="be-*" --abbrev=0 --exact-match)"
+          echo "BE_TAG=$(git describe --tags --match 'be-*' --abbrev=0 --exact-match)"
