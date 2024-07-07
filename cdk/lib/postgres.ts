@@ -4,27 +4,27 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as rds from 'aws-cdk-lib/aws-rds';
 import { Construct } from 'constructs';
 
-interface RdsProps extends cdk.StackProps {
+interface PostgresProps extends cdk.StackProps {
   vpc: ec2.IVpc;
 }
 
-export class RDS extends Construct {
-  constructor(scope: Construct, id: string, props: RdsProps) {
+export class Postgres extends Construct {
+  constructor(scope: Construct, id: string, props: PostgresProps) {
     super(scope, id);
 
     // Create a security group for the database
     const securityGroup = new ec2.SecurityGroup(this, 'SecurityGroup', {
       vpc: props.vpc,
-      description: 'Allow rds access',
+      description: 'Allow rds outbound',
       allowAllOutbound: true,
     });
     securityGroup.addIngressRule(
       ec2.Peer.anyIpv4(),
       ec2.Port.tcp(5432),
-      'Allow rds access',
+      'Allow rds inbound',
     );
 
-    const dbInstance = new rds.DatabaseInstance(this, 'DatabaseInstance', {
+    const dbInstance = new rds.DatabaseInstance(this, 'Instance', {
       engine: rds.DatabaseInstanceEngine.postgres({
         version: rds.PostgresEngineVersion.VER_16,
       }),

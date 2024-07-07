@@ -2,7 +2,7 @@ import * as cdk from 'aws-cdk-lib';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import { Construct } from 'constructs';
 
-import { RDS } from './rds';
+import { Postgres } from './postgres';
 
 export class Test3Stack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -12,6 +12,6 @@ export class Test3Stack extends cdk.Stack {
       maxAzs: 2, // Default is all AZs in the region
     });
 
-    new RDS(this, 'RDS', { vpc });
+    new Postgres(this, 'Postgres', { vpc });
   }
 }
