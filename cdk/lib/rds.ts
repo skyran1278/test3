@@ -1,5 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
-import { RemovalPolicy } from 'aws-cdk-lib';
+import { CfnOutput, RemovalPolicy } from 'aws-cdk-lib';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as rds from 'aws-cdk-lib/aws-rds';
 import { Construct } from 'constructs';
@@ -24,7 +24,7 @@ export class RDS extends Construct {
       'Allow rds access',
     );
 
-    new rds.DatabaseInstance(this, 'DatabaseInstance', {
+    const dbInstance = new rds.DatabaseInstance(this, 'DatabaseInstance', {
       engine: rds.DatabaseInstanceEngine.postgres({
         version: rds.PostgresEngineVersion.VER_16,
       }),
@@ -53,6 +53,12 @@ export class RDS extends Construct {
       // 20 GB of backup storage for your automated database backups and any user-initiated DB snapshots per month.
       deletionProtection: false,
       removalPolicy: RemovalPolicy.DESTROY,
+    });
+
+    // Output the name of the secret
+    new CfnOutput(this, 'SecretName', {
+      value: dbInstance.secret?.secretName || 'No secret created',
+      description: 'The name of the secret containing the RDS credentials',
     });
   }
 }
