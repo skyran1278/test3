@@ -15,13 +15,13 @@ export class Postgres extends Construct {
     // Create a security group for the database
     const securityGroup = new ec2.SecurityGroup(this, 'SecurityGroup', {
       vpc: props.vpc,
-      description: 'Allow rds outbound',
+      description: 'Allow postgres outbound',
       allowAllOutbound: true,
     });
     securityGroup.addIngressRule(
       ec2.Peer.anyIpv4(),
       ec2.Port.tcp(5432),
-      'Allow rds inbound',
+      'Allow postgres inbound',
     );
 
     const dbInstance = new rds.DatabaseInstance(this, 'Instance', {
