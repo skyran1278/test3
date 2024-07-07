@@ -16,3 +16,8 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 ## Find the Endpoint and password of the RDS instance
 
 - https://ap-northeast-1.console.aws.amazon.com/secretsmanager/listsecrets?region=ap-northeast-1
+
+```sh
+aws cloudformation describe-stacks --stack-name Test3Stack --query "Stacks[0].Outputs"
+aws secretsmanager get-secret-value --secret-id <RDSSecretName>
+```
