@@ -4,7 +4,7 @@ import { Construct } from 'constructs';
 
 import { RDS } from './rds';
 
-export class CdkStack extends cdk.Stack {
+export class Test3Stack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
