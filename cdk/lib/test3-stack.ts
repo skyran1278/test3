@@ -3,6 +3,7 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import { Construct } from 'constructs';
 
 import { Postgres } from './postgres';
+import { Redis } from './redis';
 
 export class Test3Stack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -13,5 +14,6 @@ export class Test3Stack extends cdk.Stack {
     });
 
     new Postgres(this, 'Postgres', { vpc });
+    new Redis(this, 'Redis', { vpc });
   }
 }
