@@ -10,7 +10,8 @@ export class Test3Stack extends cdk.Stack {
     super(scope, id, props);
 
     const vpc = new ec2.Vpc(this, 'Test3Vpc', {
-      maxAzs: 2, // Default is all AZs in the region
+      // Disable NAT gateways, free tier does not include them
+      natGateways: 0,
     });
 
     new Postgres(this, 'Postgres', { vpc });
