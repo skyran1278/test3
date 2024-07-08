@@ -32,8 +32,8 @@ export class Postgres extends Construct {
 
       // Ensure it is publicly accessible
       vpc: props.vpc,
-      vpcSubnets: { subnetType: ec2.SubnetType.PUBLIC },
       securityGroups: [securityGroup],
+      vpcSubnets: { subnetType: ec2.SubnetType.PUBLIC },
       publiclyAccessible: true,
 
       // Generate the secret with admin username `postgres` and random password
