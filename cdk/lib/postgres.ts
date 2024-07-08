@@ -15,7 +15,7 @@ export class Postgres extends Construct {
     // Create a security group for the database
     const securityGroup = new ec2.SecurityGroup(this, 'SecurityGroup', {
       vpc: props.vpc,
-      description: 'Allow postgres outbound',
+      description: 'Allow postgres access',
       allowAllOutbound: true,
     });
     securityGroup.addIngressRule(
