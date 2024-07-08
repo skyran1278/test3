@@ -14,7 +14,7 @@ export class Redis extends Construct {
     // Create a security group for the Redis cluster
     const securityGroup = new ec2.SecurityGroup(this, 'SecurityGroup', {
       vpc: props.vpc,
-      description: 'Allow redis outbound',
+      description: 'Allow redis access',
       allowAllOutbound: true,
     });
 
@@ -28,7 +28,7 @@ export class Redis extends Construct {
     // Create the Redis subnet group
     const subnetGroup = new elasticache.CfnSubnetGroup(this, 'SubnetGroup', {
       description: 'Subnet group for Redis cluster',
-      subnetIds: props.vpc.privateSubnets.map((subnet) => subnet.subnetId),
+      subnetIds: props.vpc.publicSubnets.map((subnet) => subnet.subnetId),
     });
 
     // Create the Redis cluster
