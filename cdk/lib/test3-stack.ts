@@ -3,6 +3,7 @@ import { Construct } from 'constructs';
 
 import { Postgres } from './postgres';
 import { Redis } from './redis';
+import { Service } from './service';
 import { Vpc } from './vpc';
 
 export class Test3Stack extends cdk.Stack {
@@ -13,5 +14,7 @@ export class Test3Stack extends cdk.Stack {
 
     new Postgres(this, 'Postgres', { vpc });
     new Redis(this, 'Redis', { vpc });
+
+    new Service(this, 'Ecs', { vpc });
   }
 }
