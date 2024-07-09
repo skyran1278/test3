@@ -14,6 +14,9 @@ export class Service extends Construct {
 
     const cluster = new ecs.Cluster(this, 'Cluster', {
       vpc: props.vpc,
+
+      // AwsSolutions-ECS4
+      containerInsights: true,
     });
 
     const service = new ecsPatterns.ApplicationLoadBalancedFargateService(
