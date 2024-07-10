@@ -146,3 +146,6 @@ dist
 # CDK asset staging directory
 .cdk.staging
 cdk.out
+
+# mac
+.DS_Store
