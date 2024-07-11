@@ -31,10 +31,14 @@ export class Postgres extends Construct {
       databaseName: 'postgres',
 
       // Ensure it is publicly accessible
+      // vpc: props.vpc,
+      // securityGroups: [securityGroup],
+      // vpcSubnets: { subnetType: ec2.SubnetType.PUBLIC },
+      // publiclyAccessible: true,
+
       vpc: props.vpc,
       securityGroups: [securityGroup],
-      vpcSubnets: { subnetType: ec2.SubnetType.PUBLIC },
-      publiclyAccessible: true,
+      vpcSubnets: { subnetType: ec2.SubnetType.PRIVATE_ISOLATED },
 
       // Generate the secret with admin username `postgres` and random password
       credentials: rds.Credentials.fromGeneratedSecret('postgres'),
