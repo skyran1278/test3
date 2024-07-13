@@ -33,6 +33,7 @@ import { Domain0008Module } from './domain-0008/domain-0008.module';
 import { Domain0009Module } from './domain-0009/domain-0009.module';
 import { Domain0010Module } from './domain-0010/domain-0010.module';
 import { Domain0015Module } from './domain-0015/domain-0015.module';
+import { Domain0021Module } from './domain-0021/domain-0021.module';
 import { CustomHttpExceptionBody } from './error/custom.error';
 import { ErrorModule } from './error/error.module';
 import { HealthModule } from './health/health.module';
@@ -40,7 +41,6 @@ import { PermissionModule } from './permission/permission.module';
 import { RoleModule } from './role/role.module';
 import { SecurityModule } from './security/security.module';
 import { UserModule } from './user/user.module';
-import { Domain0021Module } from './domain-0021/domain-0021.module';
 
 @Module({
   imports: [
@@ -59,6 +59,11 @@ import { Domain0021Module } from './domain-0021/domain-0021.module';
         logging: configService.get('DB_LOGGING'),
         subscribers: [join(__dirname, '**', '*.subscriber.{ts,js}')],
         migrations: ['dist/migration/migrations/*.js'],
+        ssl: configService.get('DB_SSL')
+          ? {
+              rejectUnauthorized: false,
+            }
+          : false,
       }),
       dataSourceFactory(options) {
         if (!options) {
