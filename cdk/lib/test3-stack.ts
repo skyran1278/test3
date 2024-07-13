@@ -12,9 +12,13 @@ export class Test3Stack extends cdk.Stack {
 
     const vpc = new Vpc(this, 'Vpc').vpc;
 
-    new Postgres(this, 'Postgres', { vpc });
-    new Redis(this, 'Redis', { vpc });
+    const postgres = new Postgres(this, 'Postgres', { vpc });
+    const redis = new Redis(this, 'Redis', { vpc });
 
-    new Service(this, 'Ecs', { vpc });
+    new Service(this, 'Service', {
+      vpc,
+      dbInstance: postgres.dbInstance,
+      redisEndpoint: redis.redisEndpoint,
+    });
   }
 }
