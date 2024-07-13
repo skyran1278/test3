@@ -1,2 +1,6 @@
+node_modules
+/coverage
+/dist
+
 # https://github.com/aws/aws-cdk/issues/3899#issuecomment-580394612
-cdk
+/cdk
