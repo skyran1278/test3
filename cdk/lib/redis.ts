@@ -8,6 +8,8 @@ interface RedisProps extends cdk.StackProps {
 }
 
 export class Redis extends Construct {
+  public readonly redisEndpoint: string;
+
   constructor(scope: Construct, id: string, props: RedisProps) {
     super(scope, id);
 
@@ -47,5 +49,7 @@ export class Redis extends Construct {
     new cdk.CfnOutput(this, 'Endpoint', {
       value: redisCluster.attrRedisEndpointAddress,
     });
+
+    this.redisEndpoint = redisCluster.attrRedisEndpointAddress;
   }
 }
