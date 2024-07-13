@@ -9,6 +9,8 @@ interface PostgresProps extends cdk.StackProps {
 }
 
 export class Postgres extends Construct {
+  public dbInstance: rds.DatabaseInstance;
+
   constructor(scope: Construct, id: string, props: PostgresProps) {
     super(scope, id);
 
@@ -24,7 +26,7 @@ export class Postgres extends Construct {
       'Allow postgres inbound',
     );
 
-    const dbInstance = new rds.DatabaseInstance(this, 'Instance', {
+    this.dbInstance = new rds.DatabaseInstance(this, 'Instance', {
       engine: rds.DatabaseInstanceEngine.postgres({
         version: rds.PostgresEngineVersion.VER_16,
       }),
@@ -48,6 +50,7 @@ export class Postgres extends Construct {
       storageType: rds.StorageType.GP2,
 
       // 750 hours of Amazon RDS Single-AZ db.t2.micro, db.t3.micro, and db.t4g.micro Instances usage running MySQL, MariaDB, PostgreSQL databases each month.
+      // t4g have up to 40% better price/performance compared to T3 instances
       instanceType: ec2.InstanceType.of(
         ec2.InstanceClass.T4G,
         ec2.InstanceSize.MICRO,
@@ -61,7 +64,7 @@ export class Postgres extends Construct {
 
     // Output the name of the secret
     new CfnOutput(this, 'SecretName', {
-      value: dbInstance.secret?.secretName || 'No secret created',
+      value: this.dbInstance.secret?.secretName || 'No secret created',
       description: 'The name of the secret containing the RDS credentials',
     });
   }
