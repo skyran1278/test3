@@ -1,3 +1,4 @@
+import { readFileSync } from 'fs';
 import { join } from 'path';
 
 import {
@@ -55,14 +56,18 @@ import { UserModule } from './user/user.module';
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
         schema: configService.get('DB_SCHEMA'),
-        autoLoadEntities: true, // every entity registered through the forFeature() method will be automatically added to the entities array of the configuration object.
         logging: configService.get('DB_LOGGING'),
         subscribers: [join(__dirname, '**', '*.subscriber.{ts,js}')],
         migrations: ['dist/migration/migrations/*.js'],
         migrationsRun: configService.get('DB_MIGRATIONS_RUN'),
+
+        // every entity registered through the forFeature() method will be automatically added to the entities array of the configuration object.
+        autoLoadEntities: true,
+
+        // https://github.com/brianc/node-postgres/issues/2558#issuecomment-1765441660
         ssl: configService.get('DB_SSL')
           ? {
-              rejectUnauthorized: false,
+              ca: readFileSync('ap-northeast-1-bundle.pem').toString(),
             }
           : false,
       }),
