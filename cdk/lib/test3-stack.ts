@@ -18,7 +18,7 @@ export class Test3Stack extends cdk.Stack {
     new Service(this, 'Service', {
       vpc,
       dbInstance: postgres.dbInstance,
-      redisEndpoint: redis.redisEndpoint,
+      redisCluster: redis.cluster,
     });
   }
 }

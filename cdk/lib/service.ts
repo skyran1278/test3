@@ -6,13 +6,14 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import { AmiHardwareType } from 'aws-cdk-lib/aws-ecs';
 import * as ecsPatterns from 'aws-cdk-lib/aws-ecs-patterns';
-import * as rds from 'aws-cdk-lib/aws-rds';
+import { CfnCacheCluster } from 'aws-cdk-lib/aws-elasticache';
+import { DatabaseInstance } from 'aws-cdk-lib/aws-rds';
 import { Construct } from 'constructs';
 
 interface ServiceProps extends cdk.StackProps {
   vpc: ec2.IVpc;
-  dbInstance: rds.DatabaseInstance;
-  redisEndpoint: string;
+  dbInstance: DatabaseInstance;
+  redisCluster: CfnCacheCluster;
 }
 
 export class Service extends Construct {
@@ -111,7 +112,7 @@ export class Service extends Construct {
             DB_LOGGING: 'true',
             DB_SSL: 'true',
             DB_MIGRATIONS_RUN: 'true',
-            REDIS_HOST: props.redisEndpoint,
+            REDIS_HOST: props.redisCluster.attrRedisEndpointAddress,
             REDIS_PORT: '6379',
             GRAPHQL_SERVER: 'development',
             JWT_SECRET: '001',
