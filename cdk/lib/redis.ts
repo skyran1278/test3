@@ -8,7 +8,7 @@ interface RedisProps extends cdk.StackProps {
 }
 
 export class Redis extends Construct {
-  public readonly redisEndpoint: string;
+  public readonly cluster: elasticache.CfnCacheCluster;
 
   constructor(scope: Construct, id: string, props: RedisProps) {
     super(scope, id);
@@ -45,7 +45,7 @@ export class Redis extends Construct {
       subnetIds: props.vpc.isolatedSubnets.map((subnet) => subnet.subnetId),
     });
 
-    const redisCluster = new elasticache.CfnCacheCluster(this, 'Cluster', {
+    this.cluster = new elasticache.CfnCacheCluster(this, 'Cluster', {
       // https://aws.amazon.com/tw/elasticache/pricing/
       // 750 hours of ElastiCache cache.t2.micro or cache.t3.micro node usage for free for up to 12 months.
       cacheNodeType: 'cache.t3.micro',
@@ -57,13 +57,11 @@ export class Redis extends Construct {
     });
 
     // Establishes the dependency between cache and subnetGroup, so that they can be deleted in the right order
-    redisCluster.addDependency(subnetGroup);
+    this.cluster.addDependency(subnetGroup);
 
     // Output the Redis endpoint
     new cdk.CfnOutput(this, 'Endpoint', {
-      value: redisCluster.attrRedisEndpointAddress,
+      value: this.cluster.attrRedisEndpointAddress,
     });
-
-    this.redisEndpoint = redisCluster.attrRedisEndpointAddress;
   }
 }
