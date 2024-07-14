@@ -115,7 +115,7 @@ export class Service extends Construct {
           environment: {
             NODE_ENV: 'development',
             PORT: '80',
-            NEST_DEBUG: 'true',
+            NEST_DEBUG: '',
             DB_HOST: props.dbInstance.dbInstanceEndpointAddress,
             DB_PORT: '5432',
             DB_USERNAME: 'postgres',
