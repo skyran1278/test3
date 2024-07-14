@@ -53,43 +53,6 @@ export class Service extends Construct {
       },
     });
 
-    // const autoScalingGroup = new autoscaling.AutoScalingGroup(
-    //   this,
-    //   'AutoScalingGroup',
-    //   {
-    //     vpc: props.vpc,
-    //     instanceType: ec2.InstanceType.of(
-    //       ec2.InstanceClass.T4G,
-    //       ec2.InstanceSize.SMALL,
-    //     ),
-    //     machineImage: ecs.EcsOptimizedImage.amazonLinux2023(
-    //       AmiHardwareType.ARM,
-    //     ),
-
-    //     vpcSubnets: { subnetType: ec2.SubnetType.PUBLIC },
-    //     associatePublicIpAddress: true,
-
-    //     // AwsSolutions-EC26
-    //     blockDevices: [
-    //       {
-    //         deviceName: '/dev/sdf',
-    //         // 30 GB of storage, 2 million I/Os, and 1 GB of snapshot storage with Amazon Elastic Block Store (EBS).
-    //         volume: autoscaling.BlockDeviceVolume.ebs(30, {
-    //           encrypted: true,
-    //         }),
-    //       },
-    //     ],
-    //   },
-    // );
-    // const capacityProvider = new ecs.AsgCapacityProvider(
-    //   this,
-    //   'AsgCapacityProvider',
-    //   {
-    //     autoScalingGroup,
-    //   },
-    // );
-    // cluster.addAsgCapacityProvider(capacityProvider);
-
     const certificate = new Certificate(this, 'Certificate', {
       domainName: 'test3.u-ran.com',
       validation: CertificateValidation.fromDns(),
@@ -110,7 +73,6 @@ export class Service extends Construct {
         protocol: ApplicationProtocol.HTTPS,
         // cpu: 256,
         taskImageOptions: {
-          // image: ecs.ContainerImage.fromRegistry('amazon/amazon-ecs-sample'),
           image: ecs.ContainerImage.fromAsset(join(__dirname, '..', '..')),
           environment: {
             NODE_ENV: 'development',
