@@ -14,32 +14,13 @@ export class Postgres extends Construct {
   constructor(scope: Construct, id: string, props: PostgresProps) {
     super(scope, id);
 
-    // Create a security group for the database
-    const securityGroup = new ec2.SecurityGroup(this, 'SecurityGroup', {
-      vpc: props.vpc,
-      description: 'Allow postgres access',
-      allowAllOutbound: true,
-    });
-    securityGroup.addIngressRule(
-      ec2.Peer.anyIpv4(),
-      ec2.Port.tcp(5432),
-      'Allow postgres inbound',
-    );
-
     this.dbInstance = new rds.DatabaseInstance(this, 'Instance', {
       engine: rds.DatabaseInstanceEngine.postgres({
         version: rds.PostgresEngineVersion.VER_16,
       }),
       databaseName: 'postgres',
 
-      // Ensure it is publicly accessible
-      // vpc: props.vpc,
-      // securityGroups: [securityGroup],
-      // vpcSubnets: { subnetType: ec2.SubnetType.PUBLIC },
-      // publiclyAccessible: true,
-
       vpc: props.vpc,
-      securityGroups: [securityGroup],
       vpcSubnets: { subnetType: ec2.SubnetType.PRIVATE_ISOLATED },
 
       // Generate the secret with admin username `postgres` and random password
@@ -62,7 +43,6 @@ export class Postgres extends Construct {
       removalPolicy: RemovalPolicy.DESTROY,
     });
 
-    // Output the name of the secret
     new CfnOutput(this, 'SecretName', {
       value: this.dbInstance.secret?.secretName || 'No secret created',
       description: 'The name of the secret containing the RDS credentials',
