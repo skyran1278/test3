@@ -75,7 +75,7 @@ export class Service extends Construct {
         taskImageOptions: {
           image: ecs.ContainerImage.fromAsset(join(__dirname, '..', '..')),
           environment: {
-            NODE_ENV: 'development',
+            NODE_ENV: 'production',
             PORT: '80',
             NEST_DEBUG: '',
             DB_HOST: props.dbInstance.dbInstanceEndpointAddress,
@@ -88,7 +88,7 @@ export class Service extends Construct {
             DB_MIGRATIONS_RUN: 'true',
             REDIS_HOST: props.redisCluster.attrRedisEndpointAddress,
             REDIS_PORT: '6379',
-            GRAPHQL_SERVER: 'development',
+            GRAPHQL_SERVER: 'production',
             JWT_SECRET: '001',
             JWT_EXPIRES_IN: '100d',
             GITHUB_TOKEN: '',
