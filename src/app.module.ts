@@ -59,6 +59,7 @@ import { UserModule } from './user/user.module';
         logging: configService.get('DB_LOGGING'),
         subscribers: [join(__dirname, '**', '*.subscriber.{ts,js}')],
         migrations: ['dist/migration/migrations/*.js'],
+        migrationsRun: configService.get('DB_MIGRATIONS_RUN'),
         ssl: configService.get('DB_SSL')
           ? {
               rejectUnauthorized: false,

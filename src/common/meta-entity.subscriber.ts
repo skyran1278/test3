@@ -73,6 +73,8 @@ export class MetaEntitySubscriber
   }
 
   beforeTransactionCommit(event: TransactionCommitEvent) {
+    if (!alsService.isActive()) return;
+
     const auditLogs = alsService.get('auditLogs') ?? [];
     if (auditLogs.length === 0) return;
 

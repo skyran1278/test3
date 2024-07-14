@@ -45,6 +45,9 @@ export class EnvironmentVariables {
   @IsBoolean()
   DB_SSL!: boolean;
 
+  @IsBoolean()
+  DB_MIGRATIONS_RUN!: boolean;
+
   @IsEnum(EnvironmentEnum)
   GRAPHQL_SERVER!: EnvironmentEnum;
 
