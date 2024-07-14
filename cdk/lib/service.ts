@@ -2,11 +2,16 @@ import { join } from 'path';
 
 import * as cdk from 'aws-cdk-lib';
 import * as autoscaling from 'aws-cdk-lib/aws-autoscaling';
+import {
+  Certificate,
+  CertificateValidation,
+} from 'aws-cdk-lib/aws-certificatemanager';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import { AmiHardwareType } from 'aws-cdk-lib/aws-ecs';
 import * as ecsPatterns from 'aws-cdk-lib/aws-ecs-patterns';
 import { CfnCacheCluster } from 'aws-cdk-lib/aws-elasticache';
+import { ApplicationProtocol } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { DatabaseInstance } from 'aws-cdk-lib/aws-rds';
 import { Construct } from 'constructs';
 
@@ -85,6 +90,11 @@ export class Service extends Construct {
     // );
     // cluster.addAsgCapacityProvider(capacityProvider);
 
+    const certificate = new Certificate(this, 'Certificate', {
+      domainName: 'test3.u-ran.com',
+      validation: CertificateValidation.fromDns(),
+    });
+
     const secret = props.dbInstance.secret;
     if (secret === undefined) {
       throw new Error('props.dbInstance.secret is undefined');
@@ -96,6 +106,8 @@ export class Service extends Construct {
       {
         cluster,
         memoryLimitMiB: 512,
+        certificate,
+        protocol: ApplicationProtocol.HTTPS,
         // cpu: 256,
         taskImageOptions: {
           // image: ecs.ContainerImage.fromRegistry('amazon/amazon-ecs-sample'),
