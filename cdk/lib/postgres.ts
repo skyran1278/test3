@@ -1,41 +1,55 @@
-import * as cdk from 'aws-cdk-lib';
-import { CfnOutput, RemovalPolicy } from 'aws-cdk-lib';
-import * as ec2 from 'aws-cdk-lib/aws-ec2';
-import * as rds from 'aws-cdk-lib/aws-rds';
+import assert = require('assert');
+
+import { CfnOutput, RemovalPolicy, StackProps } from 'aws-cdk-lib';
+import {
+  IVpc,
+  InstanceClass,
+  InstanceSize,
+  InstanceType,
+  SubnetType,
+} from 'aws-cdk-lib/aws-ec2';
+import {
+  Credentials,
+  DatabaseInstance,
+  DatabaseInstanceEngine,
+  PostgresEngineVersion,
+  StorageType,
+} from 'aws-cdk-lib/aws-rds';
+import {
+  SecretRotation,
+  SecretRotationApplication,
+} from 'aws-cdk-lib/aws-secretsmanager';
 import { Construct } from 'constructs';
 
-interface PostgresProps extends cdk.StackProps {
-  vpc: ec2.IVpc;
+interface PostgresProps extends StackProps {
+  vpc: IVpc;
 }
 
 export class Postgres extends Construct {
-  public dbInstance: rds.DatabaseInstance;
+  public dbInstance: DatabaseInstance;
 
   constructor(scope: Construct, id: string, props: PostgresProps) {
     super(scope, id);
 
-    this.dbInstance = new rds.DatabaseInstance(this, 'Instance', {
-      engine: rds.DatabaseInstanceEngine.postgres({
-        version: rds.PostgresEngineVersion.VER_16,
+    this.dbInstance = new DatabaseInstance(this, 'Instance', {
+      engine: DatabaseInstanceEngine.postgres({
+        version: PostgresEngineVersion.VER_16,
       }),
       databaseName: 'postgres',
 
       vpc: props.vpc,
-      vpcSubnets: { subnetType: ec2.SubnetType.PRIVATE_ISOLATED },
+      vpcSubnets: { subnetType: SubnetType.PRIVATE_ISOLATED },
 
       // Generate the secret with admin username `postgres` and random password
-      credentials: rds.Credentials.fromGeneratedSecret('postgres'),
+      credentials: Credentials.fromGeneratedSecret('postgres'),
 
       // 20 GB of General Purpose SSD (gp2) storage per month.
       allocatedStorage: 20,
-      storageType: rds.StorageType.GP2,
+      storageType: StorageType.GP2,
 
       // 750 hours of Amazon RDS Single-AZ db.t2.micro, db.t3.micro, and db.t4g.micro Instances usage running MySQL, MariaDB, PostgreSQL databases each month.
       // t4g have up to 40% better price/performance compared to T3 instances
-      instanceType: ec2.InstanceType.of(
-        ec2.InstanceClass.T4G,
-        ec2.InstanceSize.MICRO,
-      ),
+      instanceType: InstanceType.of(InstanceClass.T4G, InstanceSize.MICRO),
       multiAz: false,
 
       // 20 GB of backup storage for your automated database backups and any user-initiated DB snapshots per month.
@@ -53,8 +67,20 @@ export class Postgres extends Construct {
       storageEncrypted: true,
     });
 
+    assert(this.dbInstance.secret, 'Secret not created');
+
+    // AwsSolutions-SMG4
+    // The secret does not have automatic rotation scheduled.
+    // AWS Secrets Manager can be configured to automatically rotate the secret for a secured service or database.
+    new SecretRotation(this, 'SecretRotation', {
+      vpc: props.vpc,
+      application: SecretRotationApplication.POSTGRES_ROTATION_SINGLE_USER,
+      secret: this.dbInstance.secret,
+      target: this.dbInstance,
+    });
+
     new CfnOutput(this, 'SecretName', {
-      value: this.dbInstance.secret?.secretName || 'No secret created',
+      value: this.dbInstance.secret.secretName,
       description: 'The name of the secret containing the RDS credentials',
     });
   }
