@@ -41,6 +41,11 @@ export class Postgres extends Construct {
       // 20 GB of backup storage for your automated database backups and any user-initiated DB snapshots per month.
       deletionProtection: false,
       removalPolicy: RemovalPolicy.DESTROY,
+
+      // AwsSolutions-RDS2
+      // The RDS instance or Aurora DB cluster does not have storage encryption enabled.
+      // Storage encryption helps protect data-at-rest by encrypting the underlying storage, automated backups, read replicas, and snapshots for the database.
+      storageEncrypted: true,
     });
 
     new CfnOutput(this, 'SecretName', {
