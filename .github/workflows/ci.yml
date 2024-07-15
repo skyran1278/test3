@@ -61,3 +61,26 @@ jobs:
       - run: pnpm run build
       - run: pnpm run test:cov
       - run: pnpm run test:e2e
+
+  # https://www.apollographql.com/docs/rover/ci-cd/#github-actions
+  check-schema:
+    name: Check Schema
+    runs-on: ubuntu-latest
+    env:
+      APOLLO_KEY: ${{ secrets.APOLLO_KEY }}
+      APOLLO_VCS_COMMIT: ${{ github.event.pull_request.head.sha }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Rover
+        run: |
+          curl -sSL https://rover.apollo.dev/nix/v0.23.0 | sh
+
+          # Add Rover to the $GITHUB_PATH so it can be used in another step
+          # https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions#adding-a-system-path
+          echo "$HOME/.rover/bin" >> $GITHUB_PATH
+      # only run this command with the `--background` flag if you have the Apollo Studio GitHub integration enabled on your repository
+      - name: Run check against prod
+        run: |
+          rover subgraph check test3-hnwxwf@current --name test3 --schema src/schema.gql
