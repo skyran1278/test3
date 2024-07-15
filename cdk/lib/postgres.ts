@@ -42,6 +42,11 @@ export class Postgres extends Construct {
       deletionProtection: false,
       removalPolicy: RemovalPolicy.DESTROY,
 
+      // AwsSolutions-RDS11
+      // The RDS instance or Aurora DB cluster uses the default endpoint port.
+      // Port obfuscation (using a non default endpoint port) adds an additional layer of defense against non-targeted attacks (i.e. MySQL/Aurora port 3306, SQL Server port 1433, PostgreSQL port 5432, etc).
+      port: 33075,
+
       // AwsSolutions-RDS2
       // The RDS instance or Aurora DB cluster does not have storage encryption enabled.
       // Storage encryption helps protect data-at-rest by encrypting the underlying storage, automated backups, read replicas, and snapshots for the database.
