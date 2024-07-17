@@ -90,6 +90,23 @@ type CreateDomain0021Output {
   domain0021: Domain0021!
 }
 
+input CreateDomain0021sDomain0021Input {
+  """domain0021001"""
+  domain0021001: Int
+  id: ID!
+
+  """parent ID"""
+  parentId: ID
+}
+
+input CreateDomain0021sInput {
+  domain0021s: [CreateDomain0021sDomain0021Input!]!
+}
+
+type CreateDomain0021sOutput {
+  domain0021s: [Domain0021!]!
+}
+
 input CreateUserInput {
   email: String!
   password: String!
@@ -514,6 +531,7 @@ type Mutation {
   createDomain0008(input: CreateDomain0008Input!): CreateDomain0008Output!
   createDomain0015(input: CreateDomain0015Input!): CreateDomain0015Output!
   createDomain0021(input: CreateDomain0021Input!): CreateDomain0021Output!
+  createDomain0021s(input: CreateDomain0021sInput!): CreateDomain0021sOutput!
   createUser(input: CreateUserInput!): CreateUserOutput!
   removeDomain0001(input: RemoveDomain0001Input!): RemoveDomain0001Output!
   removeDomain0003(input: RemoveDomain0003Input!): RemoveDomain0003Output!

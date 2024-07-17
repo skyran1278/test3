@@ -7,6 +7,8 @@ import { Domain0021Repository } from './domain-0021.repository';
 import { Domain0021Service } from './domain-0021.service';
 import { CreateDomain0021Input } from './mutation/create-domain-0021.input';
 import { CreateDomain0021Output } from './mutation/create-domain-0021.output';
+import { CreateDomain0021sInput } from './mutation/create-domain-0021s.input';
+import { CreateDomain0021sOutput } from './mutation/create-domain-0021s.output';
 import { RemoveDomain0021Input } from './mutation/remove-domain-0021.input';
 import { RemoveDomain0021Output } from './mutation/remove-domain-0021.output';
 import { UpdateDomain0021Input } from './mutation/update-domain-0021.input';
@@ -20,6 +22,15 @@ export class Domain0021Resolver {
     private readonly domain0021Repository: Domain0021Repository,
     private readonly domain0021Service: Domain0021Service,
   ) {}
+
+  @Transactional()
+  @Mutation(() => CreateDomain0021sOutput)
+  async createDomain0021s(
+    @Args('input') input: CreateDomain0021sInput,
+  ): Promise<CreateDomain0021sOutput> {
+    const domain0021s = await this.domain0021Service.saveMany(input);
+    return { domain0021s };
+  }
 
   @Transactional()
   @Mutation(() => CreateDomain0021Output)
