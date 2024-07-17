@@ -19,6 +19,7 @@ import {
   SecretRotation,
   SecretRotationApplication,
 } from 'aws-cdk-lib/aws-secretsmanager';
+import { NagSuppressions } from 'cdk-nag';
 import { Construct } from 'constructs';
 
 interface PostgresProps extends StackProps {
@@ -66,6 +67,28 @@ export class Postgres extends Construct {
       // Storage encryption helps protect data-at-rest by encrypting the underlying storage, automated backups, read replicas, and snapshots for the database.
       storageEncrypted: true,
     });
+
+    NagSuppressions.addResourceSuppressions(this.dbInstance, [
+      {
+        id: 'AwsSolutions-RDS3',
+        reason: `
+          only Single-AZ Instance databases in free tier
+          https://aws.amazon.com/rds/pricing/
+
+          The non-Aurora RDS DB instance does not have multi-AZ support enabled. Use multi-AZ deployment configurations for high availability and automatic failover support fully managed by AWS.
+        `,
+      },
+      {
+        id: 'AwsSolutions-RDS10',
+        reason: `
+          20 GB of backup storage for your automated database backups and any user-initiated DB snapshots per month.
+          https://aws.amazon.com/rds/pricing/
+
+          The RDS instance or Aurora DB cluster does not have deletion protection enabled.
+          Enabling Deletion Protection at the cluster level for Amazon Aurora databases or instance level for non Aurora instances helps protect from accidental deletion.
+        `,
+      },
+    ]);
 
     assert(this.dbInstance.secret, 'Secret not created');
 
