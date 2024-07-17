@@ -24,6 +24,8 @@ import { ApplicationLoadBalancedEc2Service } from 'aws-cdk-lib/aws-ecs-patterns'
 import { CfnCacheCluster } from 'aws-cdk-lib/aws-elasticache';
 import { ApplicationProtocol } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { DatabaseInstance } from 'aws-cdk-lib/aws-rds';
+import { StringParameter } from 'aws-cdk-lib/aws-ssm';
+import { NagSuppressions } from 'cdk-nag';
 import { Construct } from 'constructs';
 
 interface ServiceProps extends StackProps {
@@ -88,8 +90,6 @@ export class Service extends Construct {
           REDIS_HOST: props.redisCluster.attrRedisEndpointAddress,
           REDIS_PORT: '6379',
           GRAPHQL_SERVER: 'development',
-          JWT_SECRET: '001',
-          JWT_EXPIRES_IN: '100d',
           GITHUB_TOKEN: '',
           TEST_TOKEN: '',
         },
@@ -99,9 +99,40 @@ export class Service extends Construct {
           DB_PORT: Secret.fromSecretsManager(secret, 'port'),
           DB_HOST: Secret.fromSecretsManager(secret, 'host'),
           DB_USERNAME: Secret.fromSecretsManager(secret, 'username'),
+          JWT_SECRET: Secret.fromSsmParameter(
+            StringParameter.fromSecureStringParameterAttributes(
+              this,
+              'JWT_SECRET',
+              {
+                parameterName: '/test3/JWT_SECRET',
+              },
+            ),
+          ),
+          JWT_EXPIRES_IN: Secret.fromSsmParameter(
+            StringParameter.fromSecureStringParameterAttributes(
+              this,
+              'JWT_EXPIRES_IN',
+              {
+                parameterName: '/test3/JWT_EXPIRES_IN',
+              },
+            ),
+          ),
         },
       },
     });
+
+    NagSuppressions.addResourceSuppressions(ecsService.service.taskDefinition, [
+      {
+        id: 'AwsSolutions-ECS2',
+        reason: `
+          Because of \`REDIS_HOST\`, we need to allow using environment variables.
+
+          The ECS Task Definition includes a container definition that directly specifies environment variables.
+          Use secrets to inject environment variables during container startup from AWS Systems Manager Parameter Store or Secrets Manager instead of directly specifying plaintext environment variables.
+          Updates to direct environment variables require operators to change task definitions and perform new deployments.
+        `,
+      },
+    ]);
 
     props.dbInstance.connections.allowDefaultPortFrom(ecsService.service);
 
