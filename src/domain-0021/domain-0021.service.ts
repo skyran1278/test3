@@ -4,6 +4,7 @@ import { Transactional } from 'typeorm-transactional';
 import { Domain0021 } from './domain-0021.entity';
 import { Domain0021Repository } from './domain-0021.repository';
 import { CreateDomain0021Input } from './mutation/create-domain-0021.input';
+import { CreateDomain0021sInput } from './mutation/create-domain-0021s.input';
 import { UpdateDomain0021Input } from './mutation/update-domain-0021.input';
 import { Domain0021PageArgs } from './query/domain-0021-page.args';
 
@@ -18,6 +19,13 @@ export class Domain0021Service {
     const domain0021 = await this.repo.save(input);
 
     return domain0021;
+  }
+
+  @Transactional()
+  async saveMany(input: CreateDomain0021sInput): Promise<Domain0021[]> {
+    const domain0021s = await this.repo.save(input.domain0021s);
+
+    return domain0021s;
   }
 
   @Transactional()
