@@ -1,20 +1,24 @@
-import * as cdk from 'aws-cdk-lib';
-import * as ec2 from 'aws-cdk-lib/aws-ec2';
-import * as elasticache from 'aws-cdk-lib/aws-elasticache';
+import { CfnOutput, StackProps } from 'aws-cdk-lib';
+import { IVpc, Peer, Port, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
+import {
+  CfnCacheCluster,
+  CfnParameterGroup,
+  CfnSubnetGroup,
+} from 'aws-cdk-lib/aws-elasticache';
 import { Construct } from 'constructs';
 
-interface RedisProps extends cdk.StackProps {
-  vpc: ec2.IVpc;
+interface RedisProps extends StackProps {
+  vpc: IVpc;
 }
 
 export class Redis extends Construct {
-  public readonly cluster: elasticache.CfnCacheCluster;
+  public readonly cluster: CfnCacheCluster;
 
   constructor(scope: Construct, id: string, props: RedisProps) {
     super(scope, id);
 
     // Create a security group for the Redis cluster
-    const securityGroup = new ec2.SecurityGroup(this, 'SecurityGroup', {
+    const securityGroup = new SecurityGroup(this, 'SecurityGroup', {
       vpc: props.vpc,
       description: 'Allow Redis access',
       allowAllOutbound: true,
@@ -22,30 +26,26 @@ export class Redis extends Construct {
 
     // Allow inbound traffic on port 6379 (default Redis port)
     securityGroup.addIngressRule(
-      ec2.Peer.anyIpv4(),
-      ec2.Port.tcp(6379),
+      Peer.anyIpv4(),
+      Port.tcp(6379),
       'Allow Redis inbound',
     );
 
-    const parameterGroup = new elasticache.CfnParameterGroup(
-      this,
-      'ParameterGroup',
-      {
-        cacheParameterGroupFamily: 'redis7',
-        description: 'Custom parameter group for Redis with noeviction policy',
-        properties: {
-          'maxmemory-policy': 'noeviction',
-        },
+    const parameterGroup = new CfnParameterGroup(this, 'ParameterGroup', {
+      cacheParameterGroupFamily: 'redis7',
+      description: 'Custom parameter group for Redis with noeviction policy',
+      properties: {
+        'maxmemory-policy': 'noeviction',
       },
-    );
+    });
 
     // Create the Redis subnet group
-    const subnetGroup = new elasticache.CfnSubnetGroup(this, 'SubnetGroup', {
+    const subnetGroup = new CfnSubnetGroup(this, 'SubnetGroup', {
       description: 'Subnet group for Redis cluster',
       subnetIds: props.vpc.isolatedSubnets.map((subnet) => subnet.subnetId),
     });
 
-    this.cluster = new elasticache.CfnCacheCluster(this, 'Cluster', {
+    this.cluster = new CfnCacheCluster(this, 'Cluster', {
       // https://aws.amazon.com/tw/elasticache/pricing/
       // 750 hours of ElastiCache cache.t2.micro or cache.t3.micro node usage for free for up to 12 months.
       cacheNodeType: 'cache.t3.micro',
@@ -60,7 +60,7 @@ export class Redis extends Construct {
     this.cluster.addDependency(subnetGroup);
 
     // Output the Redis endpoint
-    new cdk.CfnOutput(this, 'Endpoint', {
+    new CfnOutput(this, 'Endpoint', {
       value: this.cluster.attrRedisEndpointAddress,
     });
   }

@@ -1,11 +1,18 @@
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import {
+  FlowLog,
+  FlowLogDestination,
+  FlowLogResourceType,
+  IVpc,
+  SubnetType,
+} from 'aws-cdk-lib/aws-ec2';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
 
 // interface VpcProps extends cdk.StackProps {}
 
 export class Vpc extends Construct {
-  public readonly vpc: ec2.IVpc;
+  public readonly vpc: IVpc;
 
   constructor(scope: Construct, id: string) {
     super(scope, id);
@@ -19,12 +26,12 @@ export class Vpc extends Construct {
         {
           cidrMask: 24,
           name: 'Public',
-          subnetType: ec2.SubnetType.PUBLIC,
+          subnetType: SubnetType.PUBLIC,
         },
         {
           cidrMask: 24,
           name: 'Isolated',
-          subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
+          subnetType: SubnetType.PRIVATE_ISOLATED,
         },
       ],
     });
@@ -35,9 +42,9 @@ export class Vpc extends Construct {
     });
 
     // Create a Flow Log for the VPC
-    new ec2.FlowLog(this, 'FlowLog', {
-      resourceType: ec2.FlowLogResourceType.fromVpc(this.vpc),
-      destination: ec2.FlowLogDestination.toCloudWatchLogs(logGroup),
+    new FlowLog(this, 'FlowLog', {
+      resourceType: FlowLogResourceType.fromVpc(this.vpc),
+      destination: FlowLogDestination.toCloudWatchLogs(logGroup),
     });
   }
 }
