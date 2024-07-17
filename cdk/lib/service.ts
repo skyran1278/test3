@@ -88,7 +88,7 @@ export class Service extends Construct {
           DB_SSL: 'true',
           DB_MIGRATIONS_RUN: 'true',
           REDIS_HOST: props.redisCluster.attrRedisEndpointAddress,
-          REDIS_PORT: '6379',
+          REDIS_PORT: props.redisCluster.attrRedisEndpointPort,
           GRAPHQL_SERVER: 'development',
           GITHUB_TOKEN: '',
           TEST_TOKEN: '',
