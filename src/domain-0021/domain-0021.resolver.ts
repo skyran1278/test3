@@ -1,7 +1,16 @@
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  ID,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
 import { Transactional } from 'typeorm-transactional';
 
+import { Domain0021ChildrenLoader } from './domain-0021-children.loader';
 import { Domain0021 } from './domain-0021.entity';
 import { Domain0021Repository } from './domain-0021.repository';
 import { Domain0021Service } from './domain-0021.service';
@@ -21,6 +30,7 @@ export class Domain0021Resolver {
   constructor(
     private readonly domain0021Repository: Domain0021Repository,
     private readonly domain0021Service: Domain0021Service,
+    private readonly domain0021ChildrenLoader: Domain0021ChildrenLoader,
   ) {}
 
   @Transactional()
@@ -71,5 +81,16 @@ export class Domain0021Resolver {
   ): Promise<RemoveDomain0021Output> {
     const domain0021 = await this.domain0021Service.removeOne(input.id);
     return { domain0021 };
+  }
+
+  @ResolveField(() => [Domain0021], { nullable: true })
+  async children(
+    @Parent() domain0021: Domain0021,
+  ): Promise<Maybe<Domain0021[]>> {
+    if (domain0021.children != null && domain0021.children.length > 0) {
+      return domain0021.children;
+    }
+
+    return this.domain0021ChildrenLoader.load(domain0021);
   }
 }
