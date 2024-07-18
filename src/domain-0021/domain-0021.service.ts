@@ -23,7 +23,17 @@ export class Domain0021Service {
 
   @Transactional()
   async saveMany(input: CreateDomain0021sInput): Promise<Domain0021[]> {
-    const domain0021s = await this.repo.save(input.domain0021s);
+    const domain0021s = this.repo.create(input.domain0021s);
+
+    // https://orkhan.gitbook.io/typeorm/docs/tree-entities#working-with-tree-entities
+    // To bind tree entities to each other, it is required to set the parent in the child entity and then save them.
+    domain0021s.forEach((domain0021) => {
+      domain0021.parent = domain0021s.find(
+        ({ id }) => id === domain0021.parentId,
+      );
+    });
+
+    await this.repo.save(domain0021s);
 
     return domain0021s;
   }
