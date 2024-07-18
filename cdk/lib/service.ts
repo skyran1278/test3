@@ -21,17 +21,18 @@ import {
   Secret,
 } from 'aws-cdk-lib/aws-ecs';
 import { ApplicationLoadBalancedEc2Service } from 'aws-cdk-lib/aws-ecs-patterns';
-import { CfnCacheCluster } from 'aws-cdk-lib/aws-elasticache';
 import { ApplicationProtocol } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
-import { DatabaseInstance } from 'aws-cdk-lib/aws-rds';
 import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { NagSuppressions } from 'cdk-nag';
 import { Construct } from 'constructs';
 
+import { Postgres } from './postgres';
+import { Redis } from './redis';
+
 interface ServiceProps extends StackProps {
   vpc: IVpc;
-  dbInstance: DatabaseInstance;
-  redisCluster: CfnCacheCluster;
+  postgres: Postgres;
+  redis: Redis;
 }
 
 export class Service extends Construct {
@@ -66,7 +67,7 @@ export class Service extends Construct {
       validation: CertificateValidation.fromDns(),
     });
 
-    const secret = props.dbInstance.secret;
+    const secret = props.postgres.dbInstance.secret;
     if (secret === undefined) {
       throw new Error('props.dbInstance.secret is undefined');
     }
@@ -87,8 +88,8 @@ export class Service extends Construct {
           DB_LOGGING: 'true',
           DB_SSL: 'true',
           DB_MIGRATIONS_RUN: 'true',
-          REDIS_HOST: props.redisCluster.attrRedisEndpointAddress,
-          REDIS_PORT: props.redisCluster.attrRedisEndpointPort,
+          REDIS_HOST: props.redis.cluster.attrRedisEndpointAddress,
+          REDIS_PORT: props.redis.cluster.attrRedisEndpointPort,
           GRAPHQL_SERVER: 'development',
           GITHUB_TOKEN: '',
           TEST_TOKEN: '',
@@ -134,7 +135,9 @@ export class Service extends Construct {
       },
     ]);
 
-    props.dbInstance.connections.allowDefaultPortFrom(ecsService.service);
+    props.postgres.dbInstance.connections.allowDefaultPortFrom(
+      ecsService.service,
+    );
 
     // AwsSolutions-ELB2
     // const logBucket = new s3.Bucket(this, 'Bucket', {
