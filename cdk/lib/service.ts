@@ -13,6 +13,7 @@ import {
   InstanceType,
   SubnetType,
 } from 'aws-cdk-lib/aws-ec2';
+import { Platform } from 'aws-cdk-lib/aws-ecr-assets';
 import {
   AmiHardwareType,
   Cluster,
@@ -79,7 +80,9 @@ export class Service extends Construct {
       protocol: ApplicationProtocol.HTTPS,
       // cpu: 256,
       taskImageOptions: {
-        image: ContainerImage.fromAsset(join(__dirname, '..', '..')),
+        image: ContainerImage.fromAsset(join(__dirname, '..', '..'), {
+          platform: Platform.LINUX_ARM64,
+        }),
         environment: {
           NODE_ENV: 'production',
           PORT: '80',
