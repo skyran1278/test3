@@ -17,8 +17,8 @@ export class Test3Stack extends Stack {
 
     new Service(this, 'Service', {
       vpc,
-      dbInstance: postgres.dbInstance,
-      redisCluster: redis.cluster,
+      postgres,
+      redis,
     });
   }
 }
