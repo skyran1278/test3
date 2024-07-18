@@ -28,7 +28,7 @@ export class Redis extends Construct {
     // Allow inbound traffic on port 6379 (default Redis port)
     this.securityGroup.addIngressRule(
       Peer.anyIpv4(),
-      Port.tcp(6379),
+      Port.tcp(7982),
       'Allow Redis inbound',
     );
 
