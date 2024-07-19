@@ -23,6 +23,7 @@ import {
 } from 'aws-cdk-lib/aws-ecs';
 import { ApplicationLoadBalancedEc2Service } from 'aws-cdk-lib/aws-ecs-patterns';
 import { ApplicationProtocol } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
+import { Key } from 'aws-cdk-lib/aws-kms';
 import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { NagSuppressions } from 'cdk-nag';
 import { Construct } from 'constructs';
@@ -39,6 +40,10 @@ interface ServiceProps extends StackProps {
 export class Service extends Construct {
   constructor(scope: Construct, id: string, props: ServiceProps) {
     super(scope, id);
+
+    const key = new Key(this, 'Key', {
+      enableKeyRotation: true,
+    });
 
     const cluster = new Cluster(this, 'Cluster', {
       vpc: props.vpc,
@@ -60,6 +65,17 @@ export class Service extends Construct {
         ],
         vpcSubnets: { subnetType: SubnetType.PUBLIC },
         associatePublicIpAddress: true,
+
+        // AwsSolutions-SNS2
+        // The SNS Topic does not have server-side encryption enabled.
+        // Server side encryption adds additional protection of sensitive data delivered as messages to subscribers.
+        //
+        // AwsSolutions-SNS3
+        // The SNS Topic does not require publishers to use SSL.
+        // Without HTTPS (TLS), a network-based attacker can eavesdrop on network traffic or manipulate it, using an attack such as man-in-the-middle.
+        // Allow only encrypted connections over HTTPS (TLS) using the aws:SecureTransport condition and the 'sns: Publish' action in the topic policy to force publishers to use SSL.
+        // If SSE is already enabled then this control is auto enforced.
+        topicEncryptionKey: key,
       },
     });
 
