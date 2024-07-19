@@ -231,11 +231,7 @@ export class MetaEntitySubscriber
      *   - event.databaseEntity is Entity
      */
 
-    if (
-      !entity ||
-      (entity as { mpath: unknown })?.mpath instanceof Function ||
-      typeof (entity as { mpath: unknown })?.mpath === 'string'
-    ) {
+    if (!entity) {
       this.logger.verbose({
         message: 'Entity is not an instance of MetaEntity.',
         details: {
