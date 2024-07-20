@@ -107,6 +107,19 @@ export class Service extends Construct {
               This rule only applies to non-container Lambda functions.
             `,
           },
+          {
+            id: 'AwsSolutions-IAM4',
+            reason: `
+              I have no idea how to configure this in cluster.autoscalingGroup.
+
+              The IAM user, role, or group uses AWS managed policies.
+              An AWS managed policy is a standalone policy that is created and administered by AWS. Currently, many AWS managed policies do not restrict resource scope.
+              Replace AWS managed policies with system specific (customer) managed policies.
+              This is a granular rule that returns individual findings that can be suppressed with 'appliesTo'.
+              The findings are in the format 'Policy::<policy>' for AWS managed policies.
+              Example: appliesTo: ['Policy::arn:<AWS::Partition>:iam::aws:policy/foo'].
+            `,
+          },
         ],
         true,
       );
