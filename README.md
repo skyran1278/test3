@@ -1,4 +1,4 @@
-## Installation
+## Getting Started
 
 ```bash
 # Install package
@@ -51,6 +51,7 @@ pnpm run migration:revert
 ## Folder Structure
 
 - **migration**: Config for database migration, managing schema changes.
+- **cdk**: Cloud Development Kit (CDK) for deploying infrastructure.
 - **src**
   - **als**: Manages asynchronous local storage by request.
   - **audit-log**: Logs database actions for auditing.
@@ -70,6 +71,17 @@ pnpm run migration:revert
   - **domain-0015**: Queue management with BullMQ and Redis.
   - **domain-0021**: Tree entity.
 - **test**: End-to-end tests for full workflow validation.
+
+## Infrastructure Common Commands
+
+```bash
+aws sso login --profile ran
+
+# In the cdk folder
+cdk diff --profile ran
+cdk deploy --profile ran
+cdk destroy --profile ran
+```
 
 ## Issues
 
