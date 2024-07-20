@@ -1,21 +1,20 @@
-import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import {
   FlowLog,
   FlowLogDestination,
   FlowLogResourceType,
-  IVpc,
   SubnetType,
+  Vpc,
 } from 'aws-cdk-lib/aws-ec2';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
 
 export class VpcConstruct extends Construct {
-  public readonly vpc: IVpc;
+  public readonly vpc: Vpc;
 
   constructor(scope: Construct, id: string) {
     super(scope, id);
 
-    this.vpc = new ec2.Vpc(this, 'Test3Vpc', {
+    this.vpc = new Vpc(this, 'Test3Vpc', {
       // Disable NAT gateways, free tier does not include them
       natGateways: 0,
 
