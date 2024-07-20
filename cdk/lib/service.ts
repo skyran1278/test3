@@ -24,6 +24,8 @@ import {
 import { ApplicationLoadBalancedEc2Service } from 'aws-cdk-lib/aws-ecs-patterns';
 import { ApplicationProtocol } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { Key } from 'aws-cdk-lib/aws-kms';
+import { Topic } from 'aws-cdk-lib/aws-sns';
+import { EmailSubscription } from 'aws-cdk-lib/aws-sns-subscriptions';
 import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { NagSuppressions } from 'cdk-nag';
 import { Construct } from 'constructs';
@@ -44,6 +46,11 @@ export class Service extends Construct {
     const key = new Key(this, 'Key', {
       enableKeyRotation: true,
     });
+
+    const topic = new Topic(this, 'Topic', {
+      masterKey: key,
+    });
+    topic.addSubscription(new EmailSubscription('test3@u-ran.com'));
 
     const cluster = new Cluster(this, 'Cluster', {
       vpc: props.vpc,
@@ -76,6 +83,11 @@ export class Service extends Construct {
         // Allow only encrypted connections over HTTPS (TLS) using the aws:SecureTransport condition and the 'sns: Publish' action in the topic policy to force publishers to use SSL.
         // If SSE is already enabled then this control is auto enforced.
         topicEncryptionKey: key,
+
+        // AwsSolutions-AS3
+        // The Auto Scaling Group does not have notifications configured for all scaling events.
+        // Notifications on EC2 instance launch, launch error, termination, and termination errors allow operators to gain better insights into systems attributes such as activity and health.
+        notifications: [{ topic }],
       },
     });
 
