@@ -14,7 +14,7 @@ export class VpcConstruct extends Construct {
   constructor(scope: Construct, id: string) {
     super(scope, id);
 
-    this.vpc = new Vpc(this, 'Test3Vpc', {
+    this.vpc = new Vpc(this, 'Vpc', {
       // Disable NAT gateways, free tier does not include them
       natGateways: 0,
 
