@@ -5,6 +5,7 @@ import {
   CfnParameterGroup,
   CfnSubnetGroup,
 } from 'aws-cdk-lib/aws-elasticache';
+import { NagSuppressions } from 'cdk-nag';
 import { Construct } from 'constructs';
 
 interface RedisProps extends StackProps {
@@ -25,12 +26,27 @@ export class Redis extends Construct {
       allowAllOutbound: true,
     });
 
-    // Allow inbound traffic on port 6379 (default Redis port)
     this.securityGroup.addIngressRule(
       Peer.anyIpv4(),
       Port.tcp(7982),
       'Allow Redis inbound',
     );
+
+    NagSuppressions.addResourceSuppressions(this.securityGroup, [
+      {
+        id: 'AwsSolutions-EC23',
+        reason: `
+          I have no idea how to configure this el.
+
+          The Security Group allows for 0.0.0.0/0 or ::/0 inbound access.
+          Large port ranges, when open, expose instances to unwanted attacks.
+          More than that, they make traceability of vulnerabilities very difficult.
+          For instance, your web servers may only require 80 and 443 ports to be open, but not all.
+          One of the most common mistakes observed is when  all ports for 0.0.0.0/0 range are open in a rush to access the instance.
+          EC2 instances must expose only to those ports enabled on the corresponding security group level.
+        `,
+      },
+    ]);
 
     const parameterGroup = new CfnParameterGroup(this, 'ParameterGroup', {
       cacheParameterGroupFamily: 'redis7',

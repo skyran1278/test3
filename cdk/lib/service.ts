@@ -242,6 +242,26 @@ export class Service extends Construct {
       ecsService.service,
     );
 
+    NagSuppressions.addResourceSuppressions(
+      ecsService.loadBalancer,
+      [
+        {
+          id: 'AwsSolutions-EC23',
+          reason: `
+            I have no idea how to configure this.
+
+            The Security Group allows for 0.0.0.0/0 or ::/0 inbound access.
+            Large port ranges, when open, expose instances to unwanted attacks.
+            More than that, they make traceability of vulnerabilities very difficult.
+            For instance, your web servers may only require 80 and 443 ports to be open, but not all.
+            One of the most common mistakes observed is when  all ports for 0.0.0.0/0 range are open in a rush to access the instance.
+            EC2 instances must expose only to those ports enabled on the corresponding security group level.
+          `,
+        },
+      ],
+      true,
+    );
+
     // AwsSolutions-ELB2
     // The ELB does not have access logs enabled.
     // Access logs allow operators to to analyze traffic patterns and identify and troubleshoot security issues.
