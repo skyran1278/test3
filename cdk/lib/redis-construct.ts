@@ -48,7 +48,7 @@ export class RedisConstruct extends Construct {
       },
     ]);
 
-    const parameterGroup = new CfnParameterGroup(this, 'ParameterGroup', {
+    const parameterGroup = new CfnParameterGroup(this, 'CfnParameterGroup', {
       cacheParameterGroupFamily: 'redis7',
       description: 'Custom parameter group for Redis with noeviction policy',
       properties: {
@@ -57,12 +57,12 @@ export class RedisConstruct extends Construct {
     });
 
     // Create the Redis subnet group
-    const subnetGroup = new CfnSubnetGroup(this, 'SubnetGroup', {
+    const subnetGroup = new CfnSubnetGroup(this, 'CfnSubnetGroup', {
       description: 'Subnet group for Redis cluster',
       subnetIds: props.vpc.isolatedSubnets.map((subnet) => subnet.subnetId),
     });
 
-    this.cfnCacheCluster = new CfnCacheCluster(this, 'Cluster', {
+    this.cfnCacheCluster = new CfnCacheCluster(this, 'CfnCacheCluster', {
       // https://aws.amazon.com/tw/elasticache/pricing/
       // 750 hours of ElastiCache cache.t2.micro or cache.t3.micro node usage for free for up to 12 months.
       cacheNodeType: 'cache.t3.micro',

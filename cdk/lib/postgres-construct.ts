@@ -32,7 +32,7 @@ export class PostgresConstruct extends Construct {
   constructor(scope: Construct, id: string, props: PostgresConstructProps) {
     super(scope, id);
 
-    this.databaseInstance = new DatabaseInstance(this, 'Instance', {
+    this.databaseInstance = new DatabaseInstance(this, 'DatabaseInstance', {
       engine: DatabaseInstanceEngine.postgres({
         version: PostgresEngineVersion.VER_16,
       }),
