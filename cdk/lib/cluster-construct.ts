@@ -1,11 +1,11 @@
 import { StackProps } from 'aws-cdk-lib';
 import { BlockDeviceVolume } from 'aws-cdk-lib/aws-autoscaling';
 import {
-  IVpc,
   InstanceClass,
   InstanceSize,
   InstanceType,
   SubnetType,
+  Vpc,
 } from 'aws-cdk-lib/aws-ec2';
 import {
   AmiHardwareType,
@@ -18,7 +18,7 @@ import { NagSuppressions } from 'cdk-nag';
 import { Construct } from 'constructs';
 
 interface ClusterConstructProps extends StackProps {
-  vpc: IVpc;
+  vpc: Vpc;
   key: Key;
   topic: Topic;
 }

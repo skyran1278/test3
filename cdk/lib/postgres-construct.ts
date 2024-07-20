@@ -2,11 +2,11 @@ import assert = require('assert');
 
 import { CfnOutput, RemovalPolicy, StackProps } from 'aws-cdk-lib';
 import {
-  IVpc,
   InstanceClass,
   InstanceSize,
   InstanceType,
   SubnetType,
+  Vpc,
 } from 'aws-cdk-lib/aws-ec2';
 import {
   Credentials,
@@ -23,7 +23,7 @@ import { NagSuppressions } from 'cdk-nag';
 import { Construct } from 'constructs';
 
 interface PostgresConstructProps extends StackProps {
-  vpc: IVpc;
+  vpc: Vpc;
 }
 
 export class PostgresConstruct extends Construct {
