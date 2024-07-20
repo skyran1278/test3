@@ -120,6 +120,22 @@ export class Service extends Construct {
               Example: appliesTo: ['Policy::arn:<AWS::Partition>:iam::aws:policy/foo'].
             `,
           },
+          {
+            id: 'AwsSolutions-IAM5',
+            reason: `
+              I have no idea how to configure this in cluster.autoscalingGroup.
+
+              [Resource::*]:
+              [Resource::arn:aws:autoscaling:ap-northeast-1:637423394100:autoScalingGroup:*:autoScalingGroupName/<ServiceClusterDefaultAutoScalingGroupASGDB6A872C>]:
+              [Action::ecs:Submit*]:
+
+              The IAM entity contains wildcard permissions and does not have a cdk-nag rule suppression with evidence for those permission.
+              Metadata explaining the evidence (e.g. via supporting links) for wildcard permissions allows for transparency to operators.
+              This is a granular rule that returns individual findings that can be suppressed with 'appliesTo'.
+              The findings are in the format 'Action::<action>' for policy actions and 'Resource::<resource>' for resources.
+              Example: appliesTo: ['Action::s3:*'].
+            `,
+          },
         ],
         true,
       );
@@ -198,6 +214,29 @@ export class Service extends Construct {
         `,
       },
     ]);
+
+    if (ecsService.service.taskDefinition.executionRole) {
+      NagSuppressions.addResourceSuppressions(
+        ecsService.service.taskDefinition.executionRole,
+        [
+          {
+            id: 'AwsSolutions-IAM5',
+            reason: `
+              I have no idea how to configure this.
+
+              [Resource::*]
+
+              The IAM entity contains wildcard permissions and does not have a cdk-nag rule suppression with evidence for those permission.
+              Metadata explaining the evidence (e.g. via supporting links) for wildcard permissions allows for transparency to operators.
+              This is a granular rule that returns individual findings that can be suppressed with 'appliesTo'.
+              The findings are in the format 'Action::<action>' for policy actions and 'Resource::<resource>' for resources.
+              Example: appliesTo: ['Action::s3:*'].
+            `,
+          },
+        ],
+        true,
+      );
+    }
 
     props.postgres.dbInstance.connections.allowDefaultPortFrom(
       ecsService.service,
