@@ -92,6 +92,26 @@ export class Service extends Construct {
       },
     });
 
+    if (cluster.autoscalingGroup) {
+      NagSuppressions.addResourceSuppressions(
+        cluster.autoscalingGroup,
+        [
+          {
+            id: 'AwsSolutions-L1',
+            reason: `
+              I have no idea how to configure this in cluster.autoscalingGroup.
+
+              The non-container Lambda function is not configured to use the latest runtime version.
+              Use the latest available runtime for the targeted language to avoid technical debt.
+              Runtimes specific to a language or framework version are deprecated when the version reaches end of life.
+              This rule only applies to non-container Lambda functions.
+            `,
+          },
+        ],
+        true,
+      );
+    }
+
     const certificate = new Certificate(this, 'Certificate', {
       domainName: 'x.u-ran.com',
       validation: CertificateValidation.fromDns(),
