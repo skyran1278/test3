@@ -1,6 +1,6 @@
 import { join } from 'path';
 
-import { StackProps } from 'aws-cdk-lib';
+import { RemovalPolicy, StackProps } from 'aws-cdk-lib';
 import { BlockDeviceVolume } from 'aws-cdk-lib/aws-autoscaling';
 import {
   Certificate,
@@ -24,6 +24,7 @@ import {
 import { ApplicationLoadBalancedEc2Service } from 'aws-cdk-lib/aws-ecs-patterns';
 import { ApplicationProtocol } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { Key } from 'aws-cdk-lib/aws-kms';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { Topic } from 'aws-cdk-lib/aws-sns';
 import { EmailSubscription } from 'aws-cdk-lib/aws-sns-subscriptions';
 import { StringParameter } from 'aws-cdk-lib/aws-ssm';
@@ -170,46 +171,23 @@ export class Service extends Construct {
     );
 
     // AwsSolutions-ELB2
-    // const logBucket = new s3.Bucket(this, 'Bucket', {
-    //   removalPolicy: cdk.RemovalPolicy.DESTROY,
-    // });
-    // ecsService.loadBalancer.logAccessLogs(logBucket);
+    // The ELB does not have access logs enabled.
+    // Access logs allow operators to to analyze traffic patterns and identify and troubleshoot security issues.
+    const logBucket = new Bucket(this, 'LogBucket', {
+      removalPolicy: RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
+      enforceSSL: true,
+    });
+    ecsService.loadBalancer.logAccessLogs(logBucket);
 
-    // ecsService.service.connections.all(
-    //   props.dbInstance,
-    //   ec2.Port.tcp(5432),
-    // );
-    // ecsService.service.connections.allowTo(
-    //   ec2.Peer.ipv4(props.redisEndpoint),
-    //   ec2.Port.tcp(6379),
-    // );
-
-    // // AwsSolutions-ELB2
-    // // Create an S3 bucket for ALB access logs
-    // const accessLogBucket = new s3.Bucket(this, 'Bucket', {
-    //   removalPolicy: cdk.RemovalPolicy.DESTROY,
-    //   autoDeleteObjects: true,
-    //   blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-    // });
-
-    // accessLogBucket.addToResourcePolicy(
-    //   new iam.PolicyStatement({
-    //     effect: iam.Effect.DENY,
-    //     actions: ['s3:*'],
-    //     resources: [
-    //       accessLogBucket.bucketArn,
-    //       `${accessLogBucket.bucketArn}/*`,
-    //     ],
-    //     conditions: {
-    //       Bool: {
-    //         'aws:SecureTransport': 'false',
-    //       },
-    //     },
-    //     principals: [new iam.AnyPrincipal()],
-    //   }),
-    // );
-
-    // const loadBalancer = service.loadBalancer;
-    // loadBalancer.logAccessLogs(accessLogBucket, 'alb-access-logs/');
+    // AwsSolutions-S1
+    // The S3 Bucket has server access logs disabled.
+    // The bucket should have server access logging enabled to provide detailed records for the requests that are made to the bucket.
+    new Bucket(this, 'MainBucket', {
+      removalPolicy: RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
+      enforceSSL: true,
+      serverAccessLogsBucket: logBucket,
+    });
   }
 }
