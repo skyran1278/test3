@@ -8,15 +8,15 @@ import {
 import { NagSuppressions } from 'cdk-nag';
 import { Construct } from 'constructs';
 
-interface RedisProps extends StackProps {
+interface RedisConstructProps extends StackProps {
   vpc: IVpc;
 }
 
-export class Redis extends Construct {
-  public readonly cluster: CfnCacheCluster;
+export class RedisConstruct extends Construct {
+  public readonly cfnCacheCluster: CfnCacheCluster;
   public readonly securityGroup: SecurityGroup;
 
-  constructor(scope: Construct, id: string, props: RedisProps) {
+  constructor(scope: Construct, id: string, props: RedisConstructProps) {
     super(scope, id);
 
     // Create a security group for the Redis cluster
@@ -62,7 +62,7 @@ export class Redis extends Construct {
       subnetIds: props.vpc.isolatedSubnets.map((subnet) => subnet.subnetId),
     });
 
-    this.cluster = new CfnCacheCluster(this, 'Cluster', {
+    this.cfnCacheCluster = new CfnCacheCluster(this, 'Cluster', {
       // https://aws.amazon.com/tw/elasticache/pricing/
       // 750 hours of ElastiCache cache.t2.micro or cache.t3.micro node usage for free for up to 12 months.
       cacheNodeType: 'cache.t3.micro',
@@ -79,11 +79,11 @@ export class Redis extends Construct {
     });
 
     // Establishes the dependency between cache and subnetGroup, so that they can be deleted in the right order
-    this.cluster.addDependency(subnetGroup);
+    this.cfnCacheCluster.addDependency(subnetGroup);
 
     // Output the Redis endpoint
     new CfnOutput(this, 'Endpoint', {
-      value: this.cluster.attrRedisEndpointAddress,
+      value: this.cfnCacheCluster.attrRedisEndpointAddress,
     });
   }
 }

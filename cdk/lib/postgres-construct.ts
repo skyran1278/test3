@@ -22,17 +22,17 @@ import {
 import { NagSuppressions } from 'cdk-nag';
 import { Construct } from 'constructs';
 
-interface PostgresProps extends StackProps {
+interface PostgresConstructProps extends StackProps {
   vpc: IVpc;
 }
 
-export class Postgres extends Construct {
-  public dbInstance: DatabaseInstance;
+export class PostgresConstruct extends Construct {
+  public databaseInstance: DatabaseInstance;
 
-  constructor(scope: Construct, id: string, props: PostgresProps) {
+  constructor(scope: Construct, id: string, props: PostgresConstructProps) {
     super(scope, id);
 
-    this.dbInstance = new DatabaseInstance(this, 'Instance', {
+    this.databaseInstance = new DatabaseInstance(this, 'Instance', {
       engine: DatabaseInstanceEngine.postgres({
         version: PostgresEngineVersion.VER_16,
       }),
@@ -68,7 +68,7 @@ export class Postgres extends Construct {
       storageEncrypted: true,
     });
 
-    NagSuppressions.addResourceSuppressions(this.dbInstance, [
+    NagSuppressions.addResourceSuppressions(this.databaseInstance, [
       {
         id: 'AwsSolutions-RDS3',
         reason: `
@@ -90,7 +90,7 @@ export class Postgres extends Construct {
       },
     ]);
 
-    assert(this.dbInstance.secret, 'Secret not created');
+    assert(this.databaseInstance.secret, 'Secret not created');
 
     // AwsSolutions-SMG4
     // The secret does not have automatic rotation scheduled.
@@ -98,12 +98,12 @@ export class Postgres extends Construct {
     new SecretRotation(this, 'SecretRotation', {
       vpc: props.vpc,
       application: SecretRotationApplication.POSTGRES_ROTATION_SINGLE_USER,
-      secret: this.dbInstance.secret,
-      target: this.dbInstance,
+      secret: this.databaseInstance.secret,
+      target: this.databaseInstance,
     });
 
     new CfnOutput(this, 'SecretName', {
-      value: this.dbInstance.secret.secretName,
+      value: this.databaseInstance.secret.secretName,
       description: 'The name of the secret containing the RDS credentials',
     });
   }
