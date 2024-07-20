@@ -47,6 +47,14 @@ export class ClusterConstruct extends Construct {
             }),
           },
         ],
+
+        // https://stackoverflow.com/questions/36523282/aws-ecs-error-when-running-task-no-container-instances-were-found-in-your-clust
+        // https://docs.aws.amazon.com/AmazonECS/latest/developerguide/launch_container_instance.html
+        // Container instances need access to communicate with the Amazon ECS service endpoint.
+        // This can be through an interface VPC endpoint or through your container instances having public IP addresses.
+        // For more information about interface VPC endpoints, see Amazon ECS interface VPC endpoints (AWS PrivateLink)
+        // If you do not have an interface VPC endpoint configured and your container instances do not have public IP addresses, then they must use network address translation (NAT) to provide this access.
+        // For more information, see NAT gateways in the Amazon VPC User Guide and Using an HTTP proxy for Amazon ECS Linux container instances in this guide.
         vpcSubnets: { subnetType: SubnetType.PUBLIC },
         associatePublicIpAddress: true,
 
