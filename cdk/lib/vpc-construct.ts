@@ -9,9 +9,7 @@ import {
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
 
-// interface VpcProps extends cdk.StackProps {}
-
-export class Vpc extends Construct {
+export class VpcConstruct extends Construct {
   public readonly vpc: IVpc;
 
   constructor(scope: Construct, id: string) {
