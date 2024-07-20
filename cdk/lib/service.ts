@@ -91,6 +91,39 @@ export class Service extends Construct {
       },
     });
 
+    // const autoScalingGroup = new AutoScalingGroup(this, 'AutoScalingGroup', {
+    //   vpc: props.vpc,
+    //   instanceType: InstanceType.of(InstanceClass.T4G, InstanceSize.SMALL),
+    //   machineImage: EcsOptimizedImage.amazonLinux2023(AmiHardwareType.ARM),
+    //   blockDevices: [
+    //     {
+    //       deviceName: '/dev/sdf',
+    //       // 30 GB of storage, 2 million I/Os, and 1 GB of snapshot storage with Amazon Elastic Block Store (EBS).
+    //       volume: BlockDeviceVolume.ebs(30, {
+    //         encrypted: true,
+    //       }),
+    //     },
+    //   ],
+    //   vpcSubnets: { subnetType: SubnetType.PUBLIC },
+    //   associatePublicIpAddress: true,
+    // });
+
+    // // Add the ASG as a capacity provider to the ECS cluster
+    // const asgCapacityProvider = new AsgCapacityProvider(
+    //   this,
+    //   'AsgCapacityProvider',
+    //   {
+    //     autoScalingGroup,
+    //     // https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs-readme.html#auto-scaling-group-capacity-providers
+    //     // Currently there is a known CloudFormation issue that prevents CloudFormation from automatically deleting Auto Scaling Groups that have Managed Termination Protection enabled.
+    //     // To work around this issue you could set enableManagedTerminationProtection to false on the Auto Scaling Group Capacity Provider.
+    //     // If you'd rather not disable Managed Termination Protection, you can manually delete the Auto Scaling Group. For other workarounds, see this GitHub issue.
+    //     enableManagedTerminationProtection: false,
+    //   },
+    // );
+
+    // cluster.addAsgCapacityProvider(asgCapacityProvider);
+
     const certificate = new Certificate(this, 'Certificate', {
       domainName: 'x.u-ran.com',
       validation: CertificateValidation.fromDns(),
@@ -106,6 +139,7 @@ export class Service extends Construct {
       memoryLimitMiB: 512,
       certificate,
       protocol: ApplicationProtocol.HTTPS,
+      // capacityProviderStrategies: cluster.defaultCapacityProviderStrategy,
       // cpu: 256,
       taskImageOptions: {
         image: ContainerImage.fromAsset(join(__dirname, '..', '..'), {
