@@ -11,7 +11,7 @@ export class CertificateConstruct extends Construct {
     super(scope, id);
 
     this.certificate = new Certificate(this, 'Certificate', {
-      domainName: 'x.u-ran.com',
+      domainName: 'api.u-ran.com',
       validation: CertificateValidation.fromDns(),
     });
   }
