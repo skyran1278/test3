@@ -142,8 +142,8 @@ export class AlbEcsConstruct extends Construct {
         {
           id: 'AwsSolutions-IAM5',
           reason: `
-            relative to enableExecuteCommand: true
             I have no idea how to configure this.
+            relative to enableExecuteCommand: true, for using migrate command.
 
             [Resource::*]
 
