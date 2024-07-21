@@ -4,8 +4,7 @@
 name: CI Test
 
 on:
-  push:
-    branches: [ci-test]
+  workflow_dispatch:
 
 jobs:
   test:
