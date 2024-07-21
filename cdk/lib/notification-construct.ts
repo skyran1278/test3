@@ -6,6 +6,7 @@ import { Construct } from 'constructs';
 
 interface NotificationConstructProps extends StackProps {
   key: Key;
+  email: string;
 }
 
 export class NotificationConstruct extends Construct {
@@ -18,6 +19,6 @@ export class NotificationConstruct extends Construct {
       masterKey: props.key,
     });
 
-    this.topic.addSubscription(new EmailSubscription('test3@u-ran.com'));
+    this.topic.addSubscription(new EmailSubscription(props.email));
   }
 }

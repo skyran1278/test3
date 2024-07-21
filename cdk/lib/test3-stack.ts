@@ -17,12 +17,14 @@ export class Test3Stack extends Stack {
     const { certificate } = new CertificateConstruct(
       this,
       'CertificationConstruct',
+      { domainName: 'api.u-ran.com' },
     );
 
     const { key } = new KeyConstruct(this, 'KeyConstruct');
 
     const { topic } = new NotificationConstruct(this, 'NotificationConstruct', {
       key,
+      email: 'test3@u-ran.com',
     });
 
     const { vpc } = new VpcConstruct(this, 'VpcConstruct');
