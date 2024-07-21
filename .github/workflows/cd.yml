@@ -27,7 +27,7 @@ jobs:
       - uses: pnpm/action-setup@v4
         name: Install pnpm
         with:
-          version: 8
+          version: latest
           run_install: |
             - args: [--global, aws-cdk]
 
