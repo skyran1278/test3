@@ -10,9 +10,6 @@ import { Test3Stack } from '../lib/test3-stack';
 
 const app = new cdk.App();
 
-// Add the cdk-nag AwsSolutions Pack with extra verbose logging enabled.
-Aspects.of(app).add(new AwsSolutionsChecks({ verbose: true }));
-
 new Test3Stack(app, 'Test3Stack', {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
@@ -28,3 +25,6 @@ new Test3Stack(app, 'Test3Stack', {
 
   /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
 });
+
+// Add the cdk-nag AwsSolutions Pack with extra verbose logging enabled.
+Aspects.of(app).add(new AwsSolutionsChecks({ verbose: true }));
