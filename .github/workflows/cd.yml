@@ -24,15 +24,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: |
+            - recursive: true
+              args: [--frozen-lockfile, --strict-peer-dependencies]
+            - args: [--global, cdk]
+
       - name: Use Node.js Lts
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
+          cache: 'pnpm'
 
       - name: Install CDK dependencies
         run: |
-          npm i -g pnpm
-          npm i -g cdk
           pnpm install --frozen-lockfile
 
       - name: Set up AWS CLI
