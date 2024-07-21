@@ -34,6 +34,7 @@ export class AlbEcsConstruct extends Construct {
       memoryLimitMiB: 512,
       certificate: props.certificate,
       protocol: ApplicationProtocol.HTTPS,
+      enableExecuteCommand: true,
       taskImageOptions: {
         image: ContainerImage.fromAsset(join(__dirname, '..', '..'), {
           platform: Platform.LINUX_ARM64,
