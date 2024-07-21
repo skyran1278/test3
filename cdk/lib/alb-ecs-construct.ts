@@ -136,6 +136,28 @@ export class AlbEcsConstruct extends Construct {
       },
     ]);
 
+    NagSuppressions.addResourceSuppressions(
+      ecs.service.taskDefinition.taskRole,
+      [
+        {
+          id: 'AwsSolutions-IAM5',
+          reason: `
+            relative to enableExecuteCommand: true
+            I have no idea how to configure this.
+
+            [Resource::*]
+
+            The IAM entity contains wildcard permissions and does not have a cdk-nag rule suppression with evidence for those permission.
+            Metadata explaining the evidence (e.g. via supporting links) for wildcard permissions allows for transparency to operators.
+            This is a granular rule that returns individual findings that can be suppressed with 'appliesTo'.
+            The findings are in the format 'Action::<action>' for policy actions and 'Resource::<resource>' for resources.
+            Example: appliesTo: ['Action::s3:*'].
+          `,
+        },
+      ],
+      true,
+    );
+
     if (ecs.service.taskDefinition.executionRole) {
       NagSuppressions.addResourceSuppressions(
         ecs.service.taskDefinition.executionRole,
