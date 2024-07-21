@@ -1,6 +1,8 @@
 # https://pnpm.io/docker
 
-FROM arm64v8/node:22-slim AS base
+# https://github.com/pnpm/pnpm/issues/4837
+# https://github.com/nodejs/docker-node/issues/1918
+FROM arm64v8/node:22-bullseye AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
