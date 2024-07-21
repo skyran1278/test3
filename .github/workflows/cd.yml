@@ -29,9 +29,7 @@ jobs:
         with:
           version: 8
           run_install: |
-            - recursive: true
-              args: [--frozen-lockfile, --strict-peer-dependencies]
-            - args: [--global, cdk]
+            - args: [--global, aws-cdk]
 
       - name: Use Node.js Lts
         uses: actions/setup-node@v4
