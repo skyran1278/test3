@@ -21,46 +21,79 @@ export class Domain0021Repository extends BaseRepository<Domain0021> {
     input: DeepPartial<Domain0021> | DeepPartial<Domain0021>[],
   ): Promise<Domain0021 | Domain0021[]> {
     if (Array.isArray(input)) {
-      const databaseParents = await this.repo.findBy({
-        id: In(input.map(({ parentId }) => parentId)),
-      });
+      return this.saveMultipleEntities(input);
+    } else {
+      return this.saveSingleEntity(input);
+    }
+  }
 
-      const parents = input.concat(databaseParents);
+  private async saveMultipleEntities(
+    entities: DeepPartial<Domain0021>[],
+  ): Promise<Domain0021[]> {
+    const databaseParents = await this.repo.findBy({
+      id: In(entities.map(({ parentId }) => parentId)),
+    });
 
-      // https://orkhan.gitbook.io/typeorm/docs/tree-entities#working-with-tree-entities
-      // To bind tree entities to each other, it is required to set the parent in the child entity and then save them.
-      input.forEach((e) => {
-        if (e.parentId == null) return;
+    const allEntities = entities.concat(databaseParents);
 
-        const parent = parents.find(({ id }) => id === e.parentId);
+    this.bindParentEntities(entities, allEntities);
 
-        if (!parent) {
-          throw new BadRequestException(
-            `Parent with id ${e.parentId} does not exist`,
-          );
-        }
-
-        e.parent = parent;
-      });
-
-      if (!canTopologicalSort(input)) return super.save(input);
-      const parentGoFirst = topologicalSort(input);
-
-      return super.save(parentGoFirst);
+    if (!canTopologicalSort(entities)) {
+      return super.save(entities);
     }
 
-    if (input.parentId != null && input.parent == null) {
-      const parent = await this.repo.findOneBy({ id: input.parentId });
+    const sortedEntities = topologicalSort(entities);
+    return super.save(sortedEntities);
+  }
+
+  private async saveSingleEntity(
+    entity: DeepPartial<Domain0021>,
+  ): Promise<Domain0021> {
+    if (entity.parent != null && entity.parentId == null) {
+      entity.parentId = entity.parent.id;
+    }
+
+    if (entity.parentId != null && entity.parent == null) {
+      const parent = await this.repo.findOneBy({ id: entity.parentId });
 
       if (!parent) {
         throw new BadRequestException(
-          `Parent with id ${input.parentId} does not exist`,
+          `Parent with id ${entity.parentId} does not exist`,
         );
       }
 
-      input.parent = parent;
+      entity.parent = parent;
     }
 
-    return super.save(input);
+    return super.save(entity);
+  }
+
+  /**
+   * To bind tree entities to each other, it is required to set the parent in the child entity and then save them.
+   * @see https://orkhan.gitbook.io/typeorm/docs/tree-entities#working-with-tree-entities
+   * @param entities
+   * @param allEntities
+   */
+  private bindParentEntities(
+    entities: DeepPartial<Domain0021>[],
+    allEntities: DeepPartial<Domain0021>[],
+  ): void {
+    entities.forEach((entity) => {
+      if (entity.parent != null && entity.parentId == null) {
+        entity.parentId = entity.parent.id;
+      }
+
+      if (entity.parentId != null && entity.parent == null) {
+        const parent = allEntities.find(({ id }) => id === entity.parentId);
+
+        if (!parent) {
+          throw new BadRequestException(
+            `Parent with id ${entity.parentId} does not exist`,
+          );
+        }
+
+        entity.parent = parent;
+      }
+    });
   }
 }
