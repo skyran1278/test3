@@ -33,5 +33,6 @@
     "suppressExcessPropertyErrors": false,
     "esModuleInterop": true,
     "lib": ["ESNext"]
-  }
+  },
+  "include": ["src/**/*", "tests/**/*", "migration/**/*"]
 }
