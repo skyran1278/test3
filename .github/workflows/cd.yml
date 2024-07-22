@@ -62,7 +62,11 @@ jobs:
   # https://www.apollographql.com/docs/rover/ci-cd/#github-actions
   publish-schema:
     name: Publish Schema
+
+    needs: deploy
+
     runs-on: ubuntu-latest
+
     env:
       APOLLO_KEY: ${{ secrets.APOLLO_KEY }}
 
@@ -79,4 +83,5 @@ jobs:
 
       - name: Publish Schema
         run: |
-          rover subgraph publish test3-hnwxwf@current --name test3 --schema src/schema.gql --routing-url https://api.u-ran.com/graphql
+          rover subgraph introspect https://api.u-ran.com/graphql | \
+          rover subgraph publish test3-hnwxwf@current --name test3 --schema - --routing-url https://api.u-ran.com/graphql
