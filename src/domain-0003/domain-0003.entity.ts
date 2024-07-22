@@ -5,6 +5,7 @@ import { Entity } from 'typeorm';
 
 import { ColumnField } from '../common/column-field.decorator';
 import { MetaEntity } from '../common/meta.entity';
+import { sql } from '../common/sql';
 import { VirtualColumnField } from '../common/virtual-column-field.decorator';
 import { Domain0003StatusEnum } from './domain-0003-status.enum';
 
@@ -56,13 +57,14 @@ export class Domain0003 extends MetaEntity {
   @VirtualColumnField({
     type: 'int',
     comment: 'VirtualColumn',
-    query: (alias) => `
+    query: (alias) => sql`
       SELECT
         "domain0003002"
       FROM
         "domain0003"
       WHERE
-        "id" = "${alias}"."id"`,
+        "id" = ${alias}.id
+    `,
   })
   domain0003009?: Maybe<number>;
 
