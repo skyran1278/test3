@@ -23,9 +23,7 @@ export class Domain0021Service {
 
   @Transactional()
   async saveMany(input: CreateDomain0021sInput): Promise<Domain0021[]> {
-    const domain0021s = this.repo.create(input.domain0021s);
-
-    await this.repo.save(domain0021s);
+    const domain0021s = await this.repo.save(input.domain0021s);
 
     return domain0021s;
   }
