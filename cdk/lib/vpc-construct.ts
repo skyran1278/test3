@@ -18,7 +18,7 @@ export class VpcConstruct extends Construct {
       // Disable NAT gateways, free tier does not include them
       natGateways: 0,
 
-      maxAzs: 1,
+      maxAzs: 2,
       subnetConfiguration: [
         {
           cidrMask: 24,
