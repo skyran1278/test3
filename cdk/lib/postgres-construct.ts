@@ -1,4 +1,4 @@
-import assert = require('assert');
+import * as assert from 'assert';
 
 import { CfnOutput, RemovalPolicy, StackProps } from 'aws-cdk-lib';
 import {
