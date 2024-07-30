@@ -15,6 +15,21 @@ pnpm run migration:run
 pnpm run start:dev
 ```
 
+### IaC (Infrastructure as Code) Initialization
+
+1. Login to AWS SSO and deploy the infrastructure.
+
+```bash
+aws sso login --profile ran
+
+# In the cdk folder
+cdk deploy --profile ran
+```
+
+2. Set Up DNS in [squarespace](https://account.squarespace.com/domains/managed/u-ran.com/dns/dns-settings). (first time only)
+3. Receive Email from AWS SNS Topic. (first time only)
+4. Set Up ELB DNS in [squarespace](https://account.squarespace.com/domains/managed/u-ran.com/dns/dns-settings).
+
 ## Running the App
 
 ```bash
@@ -72,7 +87,7 @@ pnpm run migration:revert
   - **domain-0021**: Tree entity.
 - **test**: End-to-end tests for full workflow validation.
 
-## Infrastructure Common Commands
+## IaC (Infrastructure as Code) Common Commands
 
 ```bash
 aws sso login --profile ran
