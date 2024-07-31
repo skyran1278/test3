@@ -10,8 +10,8 @@ export class Seed1817332628407 implements MigrationInterface {
       INSERT INTO
         public.user (id, email, "hashedPassword")
       VALUES
-        ('94107a27-4c24-4912-be7b-6f4b0b462acb', 'nai@u-ran', '1'),
-        ('f4e1b2a3-8c4a-4a1b-8c6e-3e3b0b1e2c1b', 'paul@u-ran', '1');
+        ('94107a27-4c24-4912-be7b-6f4b0b462acb', 'nai@u-ran.com', '1'),
+        ('f4e1b2a3-8c4a-4a1b-8c6e-3e3b0b1e2c1b', 'auth@u-ran.com', '1');
     `);
 
     await queryRunner.query(sql`
