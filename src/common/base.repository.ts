@@ -1,3 +1,6 @@
+import assert from 'assert';
+
+import { MongoQuery } from '@casl/ability';
 import { Logger } from '@nestjs/common';
 import { Maybe } from 'graphql/jsutils/Maybe';
 import {
@@ -6,12 +9,20 @@ import {
   FindOptionsOrder,
   FindOptionsRelations,
   FindOptionsWhere,
+  In,
   IsNull,
+  LessThan,
+  LessThanOrEqual,
+  MoreThan,
+  MoreThanOrEqual,
+  Not,
   ObjectLiteral,
   Repository,
   TreeRepository,
 } from 'typeorm';
 
+import { alsService } from '../als/als.service';
+import { PermissionActionEnum } from '../permission/permission-action.enum';
 import { MetaEntity } from './meta.entity';
 import { NodePage } from './node-page.type';
 import { DeepNullable } from './nullable.interface';
@@ -27,6 +38,12 @@ interface NodePageInput<Entity extends ObjectLiteral> {
   skip?: Maybe<number>;
   order?: DeepNullable<FindOptionsOrder<Entity>>;
   where?: Maybe<WhereInput<Entity>[]> | Maybe<WhereInput<Entity>>;
+}
+
+interface TransformWhereOutput<Entity extends ObjectLiteral> {
+  mergedRuleWhereArray: FindOptionsWhere<Entity>[];
+  whereArray: FindOptionsWhere<Entity>[];
+  isForbidden: boolean;
 }
 
 export abstract class BaseRepository<
@@ -144,6 +161,11 @@ export abstract class BaseRepository<
     return this.repository.save(entity);
   }
 
+  /**
+   * Finds and returns a paginated list of nodes based on the provided options.
+   * @param options - The options for pagination and filtering.
+   * @returns A promise that resolves to a `NodePage` object containing the paginated nodes.
+   */
   async findNodePage(
     options?: NodePageInput<Entity>,
   ): Promise<NodePage<Entity>> {
@@ -152,26 +174,24 @@ export abstract class BaseRepository<
     const skip = options?.skip ?? undefined;
     const order = options?.order ? this.omitNullFields(options.order) : {};
 
-    const inputWhereArray = Array.isArray(options?.where)
-      ? options.where
-      : options?.where
-        ? [options.where]
-        : [];
-    const toFindOptionsWhereArray = inputWhereArray.map((inputWhere) =>
-      inputWhere.toFindOptionsWhere(),
-    );
-    const where = this.transformNullFields(toFindOptionsWhereArray);
+    const { whereArray, mergedRuleWhereArray, isForbidden } =
+      this.transformWhere(options?.where);
 
-    const relations = this.getRelationsByWhereAndOrder([...where, order]);
+    if (isForbidden) {
+      this.logger.verbose(
+        `No rules found for the \`${this.metadata.targetName}\` entity, returning an empty page.`,
+      );
+      return { take, skip, nodes: [], total: 0 };
+    }
+
+    const relations = this.getRelationsByWhereAndOrder([...whereArray, order]);
 
     this.logger.verbose({
-      [`page ${this.metadata.targetName}`]: {
+      [`${this.metadata.targetName}Page`]: {
         take,
         skip,
         order,
-        whereInput: options?.where,
-        toFindOptionsWhereArray,
-        where,
+        where: mergedRuleWhereArray,
         relations,
       },
     });
@@ -181,11 +201,125 @@ export abstract class BaseRepository<
       /** @see https://github.com/typeorm/typeorm/issues/4883 */
       take: take === 0 ? 0.1 : take,
       order,
-      where,
+      where: mergedRuleWhereArray,
       relations: relations as FindOptionsRelations<Entity>,
     });
 
     return { take, skip, nodes, total };
+  }
+
+  private transformWhere(
+    whereInput: NodePageInput<Entity>['where'],
+  ): TransformWhereOutput<Entity> {
+    const inputWhereArray = Array.isArray(whereInput)
+      ? whereInput
+      : whereInput
+        ? [whereInput]
+        : [];
+
+    const toFindOptionsWhereArray = inputWhereArray.map((inputWhere) =>
+      inputWhere.toFindOptionsWhere(),
+    );
+    const whereArray = this.transformNullFields(toFindOptionsWhereArray);
+
+    const ruleWhereArray = this.getPermissionRuleWhereArray();
+
+    const isForbidden = ruleWhereArray.length === 0;
+
+    const mergedRuleWhereArray =
+      whereArray.length === 0
+        ? ruleWhereArray
+        : whereArray.flatMap((where) =>
+            ruleWhereArray.map((rule) => ({
+              ...where,
+              ...rule,
+            })),
+          );
+
+    this.logger.verbose({
+      [`${this.metadata.targetName}Page['transformWhere']`]: {
+        whereInput,
+        toFindOptionsWhereArray,
+        whereArray,
+        mergedRuleWhereArray,
+      },
+    });
+
+    return { whereArray, mergedRuleWhereArray, isForbidden };
+  }
+
+  private getPermissionRuleWhereArray(): FindOptionsWhere<Entity>[] {
+    const rules = alsService.getOrFail('rules');
+
+    const narrowDownRules = rules
+      .filter(
+        (rule) =>
+          rule.subject === this.metadata.targetName || rule.subject === 'all',
+      )
+      .filter(
+        (rule) =>
+          rule.action === PermissionActionEnum.READ ||
+          rule.action === PermissionActionEnum.MANAGE,
+      );
+
+    return narrowDownRules.map((rule) => {
+      return this.mongoQueryLanguageToTypeORMFindOptionsWhere(rule.conditions);
+    });
+  }
+
+  /**
+   * Transforms the given Mongo query language conditions to TypeORM FindOptionsWhere.
+   *
+   * Only supports $in, $ne, $gt, $gte, $lt, and $lte operators.
+   * Only supports one-level nested objects.
+   * Note: Using nested objects may cause performance issues while querying.
+   *
+   * @param conditions Mongo query language conditions.
+   * @returns TypeORM FindOptionsWhere conditions.
+   */
+  private mongoQueryLanguageToTypeORMFindOptionsWhere(
+    conditions: MongoQuery | undefined,
+  ): FindOptionsWhere<Entity> {
+    if (!conditions) return {};
+
+    type Where = FindOptionsWhere<Entity>;
+    const where: Where = {};
+
+    for (const [key, value] of Object.entries(conditions)) {
+      let whereValue = value;
+
+      if (this.isPlainObject(value)) {
+        switch (true) {
+          case '$in' in value:
+            assert(Array.isArray(value.$in), 'Value of $in should be an array');
+            whereValue = In(value.$in);
+            break;
+          case '$ne' in value:
+            whereValue = Not(value.$ne);
+            break;
+          case '$gt' in value:
+            whereValue = MoreThan(value.$gt);
+            break;
+          case '$gte' in value:
+            whereValue = MoreThanOrEqual(value.$gte);
+            break;
+          case '$lt' in value:
+            whereValue = LessThan(value.$lt);
+            break;
+          case '$lte' in value:
+            whereValue = LessThanOrEqual(value.$lte);
+            break;
+          default:
+            throw new Error(
+              `Unsupported operator in query language: ${JSON.stringify(value)}`,
+            );
+        }
+      }
+
+      where[key as keyof Where] = whereValue as Where[keyof Where];
+    }
+
+    return where;
   }
 
   private isPlainObject(obj: unknown): obj is Record<string, unknown> {
