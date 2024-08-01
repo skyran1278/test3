@@ -40,9 +40,8 @@ interface NodePageInput<Entity extends ObjectLiteral> {
   where?: Maybe<WhereInput<Entity>[]> | Maybe<WhereInput<Entity>>;
 }
 
-interface TransformWhereOutput<Entity extends ObjectLiteral> {
-  mergedRuleWhereArray: FindOptionsWhere<Entity>[];
-  whereArray: FindOptionsWhere<Entity>[];
+interface PermissionWhereClause<Entity extends ObjectLiteral> {
+  where: FindOptionsWhere<Entity>[];
   isForbidden: boolean;
 }
 
@@ -174,8 +173,9 @@ export abstract class BaseRepository<
     const skip = options?.skip ?? undefined;
     const order = options?.order ? this.omitNullFields(options.order) : {};
 
-    const { whereArray, mergedRuleWhereArray, isForbidden } =
-      this.transformWhere(options?.where);
+    const { where, isForbidden } = this.includePermissionWhereClause(
+      options?.where,
+    );
 
     if (isForbidden) {
       this.logger.verbose(
@@ -184,14 +184,17 @@ export abstract class BaseRepository<
       return { take, skip, nodes: [], total: 0 };
     }
 
-    const relations = this.getRelationsByWhereAndOrder([...whereArray, order]);
+    const relations = this.getRelationsByWhereAndOrder([
+      ...where,
+      order,
+    ]) as FindOptionsRelations<Entity>;
 
     this.logger.verbose({
       [`${this.metadata.targetName}Page`]: {
         take,
         skip,
         order,
-        where: mergedRuleWhereArray,
+        where,
         relations,
       },
     });
@@ -201,16 +204,16 @@ export abstract class BaseRepository<
       /** @see https://github.com/typeorm/typeorm/issues/4883 */
       take: take === 0 ? 0.1 : take,
       order,
-      where: mergedRuleWhereArray,
-      relations: relations as FindOptionsRelations<Entity>,
+      where,
+      relations,
     });
 
     return { take, skip, nodes, total };
   }
 
-  private transformWhere(
+  private includePermissionWhereClause(
     whereInput: NodePageInput<Entity>['where'],
-  ): TransformWhereOutput<Entity> {
+  ): PermissionWhereClause<Entity> {
     const inputWhereArray = Array.isArray(whereInput)
       ? whereInput
       : whereInput
@@ -245,7 +248,7 @@ export abstract class BaseRepository<
       },
     });
 
-    return { whereArray, mergedRuleWhereArray, isForbidden };
+    return { where: mergedRuleWhereArray, isForbidden };
   }
 
   private getPermissionRuleWhereArray(): FindOptionsWhere<Entity>[] {
