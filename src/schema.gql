@@ -738,7 +738,7 @@ input SignInInput {
 }
 
 type SignInOutput {
-  access_token: String!
+  accessToken: String!
 }
 
 input UpdateDomain0001Input {
