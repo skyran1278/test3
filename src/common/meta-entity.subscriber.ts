@@ -83,6 +83,7 @@ export class MetaEntitySubscriber
   }
 
   afterLoad(entity: MetaEntity) {
+    // Since we need to load the permission entity to check permissions, we should skip the permission check for the permission entity itself.
     if (entity instanceof Permission) {
       return;
     }
