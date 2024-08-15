@@ -54,12 +54,12 @@ describe('AppController (e2e)', () => {
     const body = await graphqlRequest(
       `mutation SignIn($input: SignInInput!) {
         signIn(input: $input) {
-          access_token
+          accessToken
         }
       }`,
       {
         input: {
-          email: 'nai@u-ran',
+          email: 'nai@u-ran.com',
           password: '1',
         },
       },
