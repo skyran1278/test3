@@ -1,21 +1,16 @@
 import assert from 'assert';
 
-import { Maybe } from 'graphql/jsutils/Maybe';
+import { DeepPartial } from 'typeorm';
 
-import { Nullable } from '../common/nullable.interface';
-
-interface Element {
-  id: string;
-  parentId?: Maybe<string>; // null indicates no parent (root element)
-}
+import { TreeEntity } from './tree.entity';
 
 /**
  * @see https://en.wikipedia.org/wiki/Topological_sorting
  * @param elements
  * @returns
  */
-export function topologicalSort(elements: Element[]): Element[] {
-  const sorted: Element[] = [];
+export function topologicalSort<T extends TreeEntity>(elements: T[]): T[] {
+  const sorted: T[] = [];
   const visited: Set<string> = new Set();
   const graph: Map<string, string[]> = new Map();
 
@@ -62,8 +57,8 @@ export function topologicalSort(elements: Element[]): Element[] {
   return sorted.reverse(); // reverse to ensure parents come before children
 }
 
-export const canTopologicalSort = <T extends Element>(
-  elements: Nullable<T>[],
+export const canTopologicalSort = <T extends TreeEntity>(
+  elements: DeepPartial<T>[],
 ): elements is T[] => {
   return elements.every((e) => e.id);
 };
