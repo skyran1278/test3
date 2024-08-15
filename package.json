@@ -23,6 +23,7 @@
     "migration:run": "npm run build && typeorm migration:run -d dist/migration/migration.config.js",
     "migration:run:prod": "npx typeorm migration:run -d dist/migration/migration.config.js",
     "migration:revert:prod": "npx typeorm migration:revert -d dist/migration/migration.config.js",
+    "migration:drop:prod": "npx typeorm schema:drop -d dist/migration/migration.config.js",
     "release": "dotenv release-it --"
   },
   "dependencies": {
