@@ -52,6 +52,7 @@ export class AlbEcsConstruct extends Construct {
           GRAPHQL_SERVER: 'development',
           GITHUB_TOKEN: '',
           TEST_TOKEN: '',
+          CORS_ORIGIN: 'https://preflight-request.apollographql.com',
         },
         secrets: {
           DB_PASSWORD: Secret.fromSecretsManager(secret, 'password'),
