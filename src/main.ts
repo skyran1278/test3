@@ -34,9 +34,11 @@ async function bootstrap() {
     serveFavicon(path.join(__dirname, '..', '..', 'public', 'favicon.ico')),
   );
 
+  app.useGlobalPipes(validatorPipe);
+
   const configService = app.get(TypedConfigService);
 
-  app.useGlobalPipes(validatorPipe);
+  app.enableCors({ origin: configService.get('CORS_ORIGIN').split(',') });
 
   await app.listen(configService.get('PORT'));
 }

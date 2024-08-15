@@ -18,6 +18,9 @@ export class EnvironmentVariables {
   @Max(65535)
   PORT!: number;
 
+  @IsString()
+  CORS_ORIGIN!: string;
+
   @IsBoolean()
   NEST_DEBUG!: boolean;
 
