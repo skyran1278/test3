@@ -1,3 +1,5 @@
+import { readFileSync } from 'fs';
+
 import dotenv from 'dotenv';
 import { DataSource } from 'typeorm';
 
@@ -13,4 +15,9 @@ export const AppDataSource = new DataSource({
   schema: process.env.DB_SCHEMA,
   entities: ['dist/src/**/*.entity.js'],
   migrations: ['dist/migration/migrations/*.js'],
+  ssl: process.env.DB_SSL
+    ? {
+        ca: readFileSync('ap-northeast-1-bundle.pem').toString(),
+      }
+    : false,
 });
