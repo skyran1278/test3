@@ -2,14 +2,16 @@ import assert from 'assert';
 
 import { DeepPartial } from 'typeorm';
 
-import { TreeEntity } from './tree.entity';
+import { TreeBaseInterface } from './tree-base.interface';
 
 /**
  * @see https://en.wikipedia.org/wiki/Topological_sorting
  * @param elements
  * @returns
  */
-export function topologicalSort<T extends TreeEntity>(elements: T[]): T[] {
+export function topologicalSort<T extends TreeBaseInterface>(
+  elements: T[],
+): T[] {
   const sorted: T[] = [];
   const visited: Set<string> = new Set();
   const graph: Map<string, string[]> = new Map();
@@ -57,7 +59,7 @@ export function topologicalSort<T extends TreeEntity>(elements: T[]): T[] {
   return sorted.reverse(); // reverse to ensure parents come before children
 }
 
-export const canTopologicalSort = <T extends TreeEntity>(
+export const canTopologicalSort = <T extends TreeBaseInterface>(
   elements: DeepPartial<T>[],
 ): elements is T[] => {
   return elements.every((e) => e.id);

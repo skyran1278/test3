@@ -3,10 +3,10 @@ import { DeepPartial, FindOptionsWhere, In, TreeRepository } from 'typeorm';
 
 import { BaseRepository } from './base.repository';
 import { canTopologicalSort, topologicalSort } from './topological-sort';
-import { TreeEntity } from './tree.entity';
+import { TreeBaseInterface } from './tree-base.interface';
 
 export abstract class TreeBaseRepository<
-  Entity extends TreeEntity,
+  Entity extends TreeBaseInterface,
 > extends BaseRepository<Entity> {
   readonly logger = new Logger(this.constructor.name);
 
