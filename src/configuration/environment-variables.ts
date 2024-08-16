@@ -1,14 +1,11 @@
-import {
-  IsBoolean,
-  IsEnum,
-  IsNumber,
-  IsString,
-  Max,
-  Min,
-} from 'class-validator';
+import { IsEnum, IsNumber, IsString, Max, Min } from 'class-validator';
 
 import { EnvironmentEnum } from './environment.enum';
 
+/**
+ * @see https://docs.nestjs.com/techniques/configuration#schema-validation
+ * should not use boolean type for environment variables, because nest.js will override process.env the value with the string 'true' or 'false'
+ */
 export class EnvironmentVariables {
   @IsEnum(EnvironmentEnum)
   NODE_ENV!: EnvironmentEnum;
@@ -21,8 +18,8 @@ export class EnvironmentVariables {
   @IsString()
   CORS_ORIGIN!: string;
 
-  @IsBoolean()
-  NEST_DEBUG!: boolean;
+  @IsString()
+  NEST_DEBUG!: string;
 
   @IsString()
   DB_HOST!: string;
@@ -42,14 +39,14 @@ export class EnvironmentVariables {
   @IsString()
   DB_SCHEMA!: string;
 
-  @IsBoolean()
-  DB_LOGGING!: boolean;
+  @IsString()
+  DB_LOGGING!: string;
 
-  @IsBoolean()
-  DB_SSL!: boolean;
+  @IsString()
+  DB_SSL!: string;
 
-  @IsBoolean()
-  DB_MIGRATIONS_RUN!: boolean;
+  @IsString()
+  DB_MIGRATIONS_RUN!: string;
 
   @IsEnum(EnvironmentEnum)
   GRAPHQL_SERVER!: EnvironmentEnum;
