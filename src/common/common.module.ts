@@ -8,7 +8,7 @@ import { RepoProxy } from '../common/repo.proxy';
 import { TypedConfigService } from '../configuration/typed-config.service';
 import { UserModule } from '../user/user.module';
 import { LoggingInterceptor } from './logging.interceptor';
-import { MetaEntityResolver } from './meta.resolver';
+import { MetaEntityResolver } from './meta-entity.resolver';
 import { WinstonLogger } from './winston-logger.service';
 
 @Global()
