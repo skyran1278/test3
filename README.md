@@ -62,6 +62,7 @@ pnpm run migration:run
 # Revert migration
 pnpm run migration:revert
 
+# Run migration in production (Cloud Shell)
 aws ecs execute-command \
   --cluster arn:aws:ecs:ap-northeast-1:637423394100:cluster/Test3Stack-ClusterConstructCluster9DBF4A34-wzgWSzN6qjJu \
   --task arn:aws:ecs:ap-northeast-1:637423394100:task/Test3Stack-ClusterConstructCluster9DBF4A34-wzgWSzN6qjJu/9cf2c6c136744ef1bfa211120c8a51bf \
