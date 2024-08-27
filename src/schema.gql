@@ -107,6 +107,24 @@ type CreateDomain0021sOutput {
   domain0021s: [Domain0021!]!
 }
 
+input CreateDomain0024Input {
+  """domain0024001"""
+  domain0024001: Int
+}
+
+type CreateDomain0024Output {
+  domain0024: Domain0024!
+}
+
+input CreateDomain0025Input {
+  """domain0025001"""
+  domain0025001: Int
+}
+
+type CreateDomain0025Output {
+  domain0025: Domain0025!
+}
+
 input CreateUserInput {
   email: String!
   password: String!
@@ -499,6 +517,112 @@ input Domain0021WhereInput {
   updatedUserId: ID
 }
 
+type Domain0024 implements MetaEntity {
+  createdAt: DateTime!
+  createdUser: User
+  createdUserId: ID
+  deletedAt: DateTime
+  deletedUser: User
+  deletedUserId: ID
+  domain0025s: [Domain0025!]!
+
+  """domain0024001"""
+  domain0024001: Int
+  id: ID!
+  updatedAt: DateTime!
+  updatedUser: User
+  updatedUserId: ID
+}
+
+input Domain0024OrderInput {
+  createdAt: NodeOrderEnum
+  deletedAt: NodeOrderEnum
+
+  """domain0024001"""
+  domain0024001: NodeOrderEnum
+  updatedAt: NodeOrderEnum
+}
+
+type Domain0024Page implements NodePage {
+  """Nodes in this page"""
+  nodes: [Domain0024!]!
+
+  """Amount of nodes to skip from the beginning of this page"""
+  skip: NonNegativeInt
+
+  """Maximum amount of nodes in this page"""
+  take: NonNegativeInt
+
+  """Total amount of nodes"""
+  total: NonNegativeInt
+}
+
+input Domain0024WhereInput {
+  createdAt: DateTime
+  createdUserId: ID
+  deletedAt: DateTime
+  deletedUserId: ID
+
+  """domain0024001"""
+  domain0024001: Int
+  id: ID
+  updatedAt: DateTime
+  updatedUserId: ID
+}
+
+type Domain0025 implements MetaEntity {
+  createdAt: DateTime!
+  createdUser: User
+  createdUserId: ID
+  deletedAt: DateTime
+  deletedUser: User
+  deletedUserId: ID
+  domain0024s: [Domain0024!]!
+
+  """domain0025001"""
+  domain0025001: Int
+  id: ID!
+  updatedAt: DateTime!
+  updatedUser: User
+  updatedUserId: ID
+}
+
+input Domain0025OrderInput {
+  createdAt: NodeOrderEnum
+  deletedAt: NodeOrderEnum
+
+  """domain0025001"""
+  domain0025001: NodeOrderEnum
+  updatedAt: NodeOrderEnum
+}
+
+type Domain0025Page implements NodePage {
+  """Nodes in this page"""
+  nodes: [Domain0025!]!
+
+  """Amount of nodes to skip from the beginning of this page"""
+  skip: NonNegativeInt
+
+  """Maximum amount of nodes in this page"""
+  take: NonNegativeInt
+
+  """Total amount of nodes"""
+  total: NonNegativeInt
+}
+
+input Domain0025WhereInput {
+  createdAt: DateTime
+  createdUserId: ID
+  deletedAt: DateTime
+  deletedUserId: ID
+
+  """domain0025001"""
+  domain0025001: Int
+  id: ID
+  updatedAt: DateTime
+  updatedUserId: ID
+}
+
 type ErrorType {
   customAuthenticationError: Boolean
   queryFailedError: Boolean
@@ -532,11 +656,15 @@ type Mutation {
   createDomain0015(input: CreateDomain0015Input!): CreateDomain0015Output!
   createDomain0021(input: CreateDomain0021Input!): CreateDomain0021Output!
   createDomain0021s(input: CreateDomain0021sInput!): CreateDomain0021sOutput!
+  createDomain0024(input: CreateDomain0024Input!): CreateDomain0024Output!
+  createDomain0025(input: CreateDomain0025Input!): CreateDomain0025Output!
   createUser(input: CreateUserInput!): CreateUserOutput!
   removeDomain0001(input: RemoveDomain0001Input!): RemoveDomain0001Output!
   removeDomain0003(input: RemoveDomain0003Input!): RemoveDomain0003Output!
   removeDomain0008(input: RemoveDomain0008Input!): RemoveDomain0008Output!
   removeDomain0021(input: RemoveDomain0021Input!): RemoveDomain0021Output!
+  removeDomain0024(input: RemoveDomain0024Input!): RemoveDomain0024Output!
+  removeDomain0025(input: RemoveDomain0025Input!): RemoveDomain0025Output!
   removeUser(input: RemoveUserInput!): RemoveUserOutput!
   signIn(input: SignInInput!): SignInOutput!
   testQueueEventsRaceCondition(input: CreateDomain0015Input!): CreateDomain0015Output!
@@ -545,6 +673,8 @@ type Mutation {
   updateDomain0008(input: UpdateDomain0008Input!): UpdateDomain0008Output!
   updateDomain0008s(input: UpdateDomain0008sInput!): UpdateDomain0008sOutput!
   updateDomain0021(input: UpdateDomain0021Input!): UpdateDomain0021Output!
+  updateDomain0024(input: UpdateDomain0024Input!): UpdateDomain0024Output!
+  updateDomain0025(input: UpdateDomain0025Input!): UpdateDomain0025Output!
   updateUser(input: UpdateUserInput!): UpdateUserOutput!
 }
 
@@ -655,6 +785,34 @@ type Query {
     """查詢條件"""
     where: [Domain0021WhereInput!]
   ): Domain0021Page!
+  domain0024(id: ID!): Domain0024!
+  domain0024Page(
+    """排序欄位與方式"""
+    order: Domain0024OrderInput! = {}
+
+    """Amount of nodes to skip from the beginning of this page"""
+    skip: NonNegativeInt
+
+    """Maximum amount of nodes in this page"""
+    take: NonNegativeInt
+
+    """查詢條件"""
+    where: [Domain0024WhereInput!]
+  ): Domain0024Page!
+  domain0025(id: ID!): Domain0025!
+  domain0025Page(
+    """排序欄位與方式"""
+    order: Domain0025OrderInput! = {}
+
+    """Amount of nodes to skip from the beginning of this page"""
+    skip: NonNegativeInt
+
+    """Maximum amount of nodes in this page"""
+    take: NonNegativeInt
+
+    """查詢條件"""
+    where: [Domain0025WhereInput!]
+  ): Domain0025Page!
   error: ErrorType!
   me: User
   user(id: ID!): User!
@@ -703,6 +861,22 @@ input RemoveDomain0021Input {
 
 type RemoveDomain0021Output {
   domain0021: Domain0021!
+}
+
+input RemoveDomain0024Input {
+  id: ID!
+}
+
+type RemoveDomain0024Output {
+  domain0024: Domain0024!
+}
+
+input RemoveDomain0025Input {
+  id: ID!
+}
+
+type RemoveDomain0025Output {
+  domain0025: Domain0025!
 }
 
 input RemoveUserInput {
@@ -833,6 +1007,26 @@ input UpdateDomain0021Input {
 
 type UpdateDomain0021Output {
   domain0021: Domain0021!
+}
+
+input UpdateDomain0024Input {
+  """domain0024001"""
+  domain0024001: Int
+  id: ID!
+}
+
+type UpdateDomain0024Output {
+  domain0024: Domain0024!
+}
+
+input UpdateDomain0025Input {
+  """domain0025001"""
+  domain0025001: Int
+  id: ID!
+}
+
+type UpdateDomain0025Output {
+  domain0025: Domain0025!
 }
 
 input UpdateUserInput {

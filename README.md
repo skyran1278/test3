@@ -92,6 +92,8 @@ aws ecs execute-command \
   - **domain-0010**: One-to-many (cascade).
   - **domain-0015**: Queue management with BullMQ and Redis.
   - **domain-0021**: Tree entity.
+  - **domain-0024**: Many-to-many.
+  - **domain-0025**: Many-to-many.
 - **test**: End-to-end tests for full workflow validation.
 
 ## IaC (Infrastructure as Code) Common Commands
