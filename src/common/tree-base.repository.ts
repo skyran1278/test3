@@ -29,9 +29,12 @@ export abstract class TreeBaseRepository<
   private async saveMultipleEntities(
     entities: DeepPartial<Entity>[],
   ): Promise<Entity[]> {
-    const databaseParents = await this.treeRepository.findBy({
-      id: In(entities.map(({ parentId }) => parentId)),
-    } as FindOptionsWhere<Entity>);
+    const databaseParents = await this.treeRepository.find({
+      where: {
+        id: In(entities.map(({ parentId }) => parentId)),
+      } as FindOptionsWhere<Entity>,
+      withDeleted: true,
+    });
 
     const allEntities = entities.concat(databaseParents);
 
@@ -51,9 +54,12 @@ export abstract class TreeBaseRepository<
     }
 
     if (entity.parentId != null && entity.parent == null) {
-      const parent = await this.treeRepository.findOneBy({
-        id: entity.parentId,
-      } as FindOptionsWhere<Entity>);
+      const parent = await this.treeRepository.findOne({
+        where: {
+          id: entity.parentId,
+        } as FindOptionsWhere<Entity>,
+        withDeleted: true,
+      });
 
       if (!parent) {
         throw new BadRequestException(
