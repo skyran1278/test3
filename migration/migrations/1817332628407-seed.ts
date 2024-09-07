@@ -110,6 +110,21 @@ export class Seed1817332628407 implements MigrationInterface {
         ('c4b4b6c1-d7b9-4b4b-8c1d-7b9b4b6c1d7b', 221, '22509176-56cf-4f7c-a7b0-fe6bc4f08a9c'),
         ('b7354cb6-b555-47e0-974e-df651f7f0776', 222, '22509176-56cf-4f7c-a7b0-fe6bc4f08a9c');
     `);
+    await queryRunner.query(sql`
+      INSERT INTO
+        public.domain0021 (id, domain0021001, parentId, mpath)
+      VALUES
+        ('b48bff7f-3b3f-4bdd-8236-a7c06685ed44', 10, NULL, 'b48bff7f-3b3f-4bdd-8236-a7c06685ed44.'),
+        ('221a19d5-bb02-42c8-8539-24446325e958', 11, NULL, '221a19d5-bb02-42c8-8539-24446325e958.'),
+        ('cf9a9657-b85f-4a25-ae0b-526a0443a23d', 12, NULL, 'cf9a9657-b85f-4a25-ae0b-526a0443a23d.'),
+        ('993422bd-039a-4276-bedc-0b4a9051b35e', 20, 'b48bff7f-3b3f-4bdd-8236-a7c06685ed44', 'b48bff7f-3b3f-4bdd-8236-a7c06685ed44.993422bd-039a-4276-bedc-0b4a9051b35e.'),
+        ('46621bee-bd35-45fa-be2b-722065047ee5', 21, 'b48bff7f-3b3f-4bdd-8236-a7c06685ed44', 'b48bff7f-3b3f-4bdd-8236-a7c06685ed44.46621bee-bd35-45fa-be2b-722065047ee5.'),
+        ('181f4ac5-fcb2-4976-a25f-4e398cc0ed33', 22, 'b48bff7f-3b3f-4bdd-8236-a7c06685ed44', 'b48bff7f-3b3f-4bdd-8236-a7c06685ed44.181f4ac5-fcb2-4976-a25f-4e398cc0ed33.'),
+        ('a0898ce1-e7ea-4de3-8853-2269468bc251', 30, '993422bd-039a-4276-bedc-0b4a9051b35e', 'b48bff7f-3b3f-4bdd-8236-a7c06685ed44.993422bd-039a-4276-bedc-0b4a9051b35e.a0898ce1-e7ea-4de3-8853-2269468bc251.'),
+        ('3cfe69a8-bcca-4b74-b3d9-9e75b41da641', 31, '993422bd-039a-4276-bedc-0b4a9051b35e', 'b48bff7f-3b3f-4bdd-8236-a7c06685ed44.993422bd-039a-4276-bedc-0b4a9051b35e.3cfe69a8-bcca-4b74-b3d9-9e75b41da641.'),
+        ('b83d41e0-0a5d-4466-9db6-22b5392b4354', 32, '993422bd-039a-4276-bedc-0b4a9051b35e', 'b48bff7f-3b3f-4bdd-8236-a7c06685ed44.993422bd-039a-4276-bedc-0b4a9051b35e.b83d41e0-0a5d-4466-9db6-22b5392b4354.'),
+        ('aab1cae2-a27e-426e-8f31-6124698e98bd', 40, 'a0898ce1-e7ea-4de3-8853-2269468bc251', 'b48bff7f-3b3f-4bdd-8236-a7c06685ed44.993422bd-039a-4276-bedc-0b4a9051b35e.a0898ce1-e7ea-4de3-8853-2269468bc251.aab1cae2-a27e-426e-8f31-6124698e98bd.');
+    `);
   }
 
   public async down(): Promise<void> {}
