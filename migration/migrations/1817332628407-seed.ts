@@ -112,7 +112,7 @@ export class Seed1817332628407 implements MigrationInterface {
     `);
     await queryRunner.query(sql`
       INSERT INTO
-        public.domain0021 (id, domain0021001, parentId, mpath)
+        public.domain0021 (id, domain0021001, "parentId", mpath)
       VALUES
         ('b48bff7f-3b3f-4bdd-8236-a7c06685ed44', 10, NULL, 'b48bff7f-3b3f-4bdd-8236-a7c06685ed44.'),
         ('221a19d5-bb02-42c8-8539-24446325e958', 11, NULL, '221a19d5-bb02-42c8-8539-24446325e958.'),
