@@ -2,7 +2,6 @@ import { BadRequestException, Logger } from '@nestjs/common';
 import { DeepPartial, FindOptionsWhere, In, TreeRepository } from 'typeorm';
 
 import { BaseRepository } from './base.repository';
-import { canTopologicalSort, topologicalSort } from './topological-sort';
 import { TreeBaseInterface } from './tree-base.interface';
 
 export abstract class TreeBaseRepository<
@@ -26,28 +25,42 @@ export abstract class TreeBaseRepository<
     }
   }
 
+  /**
+   * Save multiple entities one by one to ensure the correctness of the mpath query.
+   *
+   * @param inputEntities - An array of entities to be saved.
+   * @returns A promise that resolves to an array of saved entities.
+   */
   private async saveMultipleEntities(
-    entities: DeepPartial<Entity>[],
+    inputEntities: DeepPartial<Entity>[],
   ): Promise<Entity[]> {
     const databaseParents = await this.treeRepository.find({
       where: {
-        id: In(entities.map(({ parentId }) => parentId)),
+        id: In(inputEntities.map(({ parentId }) => parentId)),
       } as FindOptionsWhere<Entity>,
       withDeleted: true,
     });
 
-    const allEntities = entities.concat(databaseParents);
+    const allEntities = inputEntities.concat(databaseParents);
 
-    this.bindParentEntities(entities, allEntities);
+    this.bindParentEntities(inputEntities, allEntities);
 
-    if (!canTopologicalSort(entities)) {
-      return super.save(entities);
+    const entities: Entity[] = [];
+    for (const entity of inputEntities) {
+      entities.push(await super.save(entity));
     }
 
-    const sortedEntities = topologicalSort(entities);
-    return super.save(sortedEntities);
+    return entities;
   }
 
+  /**
+   * To bind tree entities to each other, it is required to set the parent in the child entity and then save them.
+   *
+   * @see https://orkhan.gitbook.io/typeorm/docs/tree-entities#working-with-tree-entities
+   * @param entity - The entity to be saved.
+   * @returns A promise that resolves to the saved entity.
+   * @throws BadRequestException if the parent entity does not exist.
+   */
   private async saveSingleEntity(entity: DeepPartial<Entity>): Promise<Entity> {
     if (entity.parent != null && entity.parentId == null) {
       entity.parentId = entity.parent.id;
@@ -75,6 +88,7 @@ export abstract class TreeBaseRepository<
 
   /**
    * To bind tree entities to each other, it is required to set the parent in the child entity and then save them.
+   *
    * @see https://orkhan.gitbook.io/typeorm/docs/tree-entities#working-with-tree-entities
    * @param entities
    * @param allEntities
