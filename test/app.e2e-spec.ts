@@ -382,76 +382,45 @@ describe('AppController (e2e)', () => {
     });
   });
 
-  it('/graphql createDomain0021s', async () => {
+  it('/graphql createDomain0021s should correctly update the mpath', async () => {
     const body = await graphqlRequest(
       `mutation CreateDomain0021s($input: CreateDomain0021sInput!) {
         createDomain0021s(input: $input) {
           domain0021s {
+            id
             domain0021001
             children {
+              id
               domain0021001
               children {
+                id
                 domain0021001
                 children {
+                  id
                   domain0021001
+                  children {
+                    id
+                    domain0021001
+                  }
                 }
               }
             }
           }
         }
-      }`,
+      }
+      `,
       {
         input: {
           domain0021s: [
             {
               id: 'b48bff7f-3b3f-4bdd-8236-a7c06685ed44',
-              parentId: null,
+              parentId: '221a19d5-bb02-42c8-8539-24446325e958',
               domain0021001: 10,
             },
             {
-              id: '221a19d5-bb02-42c8-8539-24446325e958',
-              parentId: null,
-              domain0021001: 11,
-            },
-            {
               id: 'cf9a9657-b85f-4a25-ae0b-526a0443a23d',
-              parentId: null,
+              parentId: 'aab1cae2-a27e-426e-8f31-6124698e98bd',
               domain0021001: 12,
-            },
-            {
-              id: '993422bd-039a-4276-bedc-0b4a9051b35e',
-              parentId: 'b48bff7f-3b3f-4bdd-8236-a7c06685ed44',
-              domain0021001: 20,
-            },
-            {
-              id: '46621bee-bd35-45fa-be2b-722065047ee5',
-              parentId: 'b48bff7f-3b3f-4bdd-8236-a7c06685ed44',
-              domain0021001: 21,
-            },
-            {
-              id: '181f4ac5-fcb2-4976-a25f-4e398cc0ed33',
-              parentId: 'b48bff7f-3b3f-4bdd-8236-a7c06685ed44',
-              domain0021001: 22,
-            },
-            {
-              id: 'a0898ce1-e7ea-4de3-8853-2269468bc251',
-              parentId: '993422bd-039a-4276-bedc-0b4a9051b35e',
-              domain0021001: 30,
-            },
-            {
-              id: '3cfe69a8-bcca-4b74-b3d9-9e75b41da641',
-              parentId: '993422bd-039a-4276-bedc-0b4a9051b35e',
-              domain0021001: 31,
-            },
-            {
-              id: 'b83d41e0-0a5d-4466-9db6-22b5392b4354',
-              parentId: '993422bd-039a-4276-bedc-0b4a9051b35e',
-              domain0021001: 32,
-            },
-            {
-              id: 'aab1cae2-a27e-426e-8f31-6124698e98bd',
-              parentId: 'a0898ce1-e7ea-4de3-8853-2269468bc251',
-              domain0021001: 40,
             },
           ],
         },
@@ -463,96 +432,56 @@ describe('AppController (e2e)', () => {
         createDomain0021s: {
           domain0021s: [
             {
-              domain0021001: 12,
-              children: [],
-            },
-            {
-              domain0021001: 11,
-              children: [],
-            },
-            {
+              id: 'b48bff7f-3b3f-4bdd-8236-a7c06685ed44',
               domain0021001: 10,
               children: [
                 {
-                  domain0021001: 22,
-                  children: [],
-                },
-                {
-                  domain0021001: 21,
-                  children: [],
-                },
-                {
+                  id: '993422bd-039a-4276-bedc-0b4a9051b35e',
                   domain0021001: 20,
                   children: [
                     {
-                      domain0021001: 32,
-                      children: [],
+                      id: 'a0898ce1-e7ea-4de3-8853-2269468bc251',
+                      domain0021001: 30,
+                      children: [
+                        {
+                          id: 'aab1cae2-a27e-426e-8f31-6124698e98bd',
+                          domain0021001: 40,
+                          children: [
+                            {
+                              id: 'cf9a9657-b85f-4a25-ae0b-526a0443a23d',
+                              domain0021001: 12,
+                            },
+                          ],
+                        },
+                      ],
                     },
                     {
+                      id: '3cfe69a8-bcca-4b74-b3d9-9e75b41da641',
                       domain0021001: 31,
                       children: [],
                     },
                     {
-                      domain0021001: 30,
-                      children: [
-                        {
-                          domain0021001: 40,
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            },
-            {
-              domain0021001: 22,
-              children: [],
-            },
-            {
-              domain0021001: 21,
-              children: [],
-            },
-            {
-              domain0021001: 20,
-              children: [
-                {
-                  domain0021001: 32,
-                  children: [],
-                },
-                {
-                  domain0021001: 31,
-                  children: [],
-                },
-                {
-                  domain0021001: 30,
-                  children: [
-                    {
-                      domain0021001: 40,
+                      id: 'b83d41e0-0a5d-4466-9db6-22b5392b4354',
+                      domain0021001: 32,
                       children: [],
                     },
                   ],
                 },
-              ],
-            },
-            {
-              domain0021001: 32,
-              children: [],
-            },
-            {
-              domain0021001: 31,
-              children: [],
-            },
-            {
-              domain0021001: 30,
-              children: [
                 {
-                  domain0021001: 40,
+                  id: '46621bee-bd35-45fa-be2b-722065047ee5',
+                  domain0021001: 21,
+                  children: [],
+                },
+                {
+                  id: '181f4ac5-fcb2-4976-a25f-4e398cc0ed33',
+                  domain0021001: 22,
                   children: [],
                 },
               ],
             },
             {
-              domain0021001: 40,
+              id: 'cf9a9657-b85f-4a25-ae0b-526a0443a23d',
+              domain0021001: 12,
               children: [],
             },
           ],
