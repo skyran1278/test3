@@ -10,6 +10,7 @@ import {
 import { Maybe } from 'graphql/jsutils/Maybe';
 import { Transactional } from 'typeorm-transactional';
 
+import { Domain0021ByIdLoader } from './domain-0021-by-id.loader';
 import { Domain0021ChildrenLoader } from './domain-0021-children.loader';
 import { Domain0021 } from './domain-0021.entity';
 import { Domain0021Repository } from './domain-0021.repository';
@@ -31,6 +32,7 @@ export class Domain0021Resolver {
     private readonly domain0021Repository: Domain0021Repository,
     private readonly domain0021Service: Domain0021Service,
     private readonly domain0021ChildrenLoader: Domain0021ChildrenLoader,
+    private readonly domain0021ByIdLoader: Domain0021ByIdLoader,
   ) {}
 
   @Transactional()
@@ -92,5 +94,14 @@ export class Domain0021Resolver {
     }
 
     return this.domain0021ChildrenLoader.load(domain0021);
+  }
+
+  @ResolveField(() => Domain0021, { nullable: true })
+  async parent(
+    @Parent() { parent, parentId }: Domain0021,
+  ): Promise<Maybe<Domain0021>> {
+    if (parent) return parent;
+    if (parentId) return this.domain0021ByIdLoader.load(parentId);
+    return null;
   }
 }
