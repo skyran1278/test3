@@ -10,6 +10,7 @@ import {
 import { Maybe } from 'graphql/jsutils/Maybe';
 import { Transactional } from 'typeorm-transactional';
 
+import { ResolverInterface } from '../common/resolver.interface';
 import { Domain0025 } from '../domain-0025/domain-0025.entity';
 import { Domain0025Repository } from '../domain-0025/domain-0025.repository';
 import { Domain0024 } from './domain-0024.entity';
@@ -25,7 +26,7 @@ import { Domain0024PageArgs } from './query/domain-0024-page.args';
 import { Domain0024Page } from './query/domain-0024-page.type';
 
 @Resolver(() => Domain0024)
-export class Domain0024Resolver {
+export class Domain0024Resolver implements ResolverInterface<Domain0024> {
   constructor(
     private readonly domain0024Repository: Domain0024Repository,
     private readonly domain0024Service: Domain0024Service,

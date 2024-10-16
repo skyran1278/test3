@@ -1,11 +1,12 @@
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 
+import { ResolverInterface } from '../common/resolver.interface';
 import { Domain0010 } from '../domain-0010/domain-0010.entity';
 import { Domain0010Repository } from '../domain-0010/domain-0010.repository';
 import { Domain0009 } from './domain-0009.entity';
 
 @Resolver(() => Domain0009)
-export class Domain0009Resolver {
+export class Domain0009Resolver implements ResolverInterface<Domain0009> {
   constructor(private readonly domain0010Repository: Domain0010Repository) {}
 
   // @Transactional()
