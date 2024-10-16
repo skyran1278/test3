@@ -86,7 +86,7 @@ describe('AppController (e2e)', () => {
       data: {
         me: {
           id: '94107a27-4c24-4912-be7b-6f4b0b462acb',
-          email: 'nai@u-ran',
+          email: 'nai@u-ran.com',
         },
       },
     });
