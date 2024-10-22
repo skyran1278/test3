@@ -1,9 +1,20 @@
 services:
-  db:
-    container_name: test-postgres
-    image: postgres
+  postgres:
+    image: postgres:latest
     ports:
-      - "5510:5432"
+      - '5510:5432'
     environment:
       POSTGRES_PASSWORD: root
+    restart: always
+  test-postgres:
+    image: postgres:latest
+    ports:
+      - '5515:5432'
+    environment:
+      POSTGRES_PASSWORD: root
+    restart: always
+  redis:
+    image: redis:latest
+    ports:
+      - 6380:6379
     restart: always

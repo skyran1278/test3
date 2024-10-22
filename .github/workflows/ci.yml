@@ -27,7 +27,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
         ports:
-          - 6379:6379
+          - 6380:6379
 
       # Label used to access the service container
       postgres:
@@ -44,7 +44,7 @@ jobs:
           --health-retries 5
         ports:
           # Maps tcp port 5432 on service container to the host
-          - 5510:5432
+          - 5515:5432
 
     strategy:
       matrix:
