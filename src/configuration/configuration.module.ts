@@ -14,7 +14,6 @@ import { TypedConfigService } from './typed-config.service';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: process.env.NODE_ENV === 'test' ? '.env.test' : '.env',
       validate: configurationValidate,
     }),
   ],

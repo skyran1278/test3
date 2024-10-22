@@ -3,7 +3,7 @@ import { DataSource } from 'typeorm';
 
 import { dataSourceOptions } from '../src/common/data-source-options';
 
-dotenv.config({ path: process.env.CI ? '.env.test' : '.env' });
+dotenv.config();
 
 export const AppDataSource = new DataSource({
   ...dataSourceOptions(),
