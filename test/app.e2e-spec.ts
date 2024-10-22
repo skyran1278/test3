@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Express } from 'express';
 import request from 'supertest';
+import { DataSource } from 'typeorm';
 import {
   StorageDriver,
   initializeTransactionalContext,
@@ -14,6 +15,7 @@ import { TypedConfigService } from '../src/configuration/typed-config.service';
 describe('AppController (e2e)', () => {
   let app: INestApplication<Express>;
   let configService: TypedConfigService;
+  let dataSource: DataSource;
 
   async function graphqlRequest(
     query: string,
@@ -39,6 +41,9 @@ describe('AppController (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     configService = app.get(ConfigService);
+    dataSource = app.get(DataSource);
+
+    await dataSource.runMigrations();
 
     await app.init();
   });
@@ -491,6 +496,7 @@ describe('AppController (e2e)', () => {
   });
 
   afterAll(async () => {
+    await dataSource.dropDatabase();
     await app.close();
   });
 });
