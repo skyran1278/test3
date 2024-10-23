@@ -17,7 +17,6 @@ import {
   MoreThanOrEqual,
   Not,
   ObjectLiteral,
-  Repository,
   TreeRepository,
 } from 'typeorm';
 
@@ -50,10 +49,6 @@ export abstract class BaseRepository<
 > extends TreeRepository<Entity> {
   readonly logger = new Logger(this.constructor.name);
 
-  constructor(private readonly repository: Repository<Entity>) {
-    super(repository.target, repository.manager);
-  }
-
   /**
    * prevent repeat create entity, if entity is already exist, return it
    * because of typeorm's promise issue, repeat create entity will cause promise value gone
@@ -66,14 +61,14 @@ export abstract class BaseRepository<
     input?: DeepPartial<Entity> | DeepPartial<Entity>[],
   ): Entity | Entity[] {
     if (!input) {
-      return this.repository.create();
+      return super.create();
     }
     if (Array.isArray(input)) {
       return input.every((item) => item instanceof MetaEntity)
         ? (input as Entity[])
-        : this.repository.create(input);
+        : super.create(input);
     }
-    return input instanceof MetaEntity ? input : this.repository.create(input);
+    return input instanceof MetaEntity ? input : super.create(input);
   }
 
   /**
@@ -153,11 +148,11 @@ export abstract class BaseRepository<
 
     if (Array.isArray(input)) {
       const entities = this.create(input);
-      return this.repository.save(entities);
+      return super.save(entities);
     }
 
     const entity = this.create(input);
-    return this.repository.save(entity);
+    return super.save(entity);
   }
 
   /**

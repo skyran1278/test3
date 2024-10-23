@@ -1,5 +1,5 @@
 import { BadRequestException, Logger } from '@nestjs/common';
-import { DeepPartial, FindOptionsWhere, In, TreeRepository } from 'typeorm';
+import { DeepPartial, FindOptionsWhere, In } from 'typeorm';
 
 import { BaseRepository } from './base.repository';
 import { TreeBaseInterface } from './tree-base.interface';
@@ -8,10 +8,6 @@ export abstract class TreeBaseRepository<
   Entity extends TreeBaseInterface,
 > extends BaseRepository<Entity> {
   readonly logger = new Logger(this.constructor.name);
-
-  constructor(private readonly treeRepository: TreeRepository<Entity>) {
-    super(treeRepository);
-  }
 
   async save(entity: DeepPartial<Entity>): Promise<Entity>;
   async save(entities: DeepPartial<Entity>[]): Promise<Entity[]>;
@@ -34,7 +30,7 @@ export abstract class TreeBaseRepository<
   private async saveMultipleEntities(
     inputEntities: DeepPartial<Entity>[],
   ): Promise<Entity[]> {
-    const databaseParents = await this.treeRepository.find({
+    const databaseParents = await super.find({
       where: {
         id: In(inputEntities.map(({ parentId }) => parentId)),
       } as FindOptionsWhere<Entity>,
@@ -67,7 +63,7 @@ export abstract class TreeBaseRepository<
     }
 
     if (entity.parentId != null && entity.parent == null) {
-      const parent = await this.treeRepository.findOne({
+      const parent = await super.findOne({
         where: {
           id: entity.parentId,
         } as FindOptionsWhere<Entity>,
