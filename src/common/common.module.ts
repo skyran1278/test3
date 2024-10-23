@@ -4,11 +4,13 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 
 import { AlsModule } from '../als/als.module';
+import { AuditLogModule } from '../audit-log/audit-log.module';
 import { RepoProxy } from '../common/repo.proxy';
 import { TypedConfigService } from '../configuration/typed-config.service';
 import { UserModule } from '../user/user.module';
 import { LoggingInterceptor } from './logging.interceptor';
 import { MetaEntityResolver } from './meta-entity.resolver';
+import { MetaEntitySubscriber } from './meta-entity.subscriber';
 import { WinstonLogger } from './winston-logger.service';
 
 @Global()
@@ -23,6 +25,7 @@ import { WinstonLogger } from './winston-logger.service';
     }),
     AlsModule,
     UserModule,
+    AuditLogModule,
   ],
   providers: [
     {
@@ -40,6 +43,7 @@ import { WinstonLogger } from './winston-logger.service';
     MetaEntityResolver,
     RepoProxy,
     WinstonLogger,
+    MetaEntitySubscriber,
   ],
   exports: [RepoProxy, WinstonLogger],
 })

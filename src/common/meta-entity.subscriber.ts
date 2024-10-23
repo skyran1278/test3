@@ -1,31 +1,46 @@
-import { ForbiddenException, Logger, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { validate } from 'class-validator';
 import { isObject } from 'lodash';
 import {
+  DataSource,
   EntitySubscriberInterface,
-  EventSubscriber,
   InsertEvent,
   RecoverEvent,
   RemoveEvent,
   SoftRemoveEvent,
-  TransactionCommitEvent,
   UpdateEvent,
 } from 'typeorm';
-import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
 import { alsService } from '../als/als.service';
 import { AuditActionEnum } from '../audit-log/audit-action.enum';
 import { AuditLog } from '../audit-log/audit-log.entity';
+import { AuditLogQueue } from '../audit-log/audit-log.queue';
+import { AuditLogJobEnum } from '../audit-log/mutation/audit-log-job.enum';
 import { ValidatorError } from '../error/validator.error';
 import { PermissionActionEnum } from '../permission/permission-action.enum';
 import { Permission } from '../permission/permission.entity';
 import { MetaEntity } from './meta.entity';
 
-@EventSubscriber()
+@Injectable()
 export class MetaEntitySubscriber
   implements EntitySubscriberInterface<MetaEntity>
 {
   private readonly logger = new Logger(this.constructor.name);
+
+  /**
+   * @description Can not use the transaction manager in the subscriber.
+   */
+  constructor(
+    readonly dataSource: DataSource,
+    private readonly auditLogQueue: AuditLogQueue,
+  ) {
+    dataSource.subscribers.push(this);
+  }
 
   listenTo = () => MetaEntity;
 
@@ -73,16 +88,15 @@ export class MetaEntitySubscriber
     this.checkPermission(PermissionActionEnum.DELETE, entity);
   }
 
-  beforeTransactionCommit(event: TransactionCommitEvent) {
+  async beforeTransactionCommit() {
     if (!alsService.isActive()) return;
 
     const auditLogs = alsService.get('auditLogs') ?? [];
     if (auditLogs.length === 0) return;
 
-    // Can not use the transaction manager in the subscriber.
-    const auditLogRepo = event.manager.getRepository(AuditLog);
-
-    return auditLogRepo.insert(auditLogs as QueryDeepPartialEntity<AuditLog>[]);
+    await this.auditLogQueue.add(AuditLogJobEnum.CREATE_AUDIT_LOGS_JOB, {
+      input: { auditLogs },
+    });
   }
 
   afterLoad(entity: MetaEntity) {

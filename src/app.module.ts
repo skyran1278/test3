@@ -54,7 +54,6 @@ import { UserModule } from './user/user.module';
         ...dataSourceOptions(),
 
         logging: !!configService.get('DB_LOGGING'),
-        subscribers: [join(__dirname, '**', '*.subscriber.{ts,js}')],
         migrationsRun: !!configService.get('DB_MIGRATIONS_RUN'),
 
         // every entity registered through the forFeature() method will be automatically added to the entities array of the configuration object.
