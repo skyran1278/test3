@@ -94,9 +94,9 @@ function getReturnTypeFunc(
       returnTypeFunc = () => DateResolver;
       break;
     }
-    case 'timestamp' ||
-      'timestamp with time zone' ||
-      'timestamp without time zone': {
+    case 'timestamp':
+    case 'timestamp with time zone':
+    case 'timestamp without time zone': {
       returnTypeFunc = () => Date;
       break;
     }
