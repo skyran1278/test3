@@ -78,8 +78,10 @@ export class MetaEntitySubscriber
     const auditLogs = alsService.get('auditLogs') ?? [];
     if (auditLogs.length === 0) return;
 
+    // Can not use the transaction manager in the subscriber.
     const auditLogRepo = event.manager.getRepository(AuditLog);
-    return auditLogRepo.save(auditLogs);
+
+    return auditLogRepo.insert(auditLogs);
   }
 
   afterLoad(entity: MetaEntity) {
@@ -102,7 +104,15 @@ export class MetaEntitySubscriber
 
   afterInsert(event: InsertEvent<MetaEntity>) {
     const { entity } = event;
-    this.addAuditLog(event, AuditActionEnum.INSERT, entity.id, entity);
+
+    this.appendAuditLogToAls({
+      action: AuditActionEnum.INSERT,
+      tableName: event.metadata.tableName,
+      entityId: entity.id,
+      previousEntity: {},
+      newEntity: entity,
+      event,
+    });
   }
 
   afterUpdate(event: UpdateEvent<MetaEntity>) {
@@ -111,10 +121,13 @@ export class MetaEntitySubscriber
 
     if (this.isUpdateMpath(event)) return;
 
-    this.addAuditLog(event, AuditActionEnum.UPDATE, previousEntity.id, {
-      previousEntity,
-      newEntity,
-      updatedColumns: event.updatedColumns.map((column) => column.propertyName),
+    this.appendAuditLogToAls({
+      action: AuditActionEnum.UPDATE,
+      tableName: event.metadata.tableName,
+      entityId: previousEntity.id,
+      previousEntity: previousEntity,
+      newEntity: newEntity ?? {},
+      event,
     });
   }
 
@@ -156,6 +169,7 @@ export class MetaEntitySubscriber
     auditAction: AuditActionEnum,
   ) {
     const entity = event.entity;
+    const previousEntity = event.databaseEntity;
     const entityId = event.entityId as string | string[] | undefined;
 
     if (!entityId) {
@@ -168,39 +182,56 @@ export class MetaEntitySubscriber
 
     if (entityId instanceof Array) {
       return entityId.forEach((id) => {
-        this.addAuditLog(event, auditAction, id, entity ?? {});
+        this.appendAuditLogToAls({
+          action: auditAction,
+          tableName: event.metadata.tableName,
+          entityId: id,
+          previousEntity,
+          newEntity: entity ?? {},
+          event,
+        });
       });
     }
 
-    this.addAuditLog(event, auditAction, entityId, entity ?? {});
+    this.appendAuditLogToAls({
+      action: auditAction,
+      tableName: event.metadata.tableName,
+      entityId,
+      previousEntity,
+      newEntity: entity ?? {},
+      event,
+    });
   }
 
-  private addAuditLog(
-    event:
-      | InsertEvent<MetaEntity>
-      | UpdateEvent<MetaEntity>
-      | SoftRemoveEvent<MetaEntity>
-      | RemoveEvent<MetaEntity>
-      | RecoverEvent<MetaEntity>,
-    auditAction: AuditActionEnum,
-    entityId: string,
-    entityDetail: object,
+  private appendAuditLogToAls(
+    input: Pick<
+      AuditLog,
+      'action' | 'tableName' | 'entityId' | 'previousEntity' | 'newEntity'
+    > & {
+      event:
+        | InsertEvent<MetaEntity>
+        | UpdateEvent<MetaEntity>
+        | RemoveEvent<MetaEntity>
+        | SoftRemoveEvent<MetaEntity>
+        | RecoverEvent<MetaEntity>;
+    },
   ) {
     const requestId = alsService.get('requestId');
     const user = alsService.getOrFail('user');
-    const input = alsService.get('input');
+    const apiInput = alsService.get('input');
     const auditLogs = alsService.get('auditLogs') ?? [];
 
-    const auditLogRepo = event.manager.getRepository(AuditLog);
+    const auditLogRepo = input.event.manager.getRepository(AuditLog);
 
     const auditLog = auditLogRepo.create({
       requestId,
       userId: user.id,
-      input,
-      tableName: event.metadata.tableName,
-      action: auditAction,
-      entityId: entityId,
-      entityDetail,
+      input: apiInput,
+      tableName: input.tableName,
+      action: input.action,
+      entityId: input.entityId,
+      previousEntity: input.previousEntity,
+      newEntity: input.newEntity,
     });
 
     alsService.set('auditLogs', [...auditLogs, auditLog]);
