@@ -1,4 +1,5 @@
 {
   "cSpell.words": ["bullmq", "casl", "Fargate", "mpath", "nestjs", "varchar"],
-  "typescript.preferences.importModuleSpecifier": "relative"
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
