@@ -11,6 +11,7 @@ import {
   TransactionCommitEvent,
   UpdateEvent,
 } from 'typeorm';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
 import { alsService } from '../als/als.service';
 import { AuditActionEnum } from '../audit-log/audit-action.enum';
@@ -81,7 +82,7 @@ export class MetaEntitySubscriber
     // Can not use the transaction manager in the subscriber.
     const auditLogRepo = event.manager.getRepository(AuditLog);
 
-    return auditLogRepo.insert(auditLogs);
+    return auditLogRepo.insert(auditLogs as QueryDeepPartialEntity<AuditLog>[]);
   }
 
   afterLoad(entity: MetaEntity) {
