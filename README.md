@@ -1,43 +1,17 @@
 ## Getting Started
 
 ```bash
-# Install package
+# Install dependencies
 pnpm install
 
 # Start Docker
-docker-compose down --remove-orphans
-docker-compose up -d
+docker-compose down --remove-orphans && docker-compose up -d
 
-# Run migration
+# Run migrations
 pnpm run migration:run
 
-# Watch mode
+# Development mode
 pnpm run start:dev
-```
-
-### IaC (Infrastructure as Code) Initialization
-
-1. Login to AWS SSO and deploy the infrastructure.
-
-```bash
-aws sso login --profile ran
-
-# In the cdk folder
-cdk deploy --profile ran
-```
-
-2. Set Up DNS in [squarespace](https://account.squarespace.com/domains/managed/u-ran.com/dns/dns-settings). (first time only)
-3. Receive Email from AWS SNS Topic. (first time only)
-4. Set Up ELB DNS in [squarespace](https://account.squarespace.com/domains/managed/u-ran.com/dns/dns-settings).
-
-## Running the App
-
-```bash
-# Watch mode
-pnpm run start:dev
-
-# Production mode
-pnpm run start:prod
 ```
 
 ## Testing
@@ -50,11 +24,11 @@ pnpm run test:watch
 pnpm run test:e2e --watch
 ```
 
-## Migration
+## Migration Commands
 
 ```bash
 # Generate migration
-pnpm run migration:generate <migration-path>
+pnpm run migration:generate <path>
 
 # Run migration
 pnpm run migration:run
@@ -63,28 +37,19 @@ pnpm run migration:run
 pnpm run migration:revert
 
 # Run migration in production (Cloud Shell)
-aws ecs execute-command \
-  --cluster arn:aws:ecs:ap-northeast-1:637423394100:cluster/Test3Stack-ClusterConstructCluster9DBF4A34-wzgWSzN6qjJu \
-  --task arn:aws:ecs:ap-northeast-1:637423394100:task/Test3Stack-ClusterConstructCluster9DBF4A34-wzgWSzN6qjJu/9cf2c6c136744ef1bfa211120c8a51bf \
-  --interactive \
-  --command "/bin/sh"
+aws ecs execute-command --cluster <ARN> --task <Image URI> --interactive --command "/bin/sh"
 ```
 
 ## Folder Structure
 
-- **migration**: Configuration for database migration and schema changes management.
-- **cdk**: Cloud Development Kit (CDK) for infrastructure deployment.
-- **src**
-  - **als**: Manages asynchronous local storage by request.
-  - **audit-log**: Logs database actions for auditing.
-  - **common**: Shared utilities, helpers, and constants.
-  - **configuration**: Manages environment variables and settings.
-  - **error**: Error management, including custom classes and exception filters.
-  - **health**: Health check endpoints.
-  - **permission**: Manages user permissions and access policies.
-  - **role**: Manages role-based access control.
-  - **security**: Authentication & authorization.
-  - **user**: Manages user-related functionality.
+- **cdk**: Infrastructure deployment.
+- **src**: Application logic
+  - **als**: Async local storage.
+  - **audit-log**: Audit logging.
+  - **common**: Shared utilities.
+  - **configuration**: Env config.
+  - **migration**: DB migrations.
+  - **security, user, permission, role**: Access control.
   - **domain-0001**: Schematic.
   - **domain-0003**: Handles multiple column types.
   - **domain-0008**: One-to-many (cascade).
@@ -94,14 +59,25 @@ aws ecs execute-command \
   - **domain-0021**: Tree entity.
   - **domain-0024**: Many-to-many.
   - **domain-0025**: Many-to-many.
-- **test**: End-to-end tests for full workflow validation.
+- **test**: E2E testing.
 
-## IaC (Infrastructure as Code) Common Commands
+## IaC (Infrastructure as Code) Setup & Common Commands
+
+1. Login to AWS SSO and deploy infrastructure.
+
+   ```bash
+   aws sso login --profile ran
+   cdk deploy --profile ran
+   ```
+
+2. Configure DNS on [Squarespace](https://account.squarespace.com).
+3. Receive AWS SNS Topic email (one-time setup).
+4. Set up ELB DNS in Squarespace.
 
 ```bash
+# Common commands
 aws sso login --profile ran
-
-# In the cdk folder
+# Cd to the cdk folder
 cdk diff --profile ran
 cdk deploy --profile ran
 cdk destroy --profile ran
@@ -109,49 +85,18 @@ cdk destroy --profile ran
 
 ## Issues
 
-- [Prettier version 3 is not supported in Jest!](https://jestjs.io/docs/configuration/#prettierpath-string)
+- [Prettier v3 not supported by Jest](https://jestjs.io/docs/configuration/#prettierpath-string)
 
-## Decision Record
+## Decision Records
 
-### Remove without Cascade Example
+### Migration Folder Placement
 
-We encountered difficulties updating a 3-layer structure without using cascade.
+Due to "SyntaxError: Cannot use import statement outside a module," place the migration folder inside `src`.
 
-- When storing a 3-layer structure, start by saving the top layer first, as the lower layers require the upper layer's ID. However, saving the top layer triggers the deletion of the middle-layer entity, while the lowest layer still depends on the middle layer's ID, leading to errors.
-- **domain-0005**: One-to-many (without cascade).
-- **domain-0006**: One-to-many (without cascade).
-- **domain-0007**: One-to-many (without cascade).
-  - **Note**: Avoid saving a 3-layer structure; deleting domain-0006 causes errors in domain-0007.
-  - If necessary, use `cascade: true`.
+### Soft Remove Caution
 
-### Placement of Migration Folder
+Avoid using `softRemove` to prevent relationship issues. Use status control for data preservation.
 
-When deciding where to place the migration folder in your project structure, consider the following:
+### Second Database Complexity
 
-1. **Inside the `src` Folder**:
-
-   - **Pros**:
-     - Keeps all source code-related files together, making it easier to manage.
-     - Ideal for smaller projects where the project structure is less complex.
-   - **Cons**:
-     - Can make the `src` folder cluttered if there are many migration files.
-
-2. **Next to the `src` Folder**:
-   - **Pros**:
-     - Separates migrations from the source code, keeping the `src` folder clean and focused on the application's core logic.
-     - Easier to manage and find migration files in larger projects.
-   - **Cons**:
-     - Might slightly complicate the project structure if not well-documented or if there are many other folders at the same level.
-
-#### Recommendation
-
-For most projects, especially larger ones, placing the migration folder next to the `src` folder is usually the better choice. It helps maintain a clear separation of concerns and keeps the source code directory less cluttered. However, for smaller projects, placing it inside the `src` folder might be more convenient.
-
-### Do not recommend using softRemove
-
-Do not recommend using softRemove because if one item is soft-removed, the other still maintains the relationship but cannot access the data.
-Therefore, if you want to preserve data, use status control instead.
-
-### Second database is complicated
-
-While using a second database is possible, it is more complicated than using a single database. It requires additional configuration and management, and it can introduce more complexity to the application. Consider whether the benefits of using a second database outweigh the added complexity and potential issues that may arise. Can reference to branch `feat-second-database`.
+Using a second database adds complexity. Consider its necessity before proceeding. See branch `feat-second-database` for reference.
