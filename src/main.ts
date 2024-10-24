@@ -30,9 +30,7 @@ async function bootstrap() {
   // Be aware of this condition when you are running multiple instances in a single Node process.
   app.enableShutdownHooks();
 
-  app.use(
-    serveFavicon(path.join(__dirname, '..', '..', 'public', 'favicon.ico')),
-  );
+  app.use(serveFavicon(path.join(__dirname, '..', 'public', 'favicon.ico')));
 
   app.useGlobalPipes(validatorPipe);
 

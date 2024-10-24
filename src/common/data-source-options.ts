@@ -19,7 +19,7 @@ export const getDataSourceOptions = (): DataSourceOptions => ({
   migrations: [
     process.env.NODE_ENV === EnvironmentEnum.PRODUCTION
       ? 'dist/migration/migrations/*.js'
-      : 'migration/migrations/*.ts',
+      : 'src/migration/migrations/*.ts',
   ],
 
   // https://github.com/brianc/node-postgres/issues/2558#issuecomment-1765441660

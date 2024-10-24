@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-import { sql } from '../../src/common/sql';
+import { sql } from '../../common/sql';
 
 export class Seed1817332628407 implements MigrationInterface {
   name = 'Seed1817332628407';

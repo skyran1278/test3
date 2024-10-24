@@ -34,5 +34,5 @@
     "esModuleInterop": true,
     "lib": ["ESNext"]
   },
-  "include": ["src/**/*", "test/**/*", "migration/**/*"]
+  "include": ["src/**/*", "test/**/*"]
 }
