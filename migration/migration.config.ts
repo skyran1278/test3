@@ -1,11 +1,16 @@
 import dotenv from 'dotenv';
 import { DataSource } from 'typeorm';
 
-import { dataSourceOptions } from '../src/common/data-source-options';
+import { getDataSourceOptions } from '../src/common/data-source-options';
+import { EnvironmentEnum } from '../src/configuration/environment.enum';
 
 dotenv.config();
 
-export const AppDataSource = new DataSource({
-  ...dataSourceOptions(),
-  entities: ['dist/src/**/*.entity.js'],
+export const appDataSource = new DataSource({
+  ...getDataSourceOptions(),
+  entities: [
+    process.env.NODE_ENV === EnvironmentEnum.PRODUCTION
+      ? 'dist/src/**/*.entity.js'
+      : 'src/**/*.entity.ts',
+  ],
 });

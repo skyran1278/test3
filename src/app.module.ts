@@ -24,7 +24,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuditLogModule } from './audit-log/audit-log.module';
 import { CommonModule } from './common/common.module';
-import { dataSourceOptions } from './common/data-source-options';
+import { getDataSourceOptions } from './common/data-source-options';
 import { ConfigurationModule } from './configuration/configuration.module';
 import { EnvironmentEnum } from './configuration/environment.enum';
 import { TypedConfigService } from './configuration/typed-config.service';
@@ -51,7 +51,7 @@ import { UserModule } from './user/user.module';
       imports: [ConfigModule],
       inject: [TypedConfigService],
       useFactory: (configService: TypedConfigService) => ({
-        ...dataSourceOptions(),
+        ...getDataSourceOptions(),
 
         logging: !!configService.get('DB_LOGGING'),
         migrationsRun: !!configService.get('DB_MIGRATIONS_RUN'),
