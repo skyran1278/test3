@@ -72,8 +72,8 @@ aws ecs execute-command \
 
 ## Folder Structure
 
-- **migration**: Config for database migration, managing schema changes.
-- **cdk**: Cloud Development Kit (CDK) for deploying infrastructure.
+- **migration**: Configuration for database migration and schema changes management.
+- **cdk**: Cloud Development Kit (CDK) for infrastructure deployment.
 - **src**
   - **als**: Manages asynchronous local storage by request.
   - **audit-log**: Logs database actions for auditing.
@@ -151,3 +151,7 @@ For most projects, especially larger ones, placing the migration folder next to 
 
 Do not recommend using softRemove because if one item is soft-removed, the other still maintains the relationship but cannot access the data.
 Therefore, if you want to preserve data, use status control instead.
+
+### Second database is complicated
+
+While using a second database is possible, it is more complicated than using a single database. It requires additional configuration and management, and it can introduce more complexity to the application. Consider whether the benefits of using a second database outweigh the added complexity and potential issues that may arise. Can reference to branch `feat-second-database`.
