@@ -13,7 +13,7 @@ import { User } from '../user/user.entity';
 import { AuditActionEnum } from './audit-action.enum';
 
 @ObjectType()
-@Entity()
+@Entity({ database: process.env.AUDIT_LOG_DB_NAME })
 export class AuditLog {
   @PrimaryGeneratedColumn('uuid')
   id!: string;

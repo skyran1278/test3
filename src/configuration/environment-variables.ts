@@ -48,6 +48,33 @@ export class EnvironmentVariables {
   @IsString()
   DB_MIGRATIONS_RUN!: string;
 
+  @IsString()
+  AUDIT_LOG_DB_HOST!: string;
+
+  @IsNumber()
+  AUDIT_LOG_DB_PORT!: number;
+
+  @IsString()
+  AUDIT_LOG_DB_USERNAME!: string;
+
+  @IsString()
+  AUDIT_LOG_DB_PASSWORD!: string;
+
+  @IsString()
+  AUDIT_LOG_DB_NAME!: string;
+
+  @IsString()
+  AUDIT_LOG_DB_SCHEMA!: string;
+
+  @IsString()
+  AUDIT_LOG_DB_LOGGING!: string;
+
+  @IsString()
+  AUDIT_LOG_DB_SSL!: string;
+
+  @IsString()
+  AUDIT_LOG_DB_MIGRATIONS_RUN!: string;
+
   @IsEnum(EnvironmentEnum)
   GRAPHQL_SERVER!: EnvironmentEnum;
 

@@ -1,6 +1,6 @@
 import { Resolver } from '@nestjs/graphql';
 
-import { AuditLog } from './audit-log.entity';
+import { AuditLog } from './audit-log.audit-log-entity';
 
 @Resolver(() => AuditLog)
 export class AuditLogResolver {

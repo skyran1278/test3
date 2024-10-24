@@ -1,7 +1,7 @@
 import { Field, ID, InterfaceType } from '@nestjs/graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
 
-import { AuditLog } from '../audit-log.entity';
+import { AuditLog } from '../audit-log.audit-log-entity';
 
 @InterfaceType()
 export abstract class AuditLogById {

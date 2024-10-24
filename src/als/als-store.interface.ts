@@ -1,4 +1,4 @@
-import { AuditLog } from '../audit-log/audit-log.entity';
+import { AuditLog } from '../audit-log/audit-log.audit-log-entity';
 import { CaslAbility, CaslRules } from '../security/authorization.factory';
 import { User } from '../user/user.entity';
 

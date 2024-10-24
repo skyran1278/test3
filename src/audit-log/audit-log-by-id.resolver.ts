@@ -2,7 +2,7 @@ import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
 
 import { AuditLogByIdLoader } from './audit-log-by-id.loader';
-import { AuditLog } from './audit-log.entity';
+import { AuditLog } from './audit-log.audit-log-entity';
 import { AuditLogById } from './query/audit-log-by-id.type';
 
 @Resolver(() => AuditLogById)

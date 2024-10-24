@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Transactional } from 'typeorm-transactional';
 
-import { AuditLog } from './audit-log.entity';
+import { AuditLog } from './audit-log.audit-log-entity';
 import { AuditLogRepository } from './audit-log.repository';
 import { CreateAuditLogInput } from './mutation/create-audit-log.input';
 import { UpdateAuditLogInput } from './mutation/update-audit-log.input';

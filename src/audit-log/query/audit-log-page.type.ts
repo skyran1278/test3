@@ -1,7 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 
 import { NodePage } from '../../common/node-page.type';
-import { AuditLog } from '../audit-log.entity';
+import { AuditLog } from '../audit-log.audit-log-entity';
 
 @ObjectType({
   implements: [NodePage],

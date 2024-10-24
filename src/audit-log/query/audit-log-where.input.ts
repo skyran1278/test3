@@ -3,7 +3,7 @@ import { FindOptionsWhere } from 'typeorm';
 
 import { DeepNullable } from '../../common/nullable.interface';
 import { ToWhereInputType } from '../../common/to-where-input-type';
-import { AuditLog } from '../audit-log.entity';
+import { AuditLog } from '../audit-log.audit-log-entity';
 
 @InputType()
 export class AuditLogWhereInput extends OmitType(

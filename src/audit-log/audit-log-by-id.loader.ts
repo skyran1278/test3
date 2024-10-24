@@ -4,13 +4,10 @@ import DataLoader from 'dataloader';
 import { Maybe } from 'graphql/jsutils/Maybe';
 import { In, Repository } from 'typeorm';
 
-import { AuditLog } from './audit-log.entity';
+import { AuditLog } from './audit-log.audit-log-entity';
 
 @Injectable({ scope: Scope.REQUEST })
-export class AuditLogByIdLoader extends DataLoader<
-  string,
-  Maybe<AuditLog>
-> {
+export class AuditLogByIdLoader extends DataLoader<string, Maybe<AuditLog>> {
   constructor(
     @InjectRepository(AuditLog)
     private readonly repo: Repository<AuditLog>,

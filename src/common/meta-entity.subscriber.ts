@@ -18,7 +18,7 @@ import {
 
 import { alsService } from '../als/als.service';
 import { AuditActionEnum } from '../audit-log/audit-action.enum';
-import { AuditLog } from '../audit-log/audit-log.entity';
+import { AuditLog } from '../audit-log/audit-log.audit-log-entity';
 import { AuditLogQueue } from '../audit-log/audit-log.queue';
 import { AuditLogJobEnum } from '../audit-log/mutation/audit-log-job.enum';
 import { ValidatorError } from '../error/validator.error';
