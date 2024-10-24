@@ -21,6 +21,8 @@ interface AlbEcsConstructProps extends StackProps {
 }
 
 export class AlbEcsConstruct extends Construct {
+  public readonly ecs: ApplicationLoadBalancedEc2Service;
+
   constructor(scope: Construct, id: string, props: AlbEcsConstructProps) {
     super(scope, id);
 
@@ -29,7 +31,7 @@ export class AlbEcsConstruct extends Construct {
       throw new Error('props.dbInstance.secret is undefined');
     }
 
-    const ecs = new ApplicationLoadBalancedEc2Service(this, 'Ecs', {
+    this.ecs = new ApplicationLoadBalancedEc2Service(this, 'Ecs', {
       cluster: props.cluster,
       memoryLimitMiB: 512,
       certificate: props.certificate,
@@ -100,8 +102,6 @@ export class AlbEcsConstruct extends Construct {
       },
     });
 
-    props.databaseInstance.connections.allowDefaultPortFrom(ecs.service);
-
     // AwsSolutions-ELB2
     // The ELB does not have access logs enabled.
     // Access logs allow operators to to analyze traffic patterns and identify and troubleshoot security issues.
@@ -110,7 +110,7 @@ export class AlbEcsConstruct extends Construct {
       autoDeleteObjects: true,
       enforceSSL: true,
     });
-    ecs.loadBalancer.logAccessLogs(logBucket);
+    this.ecs.loadBalancer.logAccessLogs(logBucket);
 
     // AwsSolutions-S1
     // The S3 Bucket has server access logs disabled.
@@ -123,7 +123,7 @@ export class AlbEcsConstruct extends Construct {
     });
 
     NagSuppressions.addResourceSuppressions(
-      ecs.loadBalancer,
+      this.ecs.loadBalancer,
       [
         {
           id: 'AwsSolutions-EC23',
@@ -142,7 +142,7 @@ export class AlbEcsConstruct extends Construct {
       true,
     );
 
-    NagSuppressions.addResourceSuppressions(ecs.service.taskDefinition, [
+    NagSuppressions.addResourceSuppressions(this.ecs.service.taskDefinition, [
       {
         id: 'AwsSolutions-ECS2',
         reason: `
@@ -156,7 +156,7 @@ export class AlbEcsConstruct extends Construct {
     ]);
 
     NagSuppressions.addResourceSuppressions(
-      ecs.service.taskDefinition.taskRole,
+      this.ecs.service.taskDefinition.taskRole,
       [
         {
           id: 'AwsSolutions-IAM5',
@@ -177,9 +177,9 @@ export class AlbEcsConstruct extends Construct {
       true,
     );
 
-    if (ecs.service.taskDefinition.executionRole) {
+    if (this.ecs.service.taskDefinition.executionRole) {
       NagSuppressions.addResourceSuppressions(
-        ecs.service.taskDefinition.executionRole,
+        this.ecs.service.taskDefinition.executionRole,
         [
           {
             id: 'AwsSolutions-IAM5',

@@ -47,11 +47,13 @@ export class Test3Stack extends Stack {
       topic,
     });
 
-    new AlbEcsConstruct(this, 'AlbEcsConstruct', {
+    const { ecs } = new AlbEcsConstruct(this, 'AlbEcsConstruct', {
       cluster,
       certificate,
       cfnCacheCluster,
       databaseInstance,
     });
+
+    databaseInstance.connections.allowDefaultPortFrom(ecs.service);
   }
 }
