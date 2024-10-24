@@ -78,6 +78,24 @@ export class AlbEcsConstruct extends Construct {
               },
             ),
           ),
+          BULL_BOARD_USERNAME: Secret.fromSsmParameter(
+            StringParameter.fromSecureStringParameterAttributes(
+              this,
+              'BULL_BOARD_USERNAME',
+              {
+                parameterName: '/test3/BULL_BOARD_USERNAME',
+              },
+            ),
+          ),
+          BULL_BOARD_PASSWORD: Secret.fromSsmParameter(
+            StringParameter.fromSecureStringParameterAttributes(
+              this,
+              'BULL_BOARD_PASSWORD',
+              {
+                parameterName: '/test3/BULL_BOARD_PASSWORD',
+              },
+            ),
+          ),
         },
       },
     });

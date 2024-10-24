@@ -58,6 +58,12 @@ export class EnvironmentVariables {
   REDIS_PORT!: number;
 
   @IsString()
+  BULL_BOARD_USERNAME!: string;
+
+  @IsString()
+  BULL_BOARD_PASSWORD!: string;
+
+  @IsString()
   JWT_SECRET!: string;
 
   @IsString()

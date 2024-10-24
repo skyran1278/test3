@@ -1,3 +1,5 @@
+import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
+import { BullBoardModule } from '@bull-board/nestjs';
 import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -14,6 +16,10 @@ import { AuditLogService } from './audit-log.service';
     TypeOrmModule.forFeature([AuditLog]),
     BullModule.registerQueue({
       name: QueueEnum.AUDIT_LOG,
+    }),
+    BullBoardModule.forFeature({
+      name: QueueEnum.AUDIT_LOG,
+      adapter: BullMQAdapter,
     }),
   ],
   providers: [

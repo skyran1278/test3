@@ -1,3 +1,5 @@
+import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
+import { BullBoardModule } from '@bull-board/nestjs';
 import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -16,6 +18,10 @@ import { Domain0015Service } from './domain-0015.service';
     TypeOrmModule.forFeature([Domain0015]),
     BullModule.registerQueue({
       name: QueueEnum.DOMAIN0015,
+    }),
+    BullBoardModule.forFeature({
+      name: QueueEnum.DOMAIN0015,
+      adapter: BullMQAdapter,
     }),
   ],
   providers: [

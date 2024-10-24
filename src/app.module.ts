@@ -5,7 +5,6 @@ import {
   ApolloServerPluginLandingPageProductionDefault,
 } from '@apollo/server/plugin/landingPage/default';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { BullModule } from '@nestjs/bullmq';
 import {
   InternalServerErrorException,
   MiddlewareConsumer,
@@ -41,6 +40,7 @@ import { CustomHttpExceptionBody } from './error/custom.error';
 import { ErrorModule } from './error/error.module';
 import { HealthModule } from './health/health.module';
 import { PermissionModule } from './permission/permission.module';
+import { QueueModule } from './queue/queue.module';
 import { RoleModule } from './role/role.module';
 import { SecurityModule } from './security/security.module';
 import { UserModule } from './user/user.module';
@@ -105,16 +105,7 @@ import { UserModule } from './user/user.module';
         };
       },
     }),
-    BullModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [TypedConfigService],
-      useFactory: (configService: TypedConfigService) => ({
-        connection: {
-          host: configService.get('REDIS_HOST'),
-          port: configService.get('REDIS_PORT'),
-        },
-      }),
-    }),
+    QueueModule,
     AlsModule,
     AuditLogModule,
     ConfigurationModule,

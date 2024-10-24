@@ -8,6 +8,7 @@ import { AuditLogModule } from '../audit-log/audit-log.module';
 import { RepoProxy } from '../common/repo.proxy';
 import { TypedConfigService } from '../configuration/typed-config.service';
 import { UserModule } from '../user/user.module';
+import { BasicAuthService } from './basic-auth.service';
 import { LoggingInterceptor } from './logging.interceptor';
 import { MetaEntityResolver } from './meta-entity.resolver';
 import { MetaEntitySubscriber } from './meta-entity.subscriber';
@@ -44,7 +45,8 @@ import { WinstonLogger } from './winston-logger.service';
     RepoProxy,
     WinstonLogger,
     MetaEntitySubscriber,
+    BasicAuthService,
   ],
-  exports: [RepoProxy, WinstonLogger],
+  exports: [RepoProxy, WinstonLogger, BasicAuthService],
 })
 export class CommonModule {}
