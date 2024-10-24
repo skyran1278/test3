@@ -77,11 +77,16 @@ aws ecs execute-command --cluster <ARN> --task <Image URI> --interactive --comma
 ```bash
 # Common commands
 aws sso login --profile ran
+
 # Cd to the cdk folder
 cdk diff --profile ran
 cdk deploy --profile ran
 cdk destroy --profile ran
 ```
+
+- Check deploy status
+  - Go to ECS -> Clusters -> Tasks -> Task ID -> Logs
+  - Go to CloudFormation -> Stacks -> Stack ID -> Events
 
 ## Issues
 
@@ -89,14 +94,14 @@ cdk destroy --profile ran
 
 ## Decision Records
 
-### Migration Folder Placement
+- Migration Folder Placement
 
 Due to "SyntaxError: Cannot use import statement outside a module," place the migration folder inside `src`.
 
-### Soft Remove Caution
+- Soft Remove Caution
 
 Avoid using `softRemove` to prevent relationship issues. Use status control for data preservation.
 
-### Second Database Complexity
+- Second Database Complexity
 
 Using a second database adds complexity. Consider its necessity before proceeding. See branch `feat-second-database` for reference.
