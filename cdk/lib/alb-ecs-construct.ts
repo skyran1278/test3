@@ -102,6 +102,10 @@ export class AlbEcsConstruct extends Construct {
       },
     });
 
+    this.ecs.targetGroup.configureHealthCheck({
+      path: '/health',
+    });
+
     // AwsSolutions-ELB2
     // The ELB does not have access logs enabled.
     // Access logs allow operators to to analyze traffic patterns and identify and troubleshoot security issues.
