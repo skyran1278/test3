@@ -104,4 +104,4 @@ Avoid using `softRemove` to prevent relationship issues. Use status control for 
 
 - Second Database Complexity
 
-Using a second database adds complexity. Consider its necessity before proceeding. See branch `feat-second-database` for reference.
+Using a second database adds complexity. Consider its necessity before proceeding. See branch `feat/second-database` for reference.
