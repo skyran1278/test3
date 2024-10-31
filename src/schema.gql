@@ -373,6 +373,7 @@ input Domain0008WhereInput {
   createdUserId: ID
   deletedAt: DateTime
   deletedUserId: ID
+  domain0009s: Domain0009WhereInput
 
   """domain0008001"""
   domain0008001: Int
@@ -405,6 +406,20 @@ type Domain0009 implements Domain0010sByDomain0009Id & MetaEntity {
 interface Domain0009ById {
   domain0009: Domain0009
   domain0009Id: ID
+}
+
+input Domain0009WhereInput {
+  createdAt: DateTime
+  createdUserId: ID
+  deletedAt: DateTime
+  deletedUserId: ID
+  domain0008Id: ID
+
+  """domain0009001"""
+  domain0009001: Int
+  id: ID
+  updatedAt: DateTime
+  updatedUserId: ID
 }
 
 interface Domain0009sByDomain0008Id {
