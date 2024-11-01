@@ -7,7 +7,10 @@ import {
   ReturnTypeFuncValue,
 } from '@nestjs/graphql';
 import { Transform, Type } from 'class-transformer';
-import { ValidateNested } from 'class-validator';
+import { ValidateNested, isNumberString } from 'class-validator';
+import Decimal from 'decimal.js';
+
+import DecimalScalar from './decimal.scalar';
 
 type FieldOptionsExtractor<T> = T extends [GqlTypeReference<infer P>]
   ? FieldOptions<P[]>
@@ -37,6 +40,17 @@ export function TypeField<T extends ReturnTypeFuncValue>(
         ({ value }: { value: typeof typeFunction }) =>
           value == null ? undefined : value,
         { toClassOnly: true },
+      ),
+    );
+  } else if (typeFunction === DecimalScalar) {
+    typeDecorators.push(
+      Type(() => String),
+      Transform(
+        ({ value }: { value: string }) =>
+          isNumberString(value) ? new Decimal(value) : value,
+        {
+          toClassOnly: true,
+        },
       ),
     );
   }
