@@ -31,7 +31,7 @@ export class Domain0003 extends MetaEntity {
   domain0003003?: Maybe<string>;
 
   @ColumnField({ type: 'date', nullable: true, comment: 'date' })
-  domain0003004?: Maybe<Date>;
+  domain0003004?: Maybe<string>;
 
   @ColumnField({
     type: 'decimal',
