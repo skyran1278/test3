@@ -9,6 +9,7 @@ import { AuditLog } from './audit-log.entity';
 import { AuditLogProcessor } from './audit-log.processor';
 import { AuditLogQueue } from './audit-log.queue';
 import { AuditLogRepository } from './audit-log.repository';
+import { AuditLogResolver } from './audit-log.resolver';
 import { AuditLogService } from './audit-log.service';
 
 @Module({
@@ -27,7 +28,7 @@ import { AuditLogService } from './audit-log.service';
     AuditLogService,
     AuditLogQueue,
     AuditLogProcessor,
-    // AuditLogResolver,
+    AuditLogResolver,
     // AuditLogByIdLoader,
     // AuditLogByIdResolver,
   ],

@@ -1,53 +1,55 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import {
-  Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
   ObjectLiteral,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
+import { ColumnField } from '../common/column-field.decorator';
+import { ManyToOneField } from '../common/many-to-one-field.decorator';
 import { User } from '../user/user.entity';
 import { AuditActionEnum } from './audit-action.enum';
 
 @ObjectType()
 @Entity()
 export class AuditLog {
+  @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
+  @Field(() => Date)
   @CreateDateColumn()
   createdAt!: Date;
 
+  @Field(() => Date)
   @UpdateDateColumn()
   updatedAt!: Date;
 
-  @Field(() => Date)
-  @Column({ type: 'varchar', length: 36 })
+  @ColumnField({ type: 'varchar', length: 36 })
   requestId!: string;
 
-  @Column({ type: 'uuid' })
+  @ColumnField({ type: 'uuid' })
   userId!: string;
-  @ManyToOne(() => User)
+  @ManyToOneField(() => User)
   user?: User;
 
-  @Column({ type: 'text' })
+  @ColumnField({ type: 'text' })
   input!: string;
 
-  @Column({ type: 'enum', enum: AuditActionEnum })
+  @ColumnField({ type: 'enum', enum: AuditActionEnum })
   action!: AuditActionEnum;
 
-  @Column({ type: 'varchar', length: 255 })
+  @ColumnField({ type: 'varchar', length: 255 })
   tableName!: string;
 
-  @Column({ type: 'uuid' })
+  @ColumnField({ type: 'uuid' })
   entityId!: string;
 
-  @Column({ type: 'json' })
+  @ColumnField({ type: 'json' })
   previousEntity!: ObjectLiteral;
 
-  @Column({ type: 'json' })
+  @ColumnField({ type: 'json' })
   newEntity!: ObjectLiteral;
 }

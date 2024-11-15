@@ -1,13 +1,24 @@
-import { Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Transactional } from 'typeorm-transactional';
 
 import { AuditLog } from './audit-log.entity';
+import { AuditLogService } from './audit-log.service';
+import { RevertAuditLogInput } from './mutation/revert-audit-log.input';
+import { RevertAuditLogOutput } from './mutation/revert-audit-log.output';
 
 @Resolver(() => AuditLog)
 export class AuditLogResolver {
-  // constructor(
-  //   private readonly auditLogRepository: AuditLogRepository,
-  //   private readonly auditLogService: AuditLogService,
-  // ) {}
+  constructor(private readonly auditLogService: AuditLogService) {}
+
+  @Transactional()
+  @Mutation(() => RevertAuditLogOutput)
+  async revertAuditLog(
+    @Args('input') input: RevertAuditLogInput,
+  ): Promise<RevertAuditLogOutput> {
+    const auditLogs = await this.auditLogService.revertOne(input.requestId);
+    return { auditLogs };
+  }
+
   // @Transactional()
   // @Mutation(() => CreateAuditLogOutput)
   // async createAuditLog(

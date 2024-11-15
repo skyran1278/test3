@@ -1,3 +1,5 @@
+import { registerEnumType } from '@nestjs/graphql';
+
 export enum AuditActionEnum {
   INSERT = 'INSERT',
   UPDATE = 'UPDATE',
@@ -5,3 +7,8 @@ export enum AuditActionEnum {
   SOFT_REMOVE = 'SOFT_REMOVE',
   RECOVER = 'RECOVER',
 }
+
+registerEnumType(AuditActionEnum, {
+  name: 'AuditActionEnum',
+  description: 'AuditActionEnum',
+});

@@ -2,6 +2,30 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+"""AuditActionEnum"""
+enum AuditActionEnum {
+  INSERT
+  RECOVER
+  REMOVE
+  SOFT_REMOVE
+  UPDATE
+}
+
+type AuditLog {
+  action: AuditActionEnum!
+  createdAt: DateTime!
+  entityId: ID!
+  id: ID!
+  input: String!
+  newEntity: JSONObject!
+  previousEntity: JSONObject!
+  requestId: String!
+  tableName: String!
+  updatedAt: DateTime!
+  user: User!
+  userId: ID!
+}
+
 input CreateDomain0001Input {
   """domain0001001"""
   domain0001001: Int
@@ -717,6 +741,7 @@ type Mutation {
   removeDomain0024(input: RemoveDomain0024Input!): RemoveDomain0024Output!
   removeDomain0025(input: RemoveDomain0025Input!): RemoveDomain0025Output!
   removeUser(input: RemoveUserInput!): RemoveUserOutput!
+  revertAuditLog(input: RevertAuditLogInput!): RevertAuditLogOutput!
   signIn(input: SignInInput!): SignInOutput!
   testQueueEventsRaceCondition(input: CreateDomain0015Input!): CreateDomain0015Output!
   updateDomain0001(input: UpdateDomain0001Input!): UpdateDomain0001Output!
@@ -936,6 +961,14 @@ input RemoveUserInput {
 
 type RemoveUserOutput {
   user: User!
+}
+
+input RevertAuditLogInput {
+  requestId: ID!
+}
+
+type RevertAuditLogOutput {
+  auditLogs: [AuditLog!]!
 }
 
 type Role implements MetaEntity {
