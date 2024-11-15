@@ -37,7 +37,7 @@ pnpm run migration:run
 pnpm run migration:revert
 
 # Run migration in production (Cloud Shell)
-aws ecs execute-command --cluster <ARN> --task <Image URI> --interactive --command "/bin/sh"
+aws ecs execute-command --cluster <ARN> --task <ARN> --interactive --command "/bin/sh"
 ```
 
 ## Folder Structure
