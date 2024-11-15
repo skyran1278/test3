@@ -65,6 +65,8 @@ function getReturnTypeFunc(
 ): ReturnTypeFunc<ReturnTypeFuncValue> {
   let returnTypeFunc: ReturnTypeFunc<ReturnTypeFuncValue> | undefined;
   switch (options.type) {
+    case 'text':
+    case 'char':
     case 'varchar': {
       returnTypeFunc = () => String;
       break;
