@@ -75,4 +75,21 @@ export class Domain0003 extends MetaEntity {
     comment: 'Array<int>',
   })
   domain0003011?: Maybe<number[]>;
+
+  @ColumnField({ type: 'timestamp', nullable: true, comment: 'timestamp' })
+  domain0003012?: Maybe<Date>;
+
+  @ColumnField({
+    type: 'timestamp with time zone',
+    nullable: true,
+    comment: 'timestamp with time zone',
+  })
+  domain0003013?: Maybe<Date>;
+
+  @ColumnField({
+    type: 'timestamp without time zone',
+    nullable: true,
+    comment: 'timestamp without time zone (same as timestamp)',
+  })
+  domain0003014?: Maybe<Date>;
 }
