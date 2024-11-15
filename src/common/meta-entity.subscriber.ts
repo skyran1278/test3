@@ -51,6 +51,8 @@ export class MetaEntitySubscriber
     const user = alsService.getOrFail('user');
     entity.createdUserId = user.id;
     entity.updatedUserId = user.id;
+    entity.createdAt = new Date();
+    entity.updatedAt = new Date();
 
     this.checkPermission(PermissionActionEnum.CREATE, entity);
 
@@ -63,6 +65,7 @@ export class MetaEntitySubscriber
 
     const user = alsService.getOrFail('user');
     entity.updatedUserId = user.id;
+    entity.updatedAt = new Date();
 
     this.checkPermission(PermissionActionEnum.UPDATE, entity);
 
