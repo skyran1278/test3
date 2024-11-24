@@ -3,8 +3,6 @@ import { join } from 'path';
 
 import { DataSourceOptions } from 'typeorm';
 
-console.log(__dirname);
-
 /**
  * for delayed populate process.env, we need to use function
  * @returns
