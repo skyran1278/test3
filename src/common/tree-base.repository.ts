@@ -2,6 +2,7 @@ import { BadRequestException, Logger } from '@nestjs/common';
 import { DeepPartial, FindOptionsWhere, In } from 'typeorm';
 
 import { BaseRepository } from './base.repository';
+import { canTopologicalSort, topologicalSort } from './topological-sort';
 import { TreeBaseInterface } from './tree-base.interface';
 
 export abstract class TreeBaseRepository<
@@ -22,31 +23,40 @@ export abstract class TreeBaseRepository<
   }
 
   /**
-   * Save multiple entities one by one to ensure the correctness of the mpath query.
+   * ### Closure Table
+   * Unlike Materialized Path, entities in a Closure Table can be saved as an array. However, in this implementation, we choose to save each entity individually for Materialized Path consistency.
+   * @see https://typeorm.io/tree-entities#closure-table
    *
-   * @param inputEntities - An array of entities to be saved.
-   * @returns A promise that resolves to an array of saved entities.
+   * ### Materialized Path (aka Path Enumeration)
+   * Materialized Path requires entities to be saved one at a time to maintain the correctness of the path structure.
+   * @see https://typeorm.io/tree-entities#materialized-path-aka-path-enumeration
+   *
+   * @param entities - An array of partial entity objects to be saved.
+   * @returns A promise that resolves to an array of fully saved entities.
    */
   private async saveMultipleEntities(
-    inputEntities: DeepPartial<Entity>[],
+    entities: DeepPartial<Entity>[],
   ): Promise<Entity[]> {
     const databaseParents = await super.find({
       where: {
-        id: In(inputEntities.map(({ parentId }) => parentId)),
+        id: In(entities.map(({ parentId }) => parentId)),
       } as FindOptionsWhere<Entity>,
       withDeleted: true,
     });
 
-    const allEntities = inputEntities.concat(databaseParents);
+    const allEntities = entities.concat(databaseParents);
 
-    this.bindParentEntities(inputEntities, allEntities);
+    this.bindParentEntities(entities, allEntities);
 
-    const entities: Entity[] = [];
-    for (const entity of inputEntities) {
-      entities.push(await super.save(entity));
+    if (canTopologicalSort(entities)) {
+      entities = topologicalSort(entities);
     }
 
-    return entities;
+    for (const entity of entities) {
+      await super.save(entity);
+    }
+
+    return entities as Entity[];
   }
 
   /**
