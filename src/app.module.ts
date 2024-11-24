@@ -34,6 +34,7 @@ import { Domain0009Module } from './domain-0009/domain-0009.module';
 import { Domain0010Module } from './domain-0010/domain-0010.module';
 import { Domain0015Module } from './domain-0015/domain-0015.module';
 import { Domain0021Module } from './domain-0021/domain-0021.module';
+import { Domain0022Module } from './domain-0022/domain-0022.module';
 import { Domain0024Module } from './domain-0024/domain-0024.module';
 import { Domain0025Module } from './domain-0025/domain-0025.module';
 import { CustomHttpExceptionBody } from './error/custom.error';
@@ -123,6 +124,7 @@ import { UserModule } from './user/user.module';
     Domain0010Module,
     Domain0015Module,
     Domain0021Module,
+    Domain0022Module,
     Domain0024Module,
     Domain0025Module,
   ],

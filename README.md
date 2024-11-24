@@ -56,7 +56,8 @@ aws ecs execute-command --cluster <ARN> --task <ARN> --interactive --command "/b
   - **domain-0009**: One-to-many (cascade).
   - **domain-0010**: One-to-many (cascade).
   - **domain-0015**: Queue management with BullMQ and Redis.
-  - **domain-0021**: Tree entity.
+  - **domain-0021**: Materialized Path (aka Path Enumeration) Tree entity.
+  - **domain-0022**: Closure table Tree entity.
   - **domain-0024**: Many-to-many.
   - **domain-0025**: Many-to-many.
 - **test**: E2E testing.
