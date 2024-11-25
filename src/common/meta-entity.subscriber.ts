@@ -18,9 +18,9 @@ import {
 
 import { alsService } from '../als/als.service';
 import { AuditActionEnum } from '../audit-log/audit-action.enum';
+import { AuditLogJobEnum } from '../audit-log/audit-log-job.enum';
 import { AuditLog } from '../audit-log/audit-log.entity';
 import { AuditLogQueue } from '../audit-log/audit-log.queue';
-import { AuditLogJobEnum } from '../audit-log/mutation/audit-log-job.enum';
 import { ValidatorError } from '../error/validator.error';
 import { PermissionActionEnum } from '../permission/permission-action.enum';
 import { Permission } from '../permission/permission.entity';

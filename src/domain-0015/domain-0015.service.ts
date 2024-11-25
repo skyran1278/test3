@@ -4,12 +4,12 @@ import { Transactional } from 'typeorm-transactional';
 
 import { QueueEnum } from '../common/queue.enum';
 import { TypedConfigService } from '../configuration/typed-config.service';
+import { Domain0015JobEnum } from './domain-0015-job.enum';
 import { Domain0015 } from './domain-0015.entity';
 import { Domain0015Queue } from './domain-0015.queue';
 import { Domain0015QueueEvents } from './domain-0015.queue-events';
 import { Domain0015Repository } from './domain-0015.repository';
 import { CreateDomain0015Input } from './mutation/create-domain-0015.input';
-import { Domain0015JobEnum } from './mutation/domain-0015-job.enum';
 import { UpdateDomain0015Input } from './mutation/update-domain-0015.input';
 import { Domain0015PageArgs } from './query/domain-0015-page.args';
 

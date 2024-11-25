@@ -6,12 +6,12 @@ import { Transactional } from 'typeorm-transactional';
 import { QueueAls } from '../als/queue-als.decorator';
 import { EventHandlerWorkerHost } from '../common/event-handler-worker-host';
 import { QueueEnum } from '../common/queue.enum';
+import { AuditLogJobEnum } from './audit-log-job.enum';
 import { AuditLogRepository } from './audit-log.repository';
-import { AuditLogJobEnum } from './mutation/audit-log-job.enum';
 import {
   CreateAuditLogsJobInput,
   CreateAuditLogsJobOutput,
-} from './mutation/audit-log.job';
+} from './mutation/create-audit-logs.job';
 
 @Processor(QueueEnum.AUDIT_LOG)
 export class AuditLogProcessor extends EventHandlerWorkerHost {
