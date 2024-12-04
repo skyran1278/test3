@@ -72,7 +72,7 @@ export const ToWhereInputType = <T>(
           item.typeFn();
         }
 
-        Field(item.typeFn, { ...item.options })(
+        Field(item.typeFn, { ...item.options, defaultValue: undefined })(
           OmitObjectTypeClass.prototype,
           item.name,
         );
