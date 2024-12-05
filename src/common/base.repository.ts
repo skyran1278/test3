@@ -28,9 +28,7 @@ import { DeepNullable } from './nullable.interface';
 
 type WhereInput<Entity extends ObjectLiteral> = DeepNullable<
   FindOptionsWhere<Entity>
-> & {
-  toFindOptionsWhere: () => DeepNullable<FindOptionsWhere<Entity>>;
-};
+>;
 
 interface NodePageInput<Entity extends ObjectLiteral> {
   take?: Maybe<number>;
@@ -215,10 +213,7 @@ export abstract class BaseRepository<
         ? [whereInput]
         : [];
 
-    const toFindOptionsWhereArray = inputWhereArray.map((inputWhere) =>
-      inputWhere.toFindOptionsWhere(),
-    );
-    const whereArray = this.transformNullFields(toFindOptionsWhereArray);
+    const whereArray = this.transformNullFields(inputWhereArray);
 
     const ruleWhereArray = this.getPermissionRuleWhereArray();
 
@@ -237,7 +232,6 @@ export abstract class BaseRepository<
     this.logger.verbose({
       [`${this.metadata.targetName}Page['transformWhere']`]: {
         whereInput,
-        toFindOptionsWhereArray,
         whereArray,
         mergedRuleWhereArray,
       },

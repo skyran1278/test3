@@ -916,7 +916,7 @@ type Query {
     take: NonNegativeInt
 
     """查詢條件"""
-    where: [Domain0001WhereInput!]
+    where: [Domain0001WhereInput!]! = []
   ): Domain0001Page!
   domain0003(id: ID!): Domain0003!
   domain0003Page(
