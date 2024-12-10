@@ -16,14 +16,16 @@ export class Domain0022Service {
   async saveOne(
     input: CreateDomain0022Input | UpdateDomain0022Input,
   ): Promise<Domain0022> {
-    const domain0022 = await this.repo.save(input);
+    const domain0022 = this.repo.create(input);
+    await this.repo.save(domain0022);
 
     return domain0022;
   }
 
   @Transactional()
   async saveMany(input: CreateDomain0022sInput): Promise<Domain0022[]> {
-    const domain0022s = await this.repo.save(input.domain0022s);
+    const domain0022s = this.repo.create(input.domain0022s);
+    await this.repo.save(domain0022s);
 
     return domain0022s;
   }

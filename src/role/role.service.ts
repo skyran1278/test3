@@ -13,7 +13,8 @@ export class RoleService {
 
   @Transactional()
   async saveOne(input: CreateRoleInput | UpdateRoleInput): Promise<Role> {
-    const role = await this.repo.save(input);
+    const role = this.repo.create(input);
+    await this.repo.save(role);
 
     return role;
   }

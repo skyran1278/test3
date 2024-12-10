@@ -15,7 +15,8 @@ export class PermissionService {
   async saveOne(
     input: CreatePermissionInput | UpdatePermissionInput,
   ): Promise<Permission> {
-    const permission = await this.repo.save(input);
+    const permission = this.repo.create(input);
+    await this.repo.save(permission);
 
     return permission;
   }

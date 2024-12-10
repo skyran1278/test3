@@ -15,7 +15,8 @@ export class Domain0010Service {
   async saveOne(
     input: CreateDomain0010Input | UpdateDomain0010Input,
   ): Promise<Domain0010> {
-    const domain0010 = await this.repo.save(input);
+    const domain0010 = this.repo.create(input);
+    await this.repo.save(domain0010);
 
     return domain0010;
   }

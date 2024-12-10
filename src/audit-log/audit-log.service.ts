@@ -47,7 +47,8 @@ export class AuditLogService {
   async saveOne(
     input: CreateAuditLogInput | UpdateAuditLogInput,
   ): Promise<AuditLog> {
-    const auditLog = await this.repo.save(input);
+    const auditLog = this.repo.create(input);
+    await this.repo.save(auditLog);
 
     return auditLog;
   }

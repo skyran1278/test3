@@ -35,7 +35,8 @@ export class Domain0015Processor extends EventHandlerWorkerHost {
   ): Promise<CreateDomain0015JobOutput> {
     const { input } = job.data;
 
-    const domain0015 = await this.domain0015Repo.save(input);
+    const domain0015 = this.domain0015Repo.create(input);
+    await this.domain0015Repo.save(domain0015);
 
     return { domain0015 };
   }

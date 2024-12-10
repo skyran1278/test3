@@ -13,7 +13,8 @@ export class UserService {
 
   @Transactional()
   async saveOne(input: CreateUserInput | UpdateUserInput): Promise<User> {
-    const user = await this.repo.save(input);
+    const user = this.repo.create(input);
+    await this.repo.save(user);
 
     return user;
   }
