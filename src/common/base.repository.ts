@@ -129,31 +129,6 @@ export abstract class BaseRepository<
   // }
 
   /**
-   * Persists the provided entity or entities into the database.
-   * @param input Entity or entities to be saved.
-   * @param options Configuration options for the save operation.
-   * @returns The saved entity or entities.
-   */
-  async save(entity: DeepPartial<Entity>): Promise<Entity>;
-  async save(entities: DeepPartial<Entity>[]): Promise<Entity[]>;
-  async save(
-    input: DeepPartial<Entity> | DeepPartial<Entity>[],
-  ): Promise<Entity | Entity[]> {
-    this.logger.verbose({
-      save: this.metadata.targetName,
-      input,
-    });
-
-    if (Array.isArray(input)) {
-      const entities = this.create(input);
-      return super.save(entities);
-    }
-
-    const entity = this.create(input);
-    return super.save(entity);
-  }
-
-  /**
    * Finds and returns a paginated list of nodes based on the provided options.
    * @param options - The options for pagination and filtering.
    * @returns A promise that resolves to a `NodePage` object containing the paginated nodes.
