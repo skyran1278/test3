@@ -5,7 +5,6 @@ import { JwtModule } from '@nestjs/jwt';
 
 import { AlsModule } from '../als/als.module';
 import { AuditLogModule } from '../audit-log/audit-log.module';
-import { RepoProxy } from '../common/repo.proxy';
 import { TypedConfigService } from '../configuration/typed-config.service';
 import { UserModule } from '../user/user.module';
 import { BasicAuthService } from './basic-auth.service';
@@ -42,11 +41,10 @@ import { WinstonLogger } from './winston-logger.service';
       useClass: LoggingInterceptor,
     },
     MetaEntityResolver,
-    RepoProxy,
     WinstonLogger,
     MetaEntitySubscriber,
     BasicAuthService,
   ],
-  exports: [RepoProxy, WinstonLogger, BasicAuthService],
+  exports: [WinstonLogger, BasicAuthService],
 })
 export class CommonModule {}
