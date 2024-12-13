@@ -1,4 +1,4 @@
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
 import { Transactional } from 'typeorm-transactional';
 
@@ -13,6 +13,7 @@ import { UpdateDomain0001Input } from './mutation/update-domain-0001.input';
 import { UpdateDomain0001Output } from './mutation/update-domain-0001.output';
 import { Domain0001PageArgs } from './query/domain-0001-page.args';
 import { Domain0001Page } from './query/domain-0001-page.type';
+import { Domain0001Args } from './query/domain-0001.args';
 
 @Resolver(() => Domain0001)
 export class Domain0001Resolver {
@@ -37,11 +38,11 @@ export class Domain0001Resolver {
   }
 
   @Transactional()
-  @Query(() => Domain0001)
-  domain0001(
-    @Args('id', { type: () => ID }) id: string,
-  ): Promise<Maybe<Domain0001>> {
-    return this.domain0001Repository.findOne({ where: { id } });
+  @Query(() => Domain0001, { nullable: true })
+  domain0001(@Args() args: Domain0001Args): Promise<Maybe<Domain0001>> {
+    return this.domain0001Repository.findOne({
+      where: args.where.map((item) => item?.toFindOptionsWhere()),
+    });
   }
 
   @Transactional()

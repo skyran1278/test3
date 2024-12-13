@@ -904,7 +904,10 @@ enum PermissionActionEnum {
 }
 
 type Query {
-  domain0001(id: ID!): Domain0001!
+  domain0001(
+    """查詢條件"""
+    where: [Domain0001WhereInput!]! = []
+  ): Domain0001
   domain0001Page(
     """排序欄位與方式"""
     order: Domain0001OrderInput! = {}
