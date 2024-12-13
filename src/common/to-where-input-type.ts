@@ -16,6 +16,7 @@ import { JSONObjectResolver } from 'graphql-scalars';
 import { Maybe } from 'graphql/jsutils/Maybe';
 
 import DecimalScalar from './decimal.scalar';
+import { DeepNonNullable } from './nullable.interface';
 import { PickBasicType, PickBasicTypeProperty } from './pick-basic-type';
 
 export type OmitDecimalJsonAndArrayProperty<T> = {
@@ -29,10 +30,14 @@ export type OmitDecimalJsonAndArrayProperty<T> = {
     : P]: T[P];
 };
 
+export type WhereInputType<T> = Type<
+  DeepNonNullable<OmitDecimalJsonAndArrayProperty<PickBasicTypeProperty<T>>>
+>;
+
 export const ToWhereInputType = <T>(
   classRef: Type<T>,
   decorator: ClassDecoratorFactory | undefined = InputType,
-): Type<OmitDecimalJsonAndArrayProperty<PickBasicTypeProperty<T>>> => {
+): WhereInputType<T> => {
   const basicTypeClassRef = PickBasicType(
     PartialType(classRef, decorator),
     decorator,
@@ -72,6 +77,13 @@ export const ToWhereInputType = <T>(
           item.typeFn();
         }
 
+        // Transform(
+        //   ({ value }: { value: unknown }) => {
+        //     return value === null ? undefined : value;
+        //   },
+        //   { toClassOnly: true },
+        // )(OmitObjectTypeClass.prototype, item.name);
+
         Field(item.typeFn, { ...item.options, defaultValue: undefined })(
           OmitObjectTypeClass.prototype,
           item.name,
@@ -90,7 +102,5 @@ export const ToWhereInputType = <T>(
     applyFields(items);
   });
 
-  return OmitObjectTypeClass as Type<
-    OmitDecimalJsonAndArrayProperty<PickBasicTypeProperty<T>>
-  >;
+  return OmitObjectTypeClass as WhereInputType<T>;
 };
