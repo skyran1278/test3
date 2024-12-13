@@ -437,11 +437,6 @@ describe('AppController (e2e)', () => {
         createDomain0021s: {
           domain0021s: [
             {
-              id: 'cf9a9657-b85f-4a25-ae0b-526a0443a23d',
-              domain0021001: 12,
-              children: [],
-            },
-            {
               id: 'b48bff7f-3b3f-4bdd-8236-a7c06685ed44',
               domain0021001: 10,
               children: [
@@ -488,6 +483,11 @@ describe('AppController (e2e)', () => {
                   children: [],
                 },
               ],
+            },
+            {
+              id: 'cf9a9657-b85f-4a25-ae0b-526a0443a23d',
+              domain0021001: 12,
+              children: [],
             },
           ],
         },
