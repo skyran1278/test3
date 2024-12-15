@@ -21,9 +21,9 @@
     "migration:generate": "npx typeorm-ts-node-commonjs migration:generate -d src/migration/migration.config.ts",
     "migration:revert": "npx typeorm-ts-node-commonjs migration:revert -d src/migration/migration.config.ts",
     "migration:run": "npx typeorm-ts-node-commonjs migration:run -d src/migration/migration.config.ts",
-    "migration:run:prod": "npx typeorm migration:run -d dist/migration/migration.config.js",
-    "migration:revert:prod": "npx typeorm migration:revert -d dist/migration/migration.config.js",
-    "migration:drop:prod": "npx typeorm schema:drop -d dist/migration/migration.config.js",
+    "migration:prod:run": "npx typeorm migration:run -d dist/migration/migration.config.js",
+    "migration:prod:revert": "npx typeorm migration:revert -d dist/migration/migration.config.js",
+    "migration:prod:drop": "npx typeorm schema:drop -d dist/migration/migration.config.js",
     "release": "dotenv release-it --"
   },
   "dependencies": {

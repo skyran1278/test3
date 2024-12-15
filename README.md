@@ -38,6 +38,7 @@ pnpm run migration:revert
 
 # Run migration in production (Cloud Shell)
 aws ecs execute-command --cluster <ARN> --task <ARN> --interactive --command "/bin/sh"
+pnpm migration:prod:drop
 ```
 
 ## Folder Structure
