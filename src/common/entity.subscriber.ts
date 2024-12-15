@@ -20,6 +20,8 @@ export class EntitySubscriber implements EntitySubscriberInterface {
   }
 
   afterQuery(event: AfterQueryEvent<unknown>): void {
+    if (!this.alsService.isActive()) return;
+
     const requestId = this.alsService.get('requestId');
     const logger = new Logger(`RequestId: ${requestId}`);
     const executionTime = `\x1B[33m+${event.executionTime}ms\x1B[39m`;
