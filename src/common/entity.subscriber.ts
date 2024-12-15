@@ -81,7 +81,7 @@ export class EntitySubscriber implements EntitySubscriberInterface {
     }
 
     if (Array.isArray(value)) {
-      return `(${value.map((v) => this.formatParameter(v)).join(', ')})`; // Recursively format array values.
+      return `'{${value.map((v) => this.formatParameter(v)).join(', ')}}'`; // Recursively format array values.
     }
 
     if (isObject(value)) {
