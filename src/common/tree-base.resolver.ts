@@ -7,7 +7,7 @@
 // @Resolver(() => TreeBaseEntity)
 // export class TreeBaseEntityResolver {
 //   constructor(
-//     private readonly domain0021ChildrenLoader: Domain0021ChildrenLoader,
+//     private readonly domain21ChildrenLoader: Domain21ChildrenLoader,
 //   ) {}
 
 //   @ResolveField(() => User, { nullable: true })

@@ -97,17 +97,17 @@ describe('AppController (e2e)', () => {
     });
   });
 
-  it('/graphql createDomain0001', async () => {
+  it('/graphql createDomain01', async () => {
     const body = await graphqlRequest(
-      `mutation CreateDomain0001($input: CreateDomain0001Input!) {
-        createDomain0001(input: $input) {
-          domain0001 {
+      `mutation CreateDomain01($input: CreateDomain01Input!) {
+        createDomain01(input: $input) {
+          domain01 {
             createdUser {
               id
             }
             createdUserId
             createdAt
-            domain0001001
+            domain0101
             id
             updatedUser {
               id
@@ -119,20 +119,20 @@ describe('AppController (e2e)', () => {
       }`,
       {
         input: {
-          domain0001001: 1,
+          domain0101: 1,
         },
       },
     );
 
     expect(body).toMatchObject({
       data: {
-        createDomain0001: {
-          domain0001: {
+        createDomain01: {
+          domain01: {
             createdUser: {
               id: '94107a27-4c24-4912-be7b-6f4b0b462acb',
             },
             createdUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
-            domain0001001: 1,
+            domain0101: 1,
             updatedUser: {
               id: '94107a27-4c24-4912-be7b-6f4b0b462acb',
             },
@@ -143,72 +143,72 @@ describe('AppController (e2e)', () => {
     });
   });
 
-  it('/graphql createDomain0003', async () => {
+  it('/graphql createDomain03', async () => {
     const body = await graphqlRequest(
-      `mutation CreateDomain0003($input: CreateDomain0003Input!) {
-        createDomain0003(input: $input) {
-          domain0003 {
+      `mutation CreateDomain03($input: CreateDomain03Input!) {
+        createDomain03(input: $input) {
+          domain03 {
             id
-            domain0003001
-            domain0003002
-            domain0003003
-            domain0003004
-            domain0003005
-            domain0003006
-            domain0003007
-            domain0003008
-            domain0003011
+            domain0301
+            domain0302
+            domain0303
+            domain0304
+            domain0305
+            domain0306
+            domain0307
+            domain0308
+            domain0311
           }
         }
       }`,
       {
         input: {
-          domain0003001: true,
-          domain0003002: 1,
-          domain0003003: 'varchar',
-          domain0003004: '2024-03-31',
-          domain0003005: '10',
-          domain0003006: 'ACTIVE',
-          domain0003007: {
-            domain0003007: 'domain0003007',
+          domain0301: true,
+          domain0302: 1,
+          domain0303: 'varchar',
+          domain0304: '2024-03-31',
+          domain0305: '10',
+          domain0306: 'ACTIVE',
+          domain0307: {
+            domain0307: 'domain0307',
           },
-          domain0003008: {
-            domain0003008: 'domain0003008',
+          domain0308: {
+            domain0308: 'domain0308',
           },
-          domain0003011: [1, 2, 3],
+          domain0311: [1, 2, 3],
         },
       },
     );
 
     expect(body).toMatchObject({
       data: {
-        createDomain0003: {
-          domain0003: {
-            domain0003001: true,
-            domain0003002: 1,
-            domain0003003: 'varchar',
-            domain0003004: '2024-03-31',
-            domain0003005: '10',
-            domain0003006: 'ACTIVE',
-            domain0003007: {
-              domain0003007: 'domain0003007',
+        createDomain03: {
+          domain03: {
+            domain0301: true,
+            domain0302: 1,
+            domain0303: 'varchar',
+            domain0304: '2024-03-31',
+            domain0305: '10',
+            domain0306: 'ACTIVE',
+            domain0307: {
+              domain0307: 'domain0307',
             },
-            domain0003008: {
-              domain0003008: 'domain0003008',
+            domain0308: {
+              domain0308: 'domain0308',
             },
-            domain0003011: [1, 2, 3],
+            domain0311: [1, 2, 3],
           },
         },
       },
     });
   });
 
-  it('/graphql createDomain0008', async () => {
+  it('/graphql createDomain08', async () => {
     const body = await graphqlRequest(
-      `mutation CreateDomain0008($input: CreateDomain0008Input!) {
-        createDomain0008(input: $input) {
-          domain0008 {
-            domain0009s {
+      `mutation CreateDomain08($input: CreateDomain08Input!) {
+        createDomain08(input: $input) {
+          domain08 {
+            domain09s {
               id
               createdAt
               createdUser {
@@ -220,28 +220,28 @@ describe('AppController (e2e)', () => {
                 id
               }
               deletedUserId
-              domain0010s {
+              domain10s {
                 createdAt
                 createdUserId
                 deletedAt
                 deletedUserId
-                domain0009 {
+                domain09 {
                   createdAt
                   createdUserId
                   deletedAt
                   deletedUserId
-                  domain0009001
+                  domain0901
                   id
                   updatedAt
                   updatedUserId
                 }
-                domain0009Id
-                domain0010001
+                domain09Id
+                domain1001
                 id
                 updatedAt
                 updatedUserId
               }
-              domain0009001
+              domain0901
               updatedAt
               updatedUser {
                 id
@@ -254,16 +254,16 @@ describe('AppController (e2e)', () => {
       `,
       {
         input: {
-          domain0008001: 2,
-          domain0009s: [
+          domain0801: 2,
+          domain09s: [
             {
-              domain0009001: 2,
-              domain0010s: [
+              domain0901: 2,
+              domain10s: [
                 {
-                  domain0010001: 2,
+                  domain1001: 2,
                 },
                 {
-                  domain0010001: 2,
+                  domain1001: 2,
                 },
               ],
             },
@@ -274,9 +274,9 @@ describe('AppController (e2e)', () => {
 
     expect(body).toMatchObject({
       data: {
-        createDomain0008: {
-          domain0008: {
-            domain0009s: [
+        createDomain08: {
+          domain08: {
+            domain09s: [
               {
                 createdUser: {
                   id: '94107a27-4c24-4912-be7b-6f4b0b462acb',
@@ -285,37 +285,37 @@ describe('AppController (e2e)', () => {
                 deletedAt: null,
                 deletedUser: null,
                 deletedUserId: null,
-                domain0010s: [
+                domain10s: [
                   {
                     createdUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
                     deletedAt: null,
                     deletedUserId: null,
-                    domain0009: {
+                    domain09: {
                       createdUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
                       deletedAt: null,
                       deletedUserId: null,
-                      domain0009001: 2,
+                      domain0901: 2,
                       updatedUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
                     },
-                    domain0010001: 2,
+                    domain1001: 2,
                     updatedUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
                   },
                   {
                     createdUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
                     deletedAt: null,
                     deletedUserId: null,
-                    domain0009: {
+                    domain09: {
                       createdUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
                       deletedAt: null,
                       deletedUserId: null,
-                      domain0009001: 2,
+                      domain0901: 2,
                       updatedUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
                     },
-                    domain0010001: 2,
+                    domain1001: 2,
                     updatedUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
                   },
                 ],
-                domain0009001: 2,
+                domain0901: 2,
                 updatedUser: {
                   id: '94107a27-4c24-4912-be7b-6f4b0b462acb',
                 },
@@ -328,13 +328,13 @@ describe('AppController (e2e)', () => {
     });
   });
 
-  it('/graphql createDomain0015', async () => {
+  it('/graphql createDomain15', async () => {
     const body = await graphqlRequest(
-      `mutation CreateDomain0015($input: CreateDomain0015Input!) {
-        createDomain0015(input: $input) {
-          domain0015 {
+      `mutation CreateDomain15($input: CreateDomain15Input!) {
+        createDomain15(input: $input) {
+          domain15 {
             id
-            domain0015001
+            domain1501
             createdUserId
             updatedUserId
           }
@@ -342,16 +342,16 @@ describe('AppController (e2e)', () => {
       }`,
       {
         input: {
-          domain0015001: 1,
+          domain1501: 1,
         },
       },
     );
 
     expect(body).toMatchObject({
       data: {
-        createDomain0015: {
-          domain0015: {
-            domain0015001: 1,
+        createDomain15: {
+          domain15: {
+            domain1501: 1,
             createdUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
             updatedUserId: '94107a27-4c24-4912-be7b-6f4b0b462acb',
           },
@@ -360,52 +360,52 @@ describe('AppController (e2e)', () => {
     });
   });
 
-  it('/graphql createDomain0021', async () => {
+  it('/graphql createDomain21', async () => {
     const body = await graphqlRequest(
-      `mutation CreateDomain0021($input: CreateDomain0021Input!) {
-        createDomain0021(input: $input) {
-          domain0021 {
-            domain0021001
+      `mutation CreateDomain21($input: CreateDomain21Input!) {
+        createDomain21(input: $input) {
+          domain21 {
+            domain2101
           }
         }
       }`,
       {
         input: {
-          domain0021001: 1,
+          domain2101: 1,
         },
       },
     );
 
     expect(body).toMatchObject({
       data: {
-        createDomain0021: {
-          domain0021: {
-            domain0021001: 1,
+        createDomain21: {
+          domain21: {
+            domain2101: 1,
           },
         },
       },
     });
   });
 
-  it('/graphql createDomain0021s should correctly update the mpath', async () => {
+  it('/graphql createDomain21s should correctly update the mpath', async () => {
     const body = await graphqlRequest(
-      `mutation CreateDomain0021s($input: CreateDomain0021sInput!) {
-        createDomain0021s(input: $input) {
-          domain0021s {
+      `mutation CreateDomain21s($input: CreateDomain21sInput!) {
+        createDomain21s(input: $input) {
+          domain21s {
             id
-            domain0021001
+            domain2101
             children {
               id
-              domain0021001
+              domain2101
               children {
                 id
-                domain0021001
+                domain2101
                 children {
                   id
-                  domain0021001
+                  domain2101
                   children {
                     id
-                    domain0021001
+                    domain2101
                   }
                 }
               }
@@ -416,16 +416,16 @@ describe('AppController (e2e)', () => {
       `,
       {
         input: {
-          domain0021s: [
+          domain21s: [
             {
               id: 'b48bff7f-3b3f-4bdd-8236-a7c06685ed44',
               parentId: '221a19d5-bb02-42c8-8539-24446325e958',
-              domain0021001: 10,
+              domain2101: 10,
             },
             {
               id: 'cf9a9657-b85f-4a25-ae0b-526a0443a23d',
               parentId: 'aab1cae2-a27e-426e-8f31-6124698e98bd',
-              domain0021001: 12,
+              domain2101: 12,
             },
           ],
         },
@@ -434,27 +434,27 @@ describe('AppController (e2e)', () => {
 
     expect(body).toMatchObject({
       data: {
-        createDomain0021s: {
-          domain0021s: [
+        createDomain21s: {
+          domain21s: [
             {
               id: 'b48bff7f-3b3f-4bdd-8236-a7c06685ed44',
-              domain0021001: 10,
+              domain2101: 10,
               children: [
                 {
                   id: '993422bd-039a-4276-bedc-0b4a9051b35e',
-                  domain0021001: 20,
+                  domain2101: 20,
                   children: [
                     {
                       id: 'a0898ce1-e7ea-4de3-8853-2269468bc251',
-                      domain0021001: 30,
+                      domain2101: 30,
                       children: [
                         {
                           id: 'aab1cae2-a27e-426e-8f31-6124698e98bd',
-                          domain0021001: 40,
+                          domain2101: 40,
                           children: [
                             {
                               id: 'cf9a9657-b85f-4a25-ae0b-526a0443a23d',
-                              domain0021001: 12,
+                              domain2101: 12,
                             },
                           ],
                         },
@@ -462,31 +462,31 @@ describe('AppController (e2e)', () => {
                     },
                     {
                       id: '3cfe69a8-bcca-4b74-b3d9-9e75b41da641',
-                      domain0021001: 31,
+                      domain2101: 31,
                       children: [],
                     },
                     {
                       id: 'b83d41e0-0a5d-4466-9db6-22b5392b4354',
-                      domain0021001: 32,
+                      domain2101: 32,
                       children: [],
                     },
                   ],
                 },
                 {
                   id: '46621bee-bd35-45fa-be2b-722065047ee5',
-                  domain0021001: 21,
+                  domain2101: 21,
                   children: [],
                 },
                 {
                   id: '181f4ac5-fcb2-4976-a25f-4e398cc0ed33',
-                  domain0021001: 22,
+                  domain2101: 22,
                   children: [],
                 },
               ],
             },
             {
               id: 'cf9a9657-b85f-4a25-ae0b-526a0443a23d',
-              domain0021001: 12,
+              domain2101: 12,
               children: [],
             },
           ],

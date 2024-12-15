@@ -2,7 +2,7 @@ import { registerEnumType } from '@nestjs/graphql';
 
 export enum QueueEnum {
   AUDIT_LOG = 'AUDIT_LOG',
-  DOMAIN0015 = 'DOMAIN0015',
+  DOMAIN15 = 'DOMAIN15',
 }
 
 registerEnumType(QueueEnum, {
@@ -12,8 +12,8 @@ registerEnumType(QueueEnum, {
     AUDIT_LOG: {
       description: 'AUDIT_LOG',
     },
-    DOMAIN0015: {
-      description: 'DOMAIN0015',
+    DOMAIN15: {
+      description: 'DOMAIN15',
     },
   },
 });

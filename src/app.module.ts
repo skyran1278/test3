@@ -27,16 +27,16 @@ import { getDataSourceOptions } from './common/data-source-options';
 import { ConfigurationModule } from './configuration/configuration.module';
 import { EnvironmentEnum } from './configuration/environment.enum';
 import { TypedConfigService } from './configuration/typed-config.service';
-import { Domain0001Module } from './domain-0001/domain-0001.module';
-import { Domain0003Module } from './domain-0003/domain-0003.module';
-import { Domain0008Module } from './domain-0008/domain-0008.module';
-import { Domain0009Module } from './domain-0009/domain-0009.module';
-import { Domain0010Module } from './domain-0010/domain-0010.module';
-import { Domain0015Module } from './domain-0015/domain-0015.module';
-import { Domain0021Module } from './domain-0021/domain-0021.module';
-import { Domain0022Module } from './domain-0022/domain-0022.module';
-import { Domain0024Module } from './domain-0024/domain-0024.module';
-import { Domain0025Module } from './domain-0025/domain-0025.module';
+import { Domain01Module } from './domain-01/domain-01.module';
+import { Domain03Module } from './domain-03/domain-03.module';
+import { Domain08Module } from './domain-08/domain-08.module';
+import { Domain09Module } from './domain-09/domain-09.module';
+import { Domain10Module } from './domain-10/domain-10.module';
+import { Domain15Module } from './domain-15/domain-15.module';
+import { Domain21Module } from './domain-21/domain-21.module';
+import { Domain22Module } from './domain-22/domain-22.module';
+import { Domain24Module } from './domain-24/domain-24.module';
+import { Domain25Module } from './domain-25/domain-25.module';
 import { CustomHttpExceptionBody } from './error/custom.error';
 import { ErrorModule } from './error/error.module';
 import { HealthModule } from './health/health.module';
@@ -117,16 +117,16 @@ import { UserModule } from './user/user.module';
     HealthModule,
     UserModule,
     SecurityModule,
-    Domain0001Module,
-    Domain0003Module,
-    Domain0008Module,
-    Domain0009Module,
-    Domain0010Module,
-    Domain0015Module,
-    Domain0021Module,
-    Domain0022Module,
-    Domain0024Module,
-    Domain0025Module,
+    Domain01Module,
+    Domain03Module,
+    Domain08Module,
+    Domain09Module,
+    Domain10Module,
+    Domain15Module,
+    Domain21Module,
+    Domain22Module,
+    Domain24Module,
+    Domain25Module,
   ],
   controllers: [AppController],
   providers: [AppService],

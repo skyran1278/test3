@@ -50,16 +50,16 @@ aws ecs execute-command --cluster <ARN> --task <ARN> --interactive --command "/b
   - **configuration**: Env config.
   - **migration**: DB migrations.
   - **security, user, permission, role**: Access control.
-  - **domain-0001**: Schematic.
-  - **domain-0003**: Handles multiple column types.
-  - **domain-0008**: One-to-many (cascade).
-  - **domain-0009**: One-to-many (cascade).
-  - **domain-0010**: One-to-many (cascade).
-  - **domain-0015**: Queue management with BullMQ and Redis.
-  - **domain-0021**: Materialized Path (aka Path Enumeration) Tree entity.
-  - **domain-0022**: Closure table Tree entity.
-  - **domain-0024**: Many-to-many.
-  - **domain-0025**: Many-to-many.
+  - **domain-01**: Schematic.
+  - **domain-03**: Handles multiple column types.
+  - **domain-08**: One-to-many (cascade).
+  - **domain-09**: One-to-many (cascade).
+  - **domain-10**: One-to-many (cascade).
+  - **domain-15**: Queue management with BullMQ and Redis.
+  - **domain-21**: Materialized Path (aka Path Enumeration) Tree entity.
+  - **domain-22**: Closure table Tree entity.
+  - **domain-24**: Many-to-many.
+  - **domain-25**: Many-to-many.
 - **test**: E2E testing.
 
 ## IaC (Infrastructure as Code) Setup & Common Commands

@@ -27,24 +27,24 @@ export class Seed1817332628407 implements MigrationInterface {
         public.permission (id, action, subject, conditions)
       VALUES
         ('bc9684a2-2cbf-48ff-8335-90f01a96b86e', 'manage', 'all', NULL),
-        ('655c4f9f-3167-432c-bc43-45bd50f9621b', 'manage', 'Domain0001', '{ "createdUserId": "\${user.id}" }'),
-        ('396ed16c-5827-4efe-b4b4-29c50330d72f', 'read', 'Domain0001', NULL),
-        ('89548454-54ce-4c64-85ae-081bdd720adf', 'manage', 'Domain0003', '{ "createdUserId": "\${user.id}" }'),
-        ('7ba74da2-105f-4c90-b66d-27af338165bd', 'read', 'Domain0003', NULL),
-        ('f5c8b3d9-0f5d-4e1b-8c4a-1b8c6e3e3b0b', 'manage', 'Domain0005', '{ "createdUserId": "\${user.id}" }'),
-        ('6f1ef58c-b8d2-431f-bf2a-ac1d13741b26', 'read', 'Domain0005', NULL),
-        ('52357e5f-6127-41a2-8c11-3555d64353f6', 'manage', 'Domain0006', '{ "createdUserId": "\${user.id}" }'),
-        ('0e98cf27-a8f5-455b-bd25-ffc359f3d046', 'read', 'Domain0006', NULL),
-        ('33933832-689b-4f8f-959c-3d76c5418705', 'manage', 'Domain0007', '{ "createdUserId": "\${user.id}" }'),
-        ('8d054732-09df-4300-9b33-d2769292dbd6', 'read', 'Domain0007', NULL),
-        ('5057d6c4-2d40-4c3c-974d-a83873337536', 'manage', 'Domain0008', '{ "createdUserId": "\${user.id}" }'),
-        ('db864487-59fb-41ab-b194-0c99e4857ff5', 'read', 'Domain0008', NULL),
-        ('8908c785-bf02-4a90-bcd0-3388968e2a83', 'manage', 'Domain0009', '{ "createdUserId": "\${user.id}" }'),
-        ('79d0c6ef-6421-4ae5-9622-3b1ef427f3a1', 'read', 'Domain0009', NULL),
-        ('ac2067c7-c03d-4572-a401-18fa7f64282d', 'manage', 'Domain0010', '{ "createdUserId": "\${user.id}" }'),
-        ('e177a0c1-968f-4c6b-afe4-de9257e05c61', 'read', 'Domain0010', NULL),
-        ('ce224726-bdcf-4447-b170-5381f9ca596b', 'manage', 'Domain0011', '{ "createdUserId": "\${user.id}" }'),
-        ('dd0961d5-2090-4a3f-ab73-0c2f41608c26', 'read', 'Domain0011', NULL);
+        ('655c4f9f-3167-432c-bc43-45bd50f9621b', 'manage', 'Domain01', '{ "createdUserId": "\${user.id}" }'),
+        ('396ed16c-5827-4efe-b4b4-29c50330d72f', 'read', 'Domain01', NULL),
+        ('89548454-54ce-4c64-85ae-081bdd720adf', 'manage', 'Domain03', '{ "createdUserId": "\${user.id}" }'),
+        ('7ba74da2-105f-4c90-b66d-27af338165bd', 'read', 'Domain03', NULL),
+        ('f5c8b3d9-0f5d-4e1b-8c4a-1b8c6e3e3b0b', 'manage', 'Domain05', '{ "createdUserId": "\${user.id}" }'),
+        ('6f1ef58c-b8d2-431f-bf2a-ac1d13741b26', 'read', 'Domain05', NULL),
+        ('52357e5f-6127-41a2-8c11-3555d64353f6', 'manage', 'Domain06', '{ "createdUserId": "\${user.id}" }'),
+        ('0e98cf27-a8f5-455b-bd25-ffc359f3d046', 'read', 'Domain06', NULL),
+        ('33933832-689b-4f8f-959c-3d76c5418705', 'manage', 'Domain07', '{ "createdUserId": "\${user.id}" }'),
+        ('8d054732-09df-4300-9b33-d2769292dbd6', 'read', 'Domain07', NULL),
+        ('5057d6c4-2d40-4c3c-974d-a83873337536', 'manage', 'Domain08', '{ "createdUserId": "\${user.id}" }'),
+        ('db864487-59fb-41ab-b194-0c99e4857ff5', 'read', 'Domain08', NULL),
+        ('8908c785-bf02-4a90-bcd0-3388968e2a83', 'manage', 'Domain09', '{ "createdUserId": "\${user.id}" }'),
+        ('79d0c6ef-6421-4ae5-9622-3b1ef427f3a1', 'read', 'Domain09', NULL),
+        ('ac2067c7-c03d-4572-a401-18fa7f64282d', 'manage', 'Domain10', '{ "createdUserId": "\${user.id}" }'),
+        ('e177a0c1-968f-4c6b-afe4-de9257e05c61', 'read', 'Domain10', NULL),
+        ('ce224726-bdcf-4447-b170-5381f9ca596b', 'manage', 'Domain11', '{ "createdUserId": "\${user.id}" }'),
+        ('dd0961d5-2090-4a3f-ab73-0c2f41608c26', 'read', 'Domain11', NULL);
     `);
 
     await queryRunner.query(sql`
@@ -67,7 +67,7 @@ export class Seed1817332628407 implements MigrationInterface {
 
     await queryRunner.query(sql`
       INSERT INTO
-        public.domain0001 (id, domain0001001)
+        public.domain01 (id, domain0101)
       VALUES
         ('0bc02b9c-585e-438f-ad6e-8bc0a16cb6fb', 1),
         ('1b2c3a4d-5e6f-7a8b-9c0d-1e2a3b4c5d6e', 2);
@@ -75,14 +75,14 @@ export class Seed1817332628407 implements MigrationInterface {
 
     await queryRunner.query(sql`
       INSERT INTO
-        public.domain0003 (id, domain0003001, domain0003002, domain0003003, domain0003004, domain0003005, domain0003006, domain0003007, domain0003008, domain0003011)
+        public.domain03 (id, domain0301, domain0302, domain0303, domain0304, domain0305, domain0306, domain0307, domain0308, domain0311)
       VALUES
-        ('1e3b75d6-e9d1-4379-861e-4dc44cfde1e5', TRUE, 1, 'varchar', '2024-03-31', 10.000000, 'ACTIVE', '{"domain0003007": "domain0003007"}', '{"domain0003008": "domain0003008"}', '{1,2,3}');
+        ('1e3b75d6-e9d1-4379-861e-4dc44cfde1e5', TRUE, 1, 'varchar', '2024-03-31', 10.000000, 'ACTIVE', '{"domain0307": "domain0307"}', '{"domain0308": "domain0308"}', '{1,2,3}');
     `);
 
     await queryRunner.query(sql`
       INSERT INTO
-        public.domain0008 (id, domain0008001)
+        public.domain08 (id, domain0801)
       VALUES
         ('447d9055-317b-40e7-972a-53b8adc0c5c3', 100),
         ('3d9ba46f-8247-4982-930f-cda360c00de3', 200);
@@ -90,7 +90,7 @@ export class Seed1817332628407 implements MigrationInterface {
 
     await queryRunner.query(sql`
       INSERT INTO
-        public.domain0009 (id, domain0009001, "domain0008Id")
+        public.domain09 (id, domain0901, "domain08Id")
       VALUES
         ('0cbbc06c-95f5-4cc3-8646-5e4d27a69b33', 110, '447d9055-317b-40e7-972a-53b8adc0c5c3'),
         ('c4347881-40d0-42c2-8996-44f2827acab7', 120, '447d9055-317b-40e7-972a-53b8adc0c5c3'),
@@ -99,7 +99,7 @@ export class Seed1817332628407 implements MigrationInterface {
     `);
     await queryRunner.query(sql`
       INSERT INTO
-        public.domain0010 (id, domain0010001, "domain0009Id")
+        public.domain10 (id, domain1001, "domain09Id")
       VALUES
         ('281edeb4-449a-4774-be78-b49558f02634', 111, '0cbbc06c-95f5-4cc3-8646-5e4d27a69b33'),
         ('10c32da9-54d4-48ed-ad5e-fc2d06c0ba93', 112, '0cbbc06c-95f5-4cc3-8646-5e4d27a69b33'),
@@ -112,7 +112,7 @@ export class Seed1817332628407 implements MigrationInterface {
     `);
     await queryRunner.query(sql`
       INSERT INTO
-        public.domain0021 (id, domain0021001, "parentId", mpath)
+        public.domain21 (id, domain2101, "parentId", mpath)
       VALUES
         ('b48bff7f-3b3f-4bdd-8236-a7c06685ed44', 10, NULL, 'b48bff7f-3b3f-4bdd-8236-a7c06685ed44.'),
         ('221a19d5-bb02-42c8-8539-24446325e958', 11, NULL, '221a19d5-bb02-42c8-8539-24446325e958.'),
