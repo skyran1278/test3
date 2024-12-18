@@ -57,7 +57,7 @@
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "serve-favicon": "^2.5.0",
-    "typeorm": "npm:@4itech/typeorm@^0.3.50",
+    "typeorm": "npm:@4itech/typeorm@^0.3.51",
     "typeorm-transactional": "^0.5.0",
     "winston": "^3.13.0"
   },
