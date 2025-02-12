@@ -27,7 +27,10 @@ module.exports = {
     ],
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': 'error',
-    '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+    '@typescript-eslint/no-unused-vars': [
+      'warn',
+      { argsIgnorePattern: '^_', ignoreRestSiblings: true },
+    ],
     '@typescript-eslint/no-extraneous-class': [
       'warn',
       {
@@ -35,6 +38,5 @@ module.exports = {
         allowConstructorOnly: true,
       },
     ],
-    '@typescript-eslint/no-unused-vars': ['warn', { ignoreRestSiblings: true }],
   },
 };
