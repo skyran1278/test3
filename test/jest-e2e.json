@@ -1,5 +1,6 @@
 {
   "setupFiles": ["<rootDir>/setup-tests.ts"],
+  "prettierPath": null,
   "moduleFileExtensions": ["js", "json", "ts"],
   "rootDir": ".",
   "testEnvironment": "node",
